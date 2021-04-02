@@ -15,7 +15,7 @@
 
 class Element {
 public:
-  // rank and suit names
+  // element names
     static constexpr const char* const ELE_WATER = "Water";
     static constexpr const char* const ELE_WOOD = "Wood";
     static constexpr const char* const ELE_FIRE = "Fire";
@@ -33,10 +33,10 @@ public:
   //EFFECTS Returns the element
   std::string get_element() const;
 
-  //EFFECTS Returns the element that current element would like to receive healing from
+  //EFFECTS Returns the best healing element
   std::string get_best_healing_element() const;
 
-  //EFFECTS Returns the element that current element would like to fight as opponent
+  //EFFECTS Returns the best opponent element
   std::string get_best_opponent_element() const;
 
   //REQUIRES element is "Water", "Wood", "Fire", "Earth", or "Metal"
@@ -68,22 +68,16 @@ private:
     std::string best_opponent_element; // element that current element would like to have as opponent
 };
 
-//EFFECTS Returns true if lhs is weak against rhs.
-bool operator<(const Element& lhs, const Element& rhs);
+//EFFECTS Returns the element that current element would like to receive healing from
+std::string find_best_healing_element(const std::string& element);
 
-//EFFECTS Returns true if lhs is weak oe neutral against rhs.
-bool operator<=(const Element& lhs, const Element& rhs);
+//EFFECTS Returns the element that current element would like to fight as opponent
+std::string find_best_opponent_element(const std::string& element);
 
-//EFFECTS Returns true if lhs is strong against rhs.
-bool operator>(const Element& lhs, const Element& rhs);
-
-//EFFECTS Returns true if lhs is strong or neutral against rhs.
-bool operator>=(const Element& lhs, const Element& rhs);
-
-//EFFECTS Returns true if lhs is neutral against rhs.
+//EFFECTS Returns true if lhs is same as rhs
 bool operator==(const Element& lhs, const Element& rhs);
 
-//EFFECTS Returns true if lhs is not neutral against rhs.
+//EFFECTS Returns true if lhs is not same as rhs.
 bool operator!=(const Element& lhs, const Element& rhs);
 
 //EFFECTS Prints Element to stream, for example "Water"
