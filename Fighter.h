@@ -32,6 +32,9 @@ public:
     //EFFECTS  returns active weapon of fighter
     virtual int get_active_weapon() const = 0;
 
+    //EFFECTS returns kth weapons of fighter
+    virtual Weapon* get_k_weapon(const int& k) const = 0;
+
     //EFFECTS  returns combat status of fighter
     virtual bool get_combat_status() const = 0;
 
@@ -43,6 +46,9 @@ public:
 
     //EFFECTS  returns attack_strength of fighter
     virtual double get_attack_strength() const = 0;
+
+    //EFFECTS  returns healing_strength of fighter
+    virtual double get_healing_strength() const = 0;
 
     //REQUIRES fighter wants to add weapon
     //EFFECTS gives fighter the extra weapon
@@ -79,30 +85,40 @@ public:
     //EFFECTS changes fighter max health
     virtual void change_max_health(const int& health_change) = 0;
 
+    //EFFECTS changes fighter current health
+    virtual void change_current_health(const int& health_change) = 0;
+
     //EFFECTS changes fighter attack strength
     virtual void change_attack_strength(const int& strength_change) = 0;
+
+    //EFFECTS changes fighter healing strength
+    virtual void change_healing_strength(const int& healing_change) = 0;
 
     //REQUIRES fighter wants to heal
     //MODIFIES allies
     //EFFECTS  make fighter heal allies or self
-    virtual void go_heal(Team* allies) = 0;
+    virtual void go_heal(Team& allies) = 0;
 
     //REQUIRES fighter wants to fight
     //MODIFIES opponents
     //EFFECTS  make fighter attack opponents. print out to terminal who was attacked.
-    virtual void go_attack(Team* opponents) const = 0;
+    virtual void go_attack(Team& opponents) = 0;
 
     //REQUIRES fighter wants to fight
     //EFFECTS  make fighter grab weapon
-    virtual void go_grab_weapon(Team* allies, Team* opponents) = 0;
+    virtual void go_grab_weapon(Team& allies, Team& opponents, Brawl& brawl) = 0;
 
     //REQUIRES fighter must be in combat
     //EFFECTS  change health based on amount healed
-    virtual void receive_healing(const double& healing, const Fighter* healer) = 0;
+    virtual void receive_healing(const Weapon* healing_weapon, Fighter* healer) = 0;
 
     //REQUIRES fighter is focused by enemy
     //EFFECTS  change health based on attack
-    virtual void receive_attack(const double& damage, const Fighter* attacker) = 0;
+    virtual void receive_attack(const Weapon* damaging_weapon, const Fighter* attacker) = 0;
+
+    //EFFECTS: Prints weapons of fighter to os
+    virtual std::ostream& print_weapons(std::ostream& os) const = 0;
+
 
     // Needed to avoid some compiler errors
     virtual ~Fighter() {}
@@ -118,10 +134,12 @@ private:
     double current_health;
 
     double attack_strength;
+    double healing_strength;
 };
 
-//EFFECTS Returns a pointer to a fighter with the given name and strategy
-Fighter* Fighter_factory(const std::string& name, const std::string& strategy);
+//EFFECTS Returns a pointer to a fighter with the given name and type
+Fighter* Fighter_factory(const std::string& name, const Element& element,
+    const std::string& type);
 
 //EFFECTS Prints fighter's name to os
 std::ostream & operator<<(std::ostream& os, const Fighter& f);

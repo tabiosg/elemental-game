@@ -25,6 +25,31 @@ public:
 
 	}
 
+	//EFFECTS return team one
+	const Team get_team_one() const {
+
+	}
+
+	//EFFECTS return team two
+	const Team get_team_two() const {
+
+	}
+
+	//EFFECTS return kth dropped weapon
+	Weapon* get_kth_dropped_weapon(const int& k) {
+
+	}
+
+	//EFFECTS remove kth dropped weapon
+	void remove_kth_dropped_weapon(const int& k) {
+
+	}
+
+	//EFFECTS add dropped weapon
+	void add_dropped_weapon(const int& k) {
+
+	}
+
 	//EFFECTS start the entire brawl until one team loses all members.
 	void startBrawl() {
 
@@ -35,30 +60,6 @@ public:
 	//MODIFIES action and target
 	//EFFECTS  Ask if fighter wants to attack or heal or grab weapon or skip turn. Do action.
 	void request_and_enact_action() {
-
-	}
-
-	//REQUIRES fighter wants to attack
-	//EFFECTS see who fighter wants to attack
-	int request_attack_target() {
-
-	}
-
-	//REQUIRES fighter wants to heal
-	//EFFECTS see who fighter wants to heal
-	int request_heal_target() {
-
-	}
-
-	//REQUIRES fighter wants to heal or attack
-	//EFFECTS see which weapon the fighter wants to use
-	int request_heal_weapon() {
-
-	}
-
-	//REQUIRES fighter wants to grab and there are dropped weapons
-	//EFFECTS see what weapon the fighter wants to grab
-	int request_grab_target() {
 
 	}
 
@@ -75,7 +76,7 @@ public:
 
 	//EFFECTS Prints dropped_weapons to stream as "Dropped Weapon 1: Excalibur" 
 	//followed by newline and then "Dropped Weapon 2: Gate of Babylon"
-	std::ostream& print_dropped_weapons(std::ostream& os) {
+	std::ostream& print_dropped_weapons(std::ostream& os) const {
 
 	}
 

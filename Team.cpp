@@ -29,6 +29,12 @@ public:
 
 	}
 
+	//REQUIRES 0 < k <= in_combat_Fighters in team
+	//EFFECTS return the kth  in_combat fighter.
+	Fighter* get_kth_in_combat_fighter(const int& k) {
+
+	}
+
 	//REQUIRES team is in combat
 	//EFFECTS return true if all members are out of combat.
 	bool all_members_died() const {
@@ -49,13 +55,13 @@ public:
 
 	//EFFECTS Prints in combat fighters to stream as "Fighter 1: Alex" 
 	//followed by newline and then "Fighter 2: Harry"
-	std::ostream& print_in_combat_fighters(std::ostream& os) {
+	std::ostream& print_in_combat_fighters(std::ostream& os) const {
 
 	}
 
 	//EFFECTS Prints out of combat fighters to stream as "Fighter 1: Alex" 
 	//followed by newline and then "Fighter 2: Harry"
-	std::ostream& print_out_of_combat_fighters(std::ostream& os) {
+	std::ostream& print_out_of_combat_fighters(std::ostream& os) const {
 
 	}
 
