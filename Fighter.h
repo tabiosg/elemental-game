@@ -25,6 +25,9 @@ public:
     //EFFECTS  returns element of fighter
     virtual Element get_element() const = 0;
 
+    //EFFECTS returns number of weapons on fighter
+    virtual int get_number_of_weapons() const = 0;
+
     //REQUIRES fighter has a weapon
     //EFFECTS  returns active weapon of fighter
     virtual Weapon* get_active_weapon() const = 0;
@@ -46,7 +49,7 @@ public:
     virtual void add_weapon(Weapon* weapon) = 0;
     
     //REQUIRES fighter wants to delete a weapon
-    //EFFECTS gives fighter the extra weapon
+    //EFFECTS deletes weapon
     virtual void delete_weapon(const int& weapon_index) = 0;
 
     //REQUIRES fighter wants to change name
@@ -88,6 +91,7 @@ private:
     std::string name;
     Element element_type;
     std::vector<Weapon*> weapons;
+    int number_of_weapons;
     Weapon* active_weapon;
     bool in_combat;
     double max_health;

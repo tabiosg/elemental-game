@@ -31,17 +31,20 @@ public:
     //EFFECTS  returns healing strength of weapon
     virtual double get_healing_strength() const = 0;
 
+    //EFFECTS returns weapon's type
+    virtual const std::string& get_weapon_type() const = 0;
+
     //REQUIRES weapon has a name
     //EFFECTS  changes name of weapon
-    virtual void change_name() = 0;
+    virtual void change_name(const std::string& name_change) = 0;
 
     //REQUIRES weapon has an attack strength
     //EFFECTS  changes attack strength of weapon
-    virtual void change_attack_strength() = 0;
+    virtual void change_attack_strength(const int& changed_attack_strength) = 0;
 
     //REQUIRES weapon has a healing strength
     //EFFECTS  changes healing strength of weapon
-    virtual void change_healing_strength() = 0;
+    virtual void change_healing_strength(const int& changed_heal_strength) = 0;
 
     // Needed to avoid some compiler errors
     virtual ~Weapon() {}
@@ -51,10 +54,11 @@ private:
     Element element;
     double attack_strength;
     double healing_strength;
+    std::string weapon_type;
 };
 
-//EFFECTS Returns a pointer to a weapon with the given name
-Weapon* Weapon_factory(const std::string& name, const Element& element);
+//EFFECTS Returns a pointer to a weapon with the given weapon type
+Weapon* Weapon_factory(const std::string& weapon_type, const Element& element);
 
 //EFFECTS Prints weapon's name to os
 std::ostream& operator<<(std::ostream& os, const Weapon& w);
