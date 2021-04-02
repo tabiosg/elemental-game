@@ -20,8 +20,13 @@ public:
         attack_strength(40.0), healing_strength(20.0),
         weapon_type("Staff") {}
 
-    Staff(const Element& given_element) : Staff() {
+    Staff(const std::string& given_name, const Element& given_element,
+        const double& given_attack_strength, 
+        const double& given_healing_strength) : Staff() {
+        name = given_name;
         element = given_element;
+        attack_strength = given_attack_strength;
+        healing_strength = given_healing_strength;
     }
 
     //EFFECTS returns weapon's name
@@ -89,8 +94,13 @@ public:
         attack_strength(50.0), healing_strength(10.0),
         weapon_type("Spear") {}
 
-    Spear(const Element& given_element) : Spear() {
+    Spear(const std::string& given_name, const Element& given_element,
+        const double& given_attack_strength,
+        const double& given_healing_strength) : Spear() {
+        name = given_name;
         element = given_element;
+        attack_strength = given_attack_strength;
+        healing_strength = given_healing_strength;
     }
 
     //EFFECTS returns weapon's name
@@ -158,8 +168,13 @@ public:
         attack_strength(30.0), healing_strength(50.0),
         weapon_type("Cross") {}
 
-    Cross(const Element& given_element) : Cross() {
+    Cross(const std::string& given_name, const Element& given_element,
+        const double& given_attack_strength,
+        const double& given_healing_strength) : Cross() {
+        name = given_name;
         element = given_element;
+        attack_strength = given_attack_strength;
+        healing_strength = given_healing_strength;
     }
 
     //EFFECTS returns weapon's name
@@ -221,10 +236,18 @@ private:
 };
 
 //EFFECTS Returns a pointer to a weapon with the given weapon type
-Weapon* Weapon_factory(const std::string& weapon_type, const Element& element) {
-    if (weapon_type == "Staff") return new Staff(element);
-    else if (weapon_type == "Spear") return new Spear(element);
-    else if (weapon_type == "Cross") return new Cross(element);
+Weapon* Weapon_factory(const std::string& name, const Element& element,
+    const double& attack_strength, const double& healing_strength,
+    const std::string& weapon_type) {
+    if (weapon_type == "Staff") {
+        return new Staff(name, element, attack_strength, healing_strength);
+    }
+    else if (weapon_type == "Spear") {
+        return new Spear(name, element, attack_strength, healing_strength);
+    }
+    else if (weapon_type == "Cross") {
+        return new Cross(name, element, attack_strength, healing_strength);
+    }
     assert(false);
     return nullptr;
 }

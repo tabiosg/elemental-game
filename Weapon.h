@@ -58,7 +58,9 @@ private:
 };
 
 //EFFECTS Returns a pointer to a weapon with the given weapon type
-Weapon* Weapon_factory(const std::string& weapon_type, const Element& element);
+Weapon* Weapon_factory(const std::string& name, const Element& element,
+    const double& attack_strength, const double& healing_strength,
+    const std::string& weapon_type);
 
 //EFFECTS Prints weapon's name to os
 std::ostream& operator<<(std::ostream& os, const Weapon& w);

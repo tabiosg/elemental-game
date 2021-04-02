@@ -30,7 +30,7 @@ public:
 
     //REQUIRES fighter has a weapon
     //EFFECTS  returns active weapon of fighter
-    virtual Weapon* get_active_weapon() const = 0;
+    virtual int get_active_weapon() const = 0;
 
     //EFFECTS  returns combat status of fighter
     virtual bool get_combat_status() const = 0;
@@ -51,6 +51,26 @@ public:
     //REQUIRES fighter wants to delete a weapon
     //EFFECTS deletes weapon
     virtual void delete_weapon(const int& weapon_index) = 0;
+
+    //REQUIRES 0 < k <= number_of_weapons
+    //EFFECTS returns the kth weapon's name
+    virtual const std::string& get_k_name(const int& k) const = 0;
+
+    //REQUIRES 0 < k <= number_of_weapons
+    //EFFECTS  returns element of the kth weapon
+    virtual Element get_k_element(const int& k) const = 0;
+
+    ///REQUIRES 0 < k <= number_of_weapons
+    //EFFECTS  returns attack strength of the kth weapon
+    virtual double get_k_attack_strength(const int& k) const = 0;
+
+    //REQUIRES 0 < k <= number_of_weapons
+    //EFFECTS  returns healing strength of the kth weapon
+    virtual double get_k_healing_strength(const int& k) const = 0;
+
+    //REQUIRES 0 < k <= number_of_weapons
+    //EFFECTS returns the kth weapon's type
+    virtual const std::string& get_k_weapon_type(const int& k) const = 0;
 
     //REQUIRES fighter wants to change name
     //EFFECTS changes fighter name
@@ -92,7 +112,7 @@ private:
     Element element_type;
     std::vector<Weapon*> weapons;
     int number_of_weapons;
-    Weapon* active_weapon;
+    int active_weapon;
     bool in_combat;
     double max_health;
     double current_health;

@@ -11,11 +11,26 @@
 class HumanFighter : public Fighter {
 public:
 
-    HumanFighter() : name("Default Name"), element_type(Element::ELE_WATER), 
-        number_of_weapons(0), in_combat(false), max_health(200.0), 
+    HumanFighter() : name("Default Name"), element_type(Element::ELE_WATER),
+        number_of_weapons(0), active_weapon(0), in_combat(false), max_health(200.0),
         current_health(max_health), attack_strength(25.0) {}
 
     HumanFighter(const HumanFighter& other) {
+        name = other.get_name();
+        element_type = other.get_element();
+        number_of_weapons = other.get_number_of_weapons();
+        active_weapon = other.get_active_weapon();
+        in_combat = other.get_combat_status();
+        max_health = other.get_max_health();
+        current_health = other.get_current_health();
+        attack_strength = other.get_attack_strength();
+
+        for (int k = 0; number_of_weapons; ++k) {
+            Weapon* additional_weapon = Weapon_factory(other.get_k_name(k),
+                other.get_k_element(k), other.get_k_attack_strength(k), other.get_k_healing_strength(k),
+                other.get_k_weapon_type(k));
+            weapons.push_back(additional_weapon);
+        }
 
     }
 
@@ -41,7 +56,7 @@ public:
 
     //REQUIRES fighter has a weapon
     //EFFECTS  returns active weapon of fighter
-    Weapon* get_active_weapon() const override {
+    int get_active_weapon() const override {
         return active_weapon;
     }
 
@@ -68,13 +83,46 @@ public:
     //REQUIRES fighter wants to add weapon
     //EFFECTS gives fighter the extra weapon
     void add_weapon(Weapon* weapon) override {
-        
+        ++number_of_weapons;
+        weapons.push_back(weapon);
     }
 
     //REQUIRES fighter wants to delete a weapon
     //EFFECTS deletes weapon
     void delete_weapon(const int& weapon_index) {
+        --number_of_weapons;
+        delete weapons[weapon_index];
+        weapons.erase(weapons.begin() + weapon_index);
+    }
 
+    //REQUIRES 0 < k <= number_of_weapons
+    //EFFECTS returns the kth weapon's name
+    const std::string& get_k_name(const int& k) const override {
+        return weapons[k]->get_name();
+    }
+
+    //REQUIRES 0 < k <= number_of_weapons
+    //EFFECTS  returns element of the kth weapon
+    Element get_k_element(const int& k) const override {
+        return weapons[k]->get_element();
+    }
+
+    //REQUIRES 0 < k <= number_of_weapons
+    //EFFECTS  returns attack strength of the kth weapon
+    double get_k_attack_strength(const int& k) const override {
+        return weapons[k]->get_attack_strength();
+    }
+
+    //REQUIRES 0 < k <= number_of_weapons
+    //EFFECTS  returns healing strength of the kth weapon
+    double get_k_healing_strength(const int& k) const override {
+        return weapons[k]->get_healing_strength();
+    }
+
+    //REQUIRES 0 < k <= number_of_weapons
+    //EFFECTS returns the kth weapon's type
+    const std::string& get_k_weapon_type(const int& k) const override {
+        return weapons[k]->get_weapon_type();
     }
 
     //REQUIRES fighter wants to change name
@@ -126,14 +174,18 @@ public:
     }
 
     // Needed to avoid some compiler errors
-    virtual ~HumanFighter() {}
+    virtual ~HumanFighter() {
+        while (number_of_weapons != 0) {
+            delete_weapon(0);
+        }
+    }
 
 private:
     std::string name;
     Element element_type;
     std::vector<Weapon*> weapons;
     int number_of_weapons;
-    Weapon* active_weapon;
+    int active_weapon;
     bool in_combat;
     double max_health;
     double current_health;
@@ -169,14 +221,29 @@ class PacifistFighter : public Fighter {
 public:
 
     PacifistFighter() : name("Default Name"), element_type(Element::ELE_WATER),
-        number_of_weapons(0), in_combat(false), max_health(100.0),
+        number_of_weapons(0), active_weapon(0), in_combat(false), max_health(200.0),
         current_health(max_health), attack_strength(25.0) {}
 
     PacifistFighter(const PacifistFighter& other) {
+        name = other.get_name();
+        element_type = other.get_element();
+        number_of_weapons = other.get_number_of_weapons();
+        active_weapon = other.get_active_weapon();
+        in_combat = other.get_combat_status();
+        max_health = other.get_max_health();
+        current_health = other.get_current_health();
+        attack_strength = other.get_attack_strength();
+
+        for (int k = 0; number_of_weapons; ++k) {
+            Weapon* additional_weapon = Weapon_factory(other.get_k_name(k),
+                other.get_k_element(k), other.get_k_attack_strength(k), other.get_k_healing_strength(k),
+                other.get_k_weapon_type(k));
+            weapons.push_back(additional_weapon);
+        }
 
     }
 
-    PacifistFighter& operator=(const PacifistFighter& rhs) {
+    PacifistFighter& operator=(const HumanFighter& rhs) {
         return *this;
     }
 
@@ -198,7 +265,7 @@ public:
 
     //REQUIRES fighter has a weapon
     //EFFECTS  returns active weapon of fighter
-    Weapon* get_active_weapon() const override {
+    int get_active_weapon() const override {
         return active_weapon;
     }
 
@@ -225,13 +292,46 @@ public:
     //REQUIRES fighter wants to add weapon
     //EFFECTS gives fighter the extra weapon
     void add_weapon(Weapon* weapon) override {
-
+        ++number_of_weapons;
+        weapons.push_back(weapon);
     }
 
     //REQUIRES fighter wants to delete a weapon
     //EFFECTS deletes weapon
     void delete_weapon(const int& weapon_index) {
+        --number_of_weapons;
+        delete weapons[weapon_index];
+        weapons.erase(weapons.begin() + weapon_index);
+    }
 
+    //REQUIRES 0 < k <= number_of_weapons
+    //EFFECTS returns the kth weapon's name
+    const std::string& get_k_name(const int& k) const override {
+        return weapons[k]->get_name();
+    }
+
+    //REQUIRES 0 < k <= number_of_weapons
+    //EFFECTS  returns element of the kth weapon
+    Element get_k_element(const int& k) const override {
+        return weapons[k]->get_element();
+    }
+
+    //REQUIRES 0 < k <= number_of_weapons
+    //EFFECTS  returns attack strength of the kth weapon
+    double get_k_attack_strength(const int& k) const override {
+        return weapons[k]->get_attack_strength();
+    }
+
+    //REQUIRES 0 < k <= number_of_weapons
+    //EFFECTS  returns healing strength of the kth weapon
+    double get_k_healing_strength(const int& k) const override {
+        return weapons[k]->get_healing_strength();
+    }
+
+    //REQUIRES 0 < k <= number_of_weapons
+    //EFFECTS returns the kth weapon's type
+    const std::string& get_k_weapon_type(const int& k) const override {
+        return weapons[k]->get_weapon_type();
     }
 
     //REQUIRES fighter wants to change name
@@ -283,14 +383,18 @@ public:
     }
 
     // Needed to avoid some compiler errors
-    virtual ~PacifistFighter() {}
+    virtual ~PacifistFighter() {
+        while (number_of_weapons != 0) {
+            delete_weapon(0);
+        }
+    }
 
 private:
     std::string name;
     Element element_type;
     std::vector<Weapon*> weapons;
     int number_of_weapons;
-    Weapon* active_weapon;
+    int active_weapon;
     bool in_combat;
     double max_health;
     double current_health;
