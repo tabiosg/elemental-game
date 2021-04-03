@@ -15,36 +15,36 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Element.cpp">
+    <ClCompile Include="src\Brawl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Fighter.cpp">
+    <ClCompile Include="src\Element.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Weapon.cpp">
+    <ClCompile Include="src\Fighter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Team.cpp">
+    <ClCompile Include="src\Team.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Brawl.cpp">
+    <ClCompile Include="src\Weapon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Element.h">
+    <ClInclude Include="inc\Brawl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Fighter.h">
+    <ClInclude Include="inc\Element.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Weapon.h">
+    <ClInclude Include="inc\Fighter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Team.h">
+    <ClInclude Include="inc\Team.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Brawl.h">
+    <ClInclude Include="inc\Weapon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
