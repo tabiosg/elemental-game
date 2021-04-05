@@ -11,7 +11,7 @@
 
 
 #include "Element.h"
-#include "Team.h"
+
 #include "Weapon.h"
 #include <string>
 #include <vector>
@@ -89,7 +89,7 @@ public:
 
     //REQUIRES 0 < k <= number_of_weapons
     //EFFECTS returns the kth weapon's type
-    virtual const std::string& get_k_weapon_type(const int& k) const = 0;
+    virtual const std::string get_k_weapon_type(const int& k) const = 0;
 
     //REQUIRES fighter wants to change name
     //EFFECTS changes fighter name
@@ -116,21 +116,23 @@ public:
     virtual void exit_combat() = 0;
 
     //EFFECTS request action of fighter. should either be attack heal grab or skip.
-    virtual std::string request_action(Brawl& brawl) = 0;
+    virtual std::string request_action(std::vector<Fighter*> allies, std::vector<Fighter*> opponents,
+        const std::vector<Weapon*> dropped_weapons) = 0;
 
     //REQUIRES fighter wants to heal
     //MODIFIES allies
     //EFFECTS  make fighter heal allies or self
-    virtual void go_heal(Team& allies) = 0;
+    virtual void go_heal(std::vector<Fighter*> allies) = 0;
 
     //REQUIRES fighter wants to fight
     //MODIFIES opponents
     //EFFECTS  make fighter attack opponents. return who was attacked
-    virtual int go_attack(Team& opponents) = 0;
+    virtual int go_attack(std::vector<Fighter*> opponents) = 0;
 
     //REQUIRES fighter wants to fight
     //EFFECTS  make fighter grab weapon
-    virtual void go_grab_weapon(Team& allies, Team& opponents, Brawl& brawl) = 0;
+    virtual int go_grab_weapon(std::vector<Fighter*> allies, std::vector<Fighter*> opponents, 
+        const std::vector<Weapon*> dropped_weapons) = 0;
 
     //REQUIRES fighter must be in combat
     //EFFECTS  change health based on amount healed
@@ -144,6 +146,7 @@ public:
     //EFFECTS: Prints weapons of fighter to os
     virtual std::ostream& print_weapons(std::ostream& os) const = 0;
 
+    virtual std::ostream& print_list_of_weapons(std::ostream& os, const std::vector<Weapon*> weapons) const = 0;
 
     // Needed to avoid some compiler errors
     virtual ~Fighter() {}
@@ -178,7 +181,11 @@ Fighter* Fighter_factory(const Fighter* copied_fighter);
 std::ostream & operator<<(std::ostream& os, const Fighter& f);
 
 //EFFECTS Prints weapons of fighter to os as "Weapon 1: Excalibur" 
-	//followed by newline and then "Weapon 2: Gate of Babylon"
+//followed by newline and then "Weapon 2: Gate of Babylon"
 std::ostream& print_weapons(std::ostream& os, const Fighter& f);
+
+//EFFECTS Prints fighters to stream as "Fighter 1: Alex" 
+//followed by newline and then "Fighter 2: Harry"
+std::ostream& print_list_of_fighters(std::ostream& os, std::vector<Fighter*> fighters);
 
 #endif

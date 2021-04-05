@@ -1,19 +1,28 @@
+/* Fighter.cpp
+ *
+ * Fighter
+ *
+ * by Guthrie Tabios
+ * tabiosg
+ * 2021-04-01
+ */
+
 #include <cassert>
 #include <iostream>
 #include <string>
 #include <vector>
 #include <sstream>
+
 #include "Fighter.h"
-#include "Team.h"
+
 #include "Weapon.h"
 #include "Element.h"
-#include "Brawl.h"
 
 class Human : public Fighter {
 public:
 
-    Human() : name("Default Name"), element_type(Element::ELE_WATER),
-        number_of_weapons(0), active_weapon(0), in_combat(false), max_health(200.0),
+    Human() : name("Angel"), element_type(Element::ELE_WATER),
+        number_of_weapons(0), active_weapon(-1), in_combat(false), max_health(200.0),
         current_health(max_health), attack_strength(25.0), 
         healing_strength(25.0), type("Human") {}
 
@@ -24,6 +33,8 @@ public:
 
     Human(const std::string& given_name, const Element& element, 
         const std::string& weapon_type) : Human() {
+        name = given_name; 
+        element_type = element;
         Weapon* default_weapon;
         if (weapon_type == Weapon::WEAPON_STAFF) {
             default_weapon = Weapon_factory(Weapon::WEAPON_STAFF);
@@ -38,7 +49,6 @@ public:
             assert(false);
         }
         add_weapon(default_weapon);
-
     }
 
     Human(const std::string& given_name, const Element& given_element,
@@ -65,7 +75,7 @@ public:
         current_health = other.get_current_health();
         attack_strength = other.get_attack_strength();
         healing_strength = other.get_healing_strength();
-        type = other.get_type();;
+        type = other.get_type();
 
         for (int k = 0; number_of_weapons; ++k) {
             Weapon* additional_weapon = Weapon_factory(other.get_k_weapon(k));
@@ -75,6 +85,25 @@ public:
     }
 
     Human& operator=(const Human& rhs) {
+        while (number_of_weapons != 0) {
+            delete_weapon(0);
+        }
+
+        name = rhs.get_name();
+        element_type = rhs.get_element();
+        number_of_weapons = rhs.get_number_of_weapons();
+        active_weapon = rhs.get_active_weapon();
+        in_combat = rhs.get_combat_status();
+        max_health = rhs.get_max_health();
+        current_health = rhs.get_current_health();
+        attack_strength = rhs.get_attack_strength();
+        healing_strength = rhs.get_healing_strength();
+        type = rhs.get_type();
+
+        for (int k = 0; number_of_weapons; ++k) {
+            Weapon* additional_weapon = Weapon_factory(rhs.get_k_weapon(k));
+            weapons.push_back(additional_weapon);
+        }
         return *this;
     }
 
@@ -142,6 +171,9 @@ public:
     void add_weapon(Weapon* weapon) override {
         ++number_of_weapons;
         weapons.push_back(weapon);
+        if (active_weapon == -1) {
+            active_weapon = 0;
+        }
     }
 
     //REQUIRES fighter wants to delete a weapon
@@ -150,6 +182,9 @@ public:
         --number_of_weapons;
         delete weapons[weapon_index];
         weapons.erase(weapons.begin() + weapon_index);
+        if (active_weapon >= number_of_weapons) {
+            active_weapon = number_of_weapons - 1;
+        }
     }
 
     //REQUIRES 0 <= k < number_of_weapons
@@ -178,7 +213,7 @@ public:
 
     //REQUIRES 0 <= k < number_of_weapons
     //EFFECTS returns the kth weapon's type
-    const std::string& get_k_weapon_type(const int& k) const override {
+    const std::string get_k_weapon_type(const int& k) const override {
         return weapons[k]->get_weapon_type();
     }
 
@@ -223,23 +258,29 @@ public:
     }
 
     //EFFECTS request action of fighter. should either be attack heal grab or skip.
-    std::string request_action(Brawl& brawl) override {
+    std::string request_action(std::vector<Fighter*> allies, std::vector<Fighter*> opponents, 
+        const std::vector<Weapon*> dropped_weapons) override {
         std::cout << name << ", would you like to attack, heal, grab a weapon, or skip your turn?" <<
             std::endl << "Answer with \"Attack\", \"Heal\", \"Grab\", or \"Skip\": " <<
             std::endl;
         std::string response;
         std::cin >> response;
+        std::cout << std::endl;
+        return response;
     }
 
     //REQUIRES fighter wants to heal
     //MODIFIES allies
     //EFFECTS  make fighter heal allies or self
-    void go_heal(Team& allies) override {
-        assert(get_combat_status);
+    void go_heal(std::vector<Fighter*> allies) override {
+        assert(get_combat_status());
         int target = request_heal_target(allies);
         active_weapon = request_active_weapon();
         Weapon* current_weapon = get_k_weapon(active_weapon);
-        allies.get_kth_in_combat_fighter(target)->receive_healing(current_weapon, this);
+
+        std::cout << *this << " used " << *current_weapon << " to heal " << *allies[target] << std::endl;
+
+        allies[target]->receive_healing(current_weapon, this);
 
         Element weapon_element = current_weapon->get_element();
         if (weapon_element.is_strengthening(element_type)) {
@@ -253,50 +294,58 @@ public:
     //REQUIRES fighter wants to fight
     //MODIFIES opponents
     //EFFECTS  make fighter attack opponents. return who was attacked
-    int go_attack(Team& opponents) override {
-        assert(get_combat_status);
+    int go_attack(std::vector<Fighter*> opponents) override {
+        assert(get_combat_status());
         int target = request_attack_target(opponents);
         active_weapon = request_active_weapon();
         Weapon* current_weapon = get_k_weapon(active_weapon);
-        opponents.get_kth_in_combat_fighter(target)->receive_attack(current_weapon, this);
+
+        std::cout << *this << " used " << *current_weapon << " to attack " << *opponents[target] << std::endl;
+
+        opponents[target]->receive_attack(current_weapon, this);
 
         return target;
     }
 
     //REQUIRES fighter wants to fight
     //EFFECTS  make fighter grab weapon
-    void go_grab_weapon(Team& allies, Team& opponents, Brawl& brawl) override {
-        assert(get_combat_status);
-        int target = request_grab_target(brawl);
-        Weapon* wanted_weapon = brawl.get_kth_dropped_weapon(target);
+    int go_grab_weapon(std::vector<Fighter*> allies, std::vector<Fighter*> opponents, 
+        const std::vector<Weapon*> dropped_weapons) override {
+        assert(get_combat_status());
+        int target = request_grab_target(dropped_weapons);
+        Weapon* wanted_weapon = dropped_weapons[target];
         add_weapon(wanted_weapon);
-        brawl.remove_kth_dropped_weapon(target);
 
-        std::cout << *this << " has picked up the " << *wanted_weapon << "." << std::endl;
+        std::cout << *this << " has picked up " << *wanted_weapon << "." << std::endl << std::endl;
+        return target;
     }
 
     //REQUIRES fighter must be in combat
     //EFFECTS  change health based on amount healed
     void receive_healing(const Weapon* healing_weapon, Fighter* healer) override {
-        assert(get_combat_status);
+        assert(get_combat_status());
         double multiplier = 1.0;
         Element healer_element = healer->get_element();
-        int active = healer->get_active_weapon();
         Element weapon_element = healing_weapon->get_element();
         if (weapon_element.is_special_resource(healer_element)) {
             if (weapon_element.is_strengthening(healer_element)) {
                 multiplier = multiplier + 0.2;
+                std::cout << *healing_weapon << " was more effective because of " << *healer << "'s element!" << std::endl;
+                std::cout << *healer << " lost " << 0.1 * max_health << " when healing!" << std::endl;
             }
             else if (!weapon_element.is_strengthening(healer_element)) {
                 multiplier = multiplier - 0.2;
+                std::cout << *healing_weapon << " was less effective because of " << *healer << "'s element!" << std::endl;
             }
         }
         if (element_type.is_special_resource(weapon_element)) {
             if (element_type.is_strengthening(weapon_element)) {
                 multiplier = multiplier + 0.2;
+                std::cout << *healing_weapon << " was more effective because of " << *this << "'s element!" << std::endl;
             }
             else if (!element_type.is_strengthening(weapon_element)) {
                 multiplier = multiplier - 0.2;
+                std::cout << *healing_weapon << " was less effective because of " << *this << "'s element!" << std::endl;
             }
         }
 
@@ -309,14 +358,14 @@ public:
         }
 
         std::cout << *this << " received " << total_healing << " healing from " << *healer <<
-            "." << std::endl << *this << " now has " << current_health << " health." << std::endl;
+            "." << std::endl << *this << " now has " << current_health << " health." << std::endl << std::endl;
     }
 
     //REQUIRES fighter is focused by enemy
     //EFFECTS  change health based on attack.
     //do not change combat status if below 0 hp here.
     void receive_attack(const Weapon* damaging_weapon, const Fighter* attacker) override {
-        assert(get_combat_status);
+        assert(get_combat_status());
         double multiplier = 1.0;
         Element damaging_element = attacker->get_element();
         int active = attacker->get_active_weapon();
@@ -324,17 +373,21 @@ public:
         if (weapon_element.is_special_strength(damaging_element)) {
             if (weapon_element.is_effective_strength(damaging_element)) {
                 multiplier = multiplier + 0.2;
+                std::cout << *damaging_weapon << " was more effective because of " << *attacker << "'s element!" << std::endl;
             }
             else if (!weapon_element.is_special_strength(damaging_element)) {
                 multiplier = multiplier - 0.2;
+                std::cout << *damaging_weapon << " was less effective because of " << *attacker << "'s element!" << std::endl;
             }
         }
         if (element_type.is_special_strength(weapon_element)) {
             if (element_type.is_effective_strength(weapon_element)) {
                 multiplier = multiplier + 0.2;
+                std::cout << *damaging_weapon << " was more effective because of " << *this << "'s element!" << std::endl;
             }
             else if (!element_type.is_effective_strength(weapon_element)) {
                 multiplier = multiplier - 0.2;
+                std::cout << *damaging_weapon << " was less effective because of " << *this << "'s element!" << std::endl;
             }
         }
 
@@ -347,13 +400,23 @@ public:
         }
 
         std::cout << *this << " received " << total_damage << " damage from " << *attacker <<
-            "." << std::endl << *this << " now has " << current_health << " health." << std::endl;
+            "." << std::endl << *this << " now has " << current_health << " health." << std::endl << std::endl;
     }
 
     //EFFECTS: Prints weapons of fighter to os
     std::ostream& print_weapons(std::ostream& os) const override {
         for (int i = 0; i < number_of_weapons; ++i) {
-            os << "Weapon " << i << ": " << *weapons[i] << std::endl;
+            os << "Weapon " << i + 1 << ": " << *weapons[i] << std::endl;
+        }
+        return os;
+    }
+
+    //EFFECTS Prints dropped_weapons to stream as "Weapon 1: Excalibur" 
+    //followed by newline and then "Weapon 2: Gate of Babylon"
+    std::ostream& print_list_of_weapons(std::ostream& os, const std::vector<Weapon*> weapons) const override {
+        for (int i = 0; i < weapons.size(); ++i) {
+            Weapon* ithweapon = weapons[i];
+            os << "Weapon " << i + 1 << ": " << *ithweapon << std::endl;
         }
         return os;
     }
@@ -381,25 +444,29 @@ private:
 
     //REQUIRES fighter wants to attack
     //EFFECTS see who fighter wants to attack
-    int request_attack_target(const Team& opponents) const {
+    int request_attack_target(std::vector<Fighter*> opponents) const {
         std::cout << "These are your opponents: " << std::endl;
-        opponents.print_in_combat_fighters(std::cout);
+        print_list_of_fighters(std::cout, opponents);
+        std::cout << std::endl;
         std::cout << name << ", choose who to attack: " << std::endl;
         int target;
         std::cin >> target;
-        assert(target <= opponents.get_in_combat_size() && target > 0);
+        std::cout << std::endl;
+        assert(target <= opponents.size() && target > 0);
         return target - 1;
     }
 
     //REQUIRES fighter wants to heal
     //EFFECTS see who fighter wants to heal
-    int request_heal_target(const Team& allies) const {
+    int request_heal_target(std::vector<Fighter*> allies) const {
         std::cout << "These are your allies: " << std::endl;
-        allies.print_in_combat_fighters(std::cout);
+        print_list_of_fighters(std::cout, allies);
+        std::cout << std::endl;
         std::cout << name << ", choose who to heal (0 for self)" << std::endl;
         int target;
         std::cin >> target;
-        assert(target <= allies.get_in_combat_size() && target > 0);
+        std::cout << std::endl;
+        assert(target <= allies.size() && target > 0);
         return target - 1;
     }
 
@@ -408,11 +475,13 @@ private:
     int request_active_weapon() {
         std::cout << "These are your weapons: " << std::endl;
         print_weapons(std::cout);
+        std::cout << std::endl;
         std::cout << name << ", choose which weapon to equip by entering a number (0 for same): " << std::endl;
         int target;
         std::cin >> target;
-        assert(0 >= target && target <= number_of_weapons);
-        if (target != 0) {
+        std::cout << std::endl;
+        assert(0 <= target && target <= number_of_weapons);
+        if (target == 0) {
             return active_weapon;
         }
         return target - 1;
@@ -420,11 +489,14 @@ private:
 
     //REQUIRES fighter wants to grab and there are dropped weapons
     //EFFECTS see what weapon the fighter wants to grab
-    int request_grab_target(const Brawl& brawl) const {
+    int request_grab_target(const std::vector<Weapon*> dropped_weapons) const {
         std::cout << "These are the dropped weapons: " << std::endl;
-        brawl.print_dropped_weapons(std::cout);
+        print_list_of_weapons(std::cout, dropped_weapons);
+        std::cout << std::endl;
         std::cout << name << ", choose which weapon to equip by entering a number: " << std::endl;
         int target;
+        std::cin >> target;
+        std::cout << std::endl;
         return target - 1;
     }
 };
@@ -444,6 +516,8 @@ public:
 
     Warrior(const std::string& given_name, const Element& element,
         const std::string& weapon_type) : Warrior() {
+        name = given_name;
+        element_type = element;
         Weapon* default_weapon;
         if (weapon_type == Weapon::WEAPON_STAFF) {
             default_weapon = Weapon_factory(Weapon::WEAPON_STAFF);
@@ -484,7 +558,7 @@ public:
         current_health = other.get_current_health();
         attack_strength = other.get_attack_strength();
         healing_strength = other.get_healing_strength();
-        type = other.get_type();;
+        type = other.get_type();
 
         for (int k = 0; number_of_weapons; ++k) {
             Weapon* additional_weapon = Weapon_factory(other.get_k_weapon(k));
@@ -494,6 +568,26 @@ public:
     }
 
     Warrior& operator=(const Warrior& rhs) {
+        while (number_of_weapons != 0) {
+            delete_weapon(0);
+        }
+
+        name = rhs.get_name();
+        element_type = rhs.get_element();
+        number_of_weapons = rhs.get_number_of_weapons();
+        active_weapon = rhs.get_active_weapon();
+        in_combat = rhs.get_combat_status();
+        max_health = rhs.get_max_health();
+        current_health = rhs.get_current_health();
+        attack_strength = rhs.get_attack_strength();
+        healing_strength = rhs.get_healing_strength();
+        type = rhs.get_type();
+
+        for (int k = 0; number_of_weapons; ++k) {
+            Weapon* additional_weapon = Weapon_factory(rhs.get_k_weapon(k));
+            weapons.push_back(additional_weapon);
+        }
+
         return *this;
     }
 
@@ -561,6 +655,9 @@ public:
     void add_weapon(Weapon* weapon) override {
         ++number_of_weapons;
         weapons.push_back(weapon);
+        if (active_weapon == -1) {
+            active_weapon = 0;
+        }
     }
 
     //REQUIRES fighter wants to delete a weapon
@@ -597,7 +694,7 @@ public:
 
     //REQUIRES 0 <= k < number_of_weapons
     //EFFECTS returns the kth weapon's type
-    const std::string& get_k_weapon_type(const int& k) const override {
+    const std::string get_k_weapon_type(const int& k) const override {
         return weapons[k]->get_weapon_type();
     }
 
@@ -642,27 +739,30 @@ public:
     }
 
     //EFFECTS request action of fighter. should either be attack heal grab or skip.
-    std::string request_action(Brawl& brawl) override {
-        return "Attack";
+    std::string request_action(std::vector<Fighter*> allies, std::vector<Fighter*> opponents,
+        const std::vector<Weapon*> dropped_weapons) override {
+        std::string response = "Attack";
+        return response;
     }
 
     //REQUIRES fighter wants to heal
     //MODIFIES allies
     //EFFECTS  make fighter heal allies or self
-    void go_heal(Team& allies) override {
-        assert(get_combat_status);
+    void go_heal(std::vector<Fighter*> allies) override {
+        assert(get_combat_status());
         assert(false);
     }
 
     //REQUIRES fighter wants to fight
     //MODIFIES opponents
     //EFFECTS  make fighter attack opponents. return who was attacked
-    int go_attack(Team& opponents) override {
-        assert(get_combat_status);
-
+    int go_attack(std::vector<Fighter*> opponents) override {
+        assert(get_combat_status());
+        
         int highest_damage_weapon = 0;
         int highest_damage_amount = weapons[0]->get_attack_strength();
-        for (int i = 1; i < number_of_weapons; ++i) {
+        
+        for (int i = 0; i < number_of_weapons; ++i) {
             if (weapons[i]->get_attack_strength() > highest_damage_amount) {
                 highest_damage_amount = weapons[i]->get_attack_strength();
                 highest_damage_weapon = i;
@@ -676,10 +776,9 @@ public:
         int target = 0;
         bool target_ideal = false;
         bool worst_target = true;
-        for (int i = 0; i < opponents.get_in_combat_size(); ++i) {
-            Fighter* potential_defender = opponents.get_kth_in_combat_fighter(i);
+        for (int i = 0; i < opponents.size(); ++i) {
+            Fighter* potential_defender = opponents[i];
             Element opponent_element = potential_defender->get_element();
-            
 
             if (active_weapon_element.is_special_strength(opponent_element)) {
                 if (active_weapon_element.is_effective_strength(opponent_element)) {
@@ -699,22 +798,27 @@ public:
         }
 
         Weapon* current_weapon = get_k_weapon(active_weapon);
-        opponents.get_kth_in_combat_fighter(target)->receive_attack(current_weapon, this);
+
+        std::cout << *this << " used " << *current_weapon << " to attack " << *opponents[target] << std::endl;
+
+        opponents[target]->receive_attack(current_weapon, this);
 
         return target;
+        
     }
 
     //REQUIRES fighter wants to fight
     //EFFECTS  make fighter grab weapon
-    void go_grab_weapon(Team& allies, Team& opponents, Brawl& brawl) override {
-        assert(get_combat_status);
+    int go_grab_weapon(std::vector<Fighter*> allies, std::vector<Fighter*> opponents,
+        const std::vector<Weapon*> dropped_weapons) override {
+        assert(get_combat_status());
         assert(false);
     }
 
     //REQUIRES fighter must be in combat
     //EFFECTS  change health based on amount healed
     void receive_healing(const Weapon* healing_weapon, Fighter* healer) override {
-        assert(get_combat_status);
+        assert(get_combat_status());
         double multiplier = 1.0;
         Element healer_element = healer->get_element();
         int active = healer->get_active_weapon();
@@ -744,14 +848,14 @@ public:
             current_health = max_health;
         }
         std::cout << *this << " received " << total_healing << " healing from " << *healer <<
-            "." << std::endl << *this << " now has " << current_health << " health." << std::endl;
+            "." << std::endl << *this << " now has " << current_health << " health." << std::endl << std::endl;
     }
 
     //REQUIRES fighter is focused by enemy
     //EFFECTS  change health based on attack.
     //do not change combat status if below 0 hp here.
     void receive_attack(const Weapon* damaging_weapon, const Fighter* attacker) override {
-        assert(get_combat_status);
+        assert(get_combat_status());
         double multiplier = 1.0;
         Element damaging_element = attacker->get_element();
         int active = attacker->get_active_weapon();
@@ -759,17 +863,21 @@ public:
         if (weapon_element.is_special_strength(damaging_element)) {
             if (weapon_element.is_effective_strength(damaging_element)) {
                 multiplier = multiplier + 0.2;
+                std::cout << *damaging_weapon << " was more effective because of " << *attacker << "'s element!" << std::endl;
             }
             else if (!weapon_element.is_special_strength(damaging_element)) {
                 multiplier = multiplier - 0.2;
+                std::cout << *damaging_weapon << " was less effective because of " << *attacker << "'s element!" << std::endl;
             }
         }
         if (element_type.is_special_strength(weapon_element)) {
             if (element_type.is_effective_strength(weapon_element)) {
                 multiplier = multiplier + 0.2;
+                std::cout << *damaging_weapon << " was more effective because of " << *this << "'s element!" << std::endl;
             }
             else if (!element_type.is_effective_strength(weapon_element)) {
                 multiplier = multiplier - 0.2;
+                std::cout << *damaging_weapon << " was less effective because of " << *this << "'s element!" << std::endl;
             }
         }
 
@@ -781,13 +889,23 @@ public:
             current_health = 0;
         }
         std::cout << *this << " received " << total_damage << " damage from " << *attacker <<
-            "." << std::endl << *this << " now has " << current_health << " health." << std::endl;
+            "." << std::endl << *this << " now has " << current_health << " health." << std::endl << std::endl;
     }
 
     //EFFECTS: Prints weapons of fighter to os
     std::ostream& print_weapons(std::ostream& os) const override {
         for (int i = 0; i < number_of_weapons; ++i) {
-            os << "Weapon " << i << ": " << *weapons[i] << std::endl;
+            os << "Weapon " << i + 1 << ": " << *weapons[i] << std::endl;
+        }
+        return os;
+    }
+
+    //EFFECTS Prints dropped_weapons to stream as "Weapon 1: Excalibur" 
+    //followed by newline and then "Weapon 2: Gate of Babylon"
+    std::ostream& print_list_of_weapons(std::ostream& os, const std::vector<Weapon*> weapons) const override {
+        for (int i = 0; i < weapons.size(); ++i) {
+            Weapon* ithweapon = weapons[i];
+            os << "Weapon " << i + 1 << ": " << *ithweapon << std::endl;
         }
         return os;
     }
@@ -820,6 +938,9 @@ Fighter* Fighter_factory(const std::string& name, const Element& element,
     if (type == "Human") {
         return new Human(name, element);
     }
+    else if (type == "Warrior") {
+        return new Warrior(name, element);
+    }
     assert(false);
     return nullptr;
 }
@@ -830,6 +951,9 @@ Fighter* Fighter_factory(const std::string& name, const Element& element,
     if (type == "Human") {
         return new Human(name, element, weapon);
     }
+    else if (type == "Warrior") {
+        return new Warrior(name, element, weapon);
+    }
     assert(false);
     return nullptr;
 }
@@ -838,7 +962,7 @@ Fighter* Fighter_factory(const std::string& name, const Element& element,
 Fighter* Fighter_factory(const Fighter* copied_fighter) {
 
     std::string name = copied_fighter->get_name();
-    Element& element = copied_fighter->get_element();
+    Element element = copied_fighter->get_element();
 
     int number_of_weapons = copied_fighter->get_number_of_weapons();
 
@@ -862,6 +986,10 @@ Fighter* Fighter_factory(const Fighter* copied_fighter) {
         return new Human(name, element, weapons, number_of_weapons, active_weapon, 
             in_combat, max_health, current_health, attack_strength, healing_strength, type);
     }
+    else if (type == "Warrior") {
+        return new Warrior(name, element, weapons, number_of_weapons, active_weapon,
+            in_combat, max_health, current_health, attack_strength, healing_strength, type);
+    }
     assert(false);
     return nullptr;
 }
@@ -875,5 +1003,15 @@ std::ostream& operator<<(std::ostream& os, const Fighter& f) {
 //EFFECTS: Prints weapons of fighter to os
 std::ostream& print_weapons(std::ostream& os, const Fighter& f) {
     f.print_weapons(os);
+    return os;
+}
+
+//EFFECTS Prints fighters to stream as "Fighter 1: Alex" 
+//followed by newline and then "Fighter 2: Harry"
+std::ostream& print_list_of_fighters(std::ostream& os, std::vector<Fighter*> fighters) {
+    for (int i = 0; i < fighters.size(); ++i) {
+        Fighter* ithfighter = fighters[i];
+        os << "Fighter " << i + 1 << ": " << *ithfighter << std::endl;
+    }
     return os;
 }

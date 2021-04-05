@@ -3,95 +3,77 @@
 #include <string>
 #include "Element.h"
 
-class Element {
-public:
-   // element names
-    static constexpr const char* const ELE_WATER = "Water";
-    static constexpr const char* const ELE_WOOD = "Wood";
-    static constexpr const char* const ELE_FIRE = "Fire";
-    static constexpr const char* const ELE_EARTH = "Earth";
-    static constexpr const char* const ELE_METAL = "Metal";
-
-    //EFFECTS Initializes Element to Water
-    Element() : element(ELE_WATER), 
+//EFFECTS Initializes Element to Water
+Element::Element() : element(ELE_WATER), 
         best_healing_element(ELE_METAL), 
-        best_opponent_element(ELE_EARTH) {
-    }
+        best_opponent_element(ELE_EARTH) {}
 
-    //REQUIRES element is "Water", "Wood", "Fire", "Earth", or "Metal"
-    //EFFECTS Initializes Element to specified element.
-    Element(const std::string& element_change) : Element() {
-        assert(element_change != "Water" || element_change == "Wood"
-            || element_change == "Fire" || element_change == "Earth"
-            || element_change == "Metal");
-        element = element_change;
-        best_healing_element = find_best_healing_element(element_change);
-        best_opponent_element = find_best_opponent_element(element_change);
-    }
+//REQUIRES element is "Water", "Wood", "Fire", "Earth", or "Metal"
+//EFFECTS Initializes Element to specified element.
+Element::Element(const std::string& element_change) : Element() {
+    assert(element_change == "Water" || element_change == "Wood"
+        || element_change == "Fire" || element_change == "Earth"
+        || element_change == "Metal");
+    element = element_change;
+    best_healing_element = find_best_healing_element(element_change);
+    best_opponent_element = find_best_opponent_element(element_change);
+}
 
-    //EFFECTS Returns the element
-    std::string get_element() const {
-        return element;
-    }
+//EFFECTS Returns the element
+std::string Element::get_element() const {
+    return element;
+}
 
-    //EFFECTS Returns the best healing element
-    std::string get_best_healing_element() const {
-        return best_healing_element;
-    }
+//EFFECTS Returns the best healing element
+std::string Element::get_best_healing_element() const {
+    return best_healing_element;
+}
 
-    //EFFECTS Returns the best opponent element
-    std::string get_best_opponent_element() const {
-        return best_opponent_element;
-    }
+//EFFECTS Returns the best opponent element
+std::string Element::get_best_opponent_element() const {
+    return best_opponent_element;
+}
 
-    //REQUIRES element is "Water", "Wood", "Fire", "Earth", or "Metal"
-    //EFFECTS Changes element type to specified element.
-    void change_element(const std::string& element_change) {
-        element = element_change;
-        best_healing_element = find_best_healing_element(element_change);
-        best_opponent_element = find_best_opponent_element(element_change);
-    }
+//REQUIRES element is "Water", "Wood", "Fire", "Earth", or "Metal"
+//EFFECTS Changes element type to specified element.
+void Element::change_element(const std::string& element_change) {
+    element = element_change;
+    best_healing_element = find_best_healing_element(element_change);
+    best_opponent_element = find_best_opponent_element(element_change);
+}
 
-    //REQUIRES resource is a valid element
-    //EFFECTS Returns true if other resource element strengthens 
-    //or harms current element. False otherwise.
-    bool is_special_resource(const Element& resource) const {
-        bool strengthener = resource == best_healing_element;
-        std::string resource_element = resource.get_element();
-        bool harmer = element == find_best_healing_element(resource_element);
-        return strengthener || harmer;
-    }
+//REQUIRES resource is a valid element
+//EFFECTS Returns true if other resource element strengthens 
+//or harms current element. False otherwise.
+bool Element::is_special_resource(const Element& resource) const {
+    bool strengthener = resource == best_healing_element;
+    std::string resource_element = resource.get_element();
+    bool harmer = element == find_best_healing_element(resource_element);
+    return strengthener || harmer;
+}
 
-    //REQUIRES resource either strengthens or harms current element
-    //EFFECTS Returns true if other resource element strengthens current element. False if harms.
-    bool is_strengthening(const Element& resource) const {
-        assert(is_special_resource(resource));
-        return resource == best_healing_element;
-    }
+//REQUIRES resource either strengthens or harms current element
+//EFFECTS Returns true if other resource element strengthens current element. False if harms.
+bool Element::is_strengthening(const Element& resource) const {
+    return resource == best_healing_element;
+}
 
-    //REQUIRES defender is a valid element
-    //EFFECTS Returns true if current element is extremely effective or 
-    //extremely ineffective against defender element. False otherwise.
-    bool is_special_strength(const Element& defender) const {
-        bool effective = defender == best_opponent_element;
-        std::string defender_element = defender.get_element();
-        bool harmer = element == find_best_opponent_element(defender_element);
-        return effective || harmer;
-    }
+//REQUIRES defender is a valid element
+//EFFECTS Returns true if current element is extremely effective or 
+//extremely ineffective against defender element. False otherwise.
+bool Element::is_special_strength(const Element& defender) const {
+    bool effective = defender == best_opponent_element;
+    std::string defender_element = defender.get_element();
+    bool harmer = element == find_best_opponent_element(defender_element);
+    return effective || harmer;
+}
 
-    //REQUIRES current element is extremely effective or extremely ineffective against defender element.
-    //EFFECTS Returns true if current element is extremely effective
-    //against defender element. False otherwise.
-    bool is_effective_strength(const Element& defender) const {
-        assert(is_special_strength(defender));
-        return defender == best_opponent_element;
-    }
-
-private:
-    std::string element;
-    std::string best_healing_element; // element that current element would like to receive healing from
-    std::string best_opponent_element; // element that current element would like to have as opponent
-};
+//REQUIRES current element is extremely effective or extremely ineffective against defender element.
+//EFFECTS Returns true if current element is extremely effective
+//against defender element. False otherwise.
+bool Element::is_effective_strength(const Element& defender) const {
+    return defender == best_opponent_element;
+}
 
 //EFFECTS Returns the element that current element would like to receive healing from
 std::string find_best_healing_element(const std::string& element) {

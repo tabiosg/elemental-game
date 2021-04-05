@@ -22,7 +22,6 @@ public:
     static constexpr const char* const ELE_EARTH = "Earth";
     static constexpr const char* const ELE_METAL = "Metal";
 
-
   //EFFECTS Initializes Element to Water
   Element();
 

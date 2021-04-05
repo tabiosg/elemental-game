@@ -44,7 +44,7 @@ public:
     virtual double get_healing_strength() const = 0;
 
     //EFFECTS returns weapon's type
-    virtual const std::string& get_weapon_type() const = 0;
+    virtual const std::string get_weapon_type() const = 0;
 
     //REQUIRES weapon has a name
     //EFFECTS  changes name of weapon

@@ -29,6 +29,9 @@ public:
 	//EFFECTS return team two
 	const Team get_team_two() const;
 
+	//EFFECTS return team two
+	std::vector<Weapon*> get_all_dropped_weapons();
+
 	//REQUIRES 0 <= k < total_dropped_weapons
 	//EFFECTS return kth dropped weapon
 	Weapon* get_kth_dropped_weapon(const int& k);

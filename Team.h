@@ -28,7 +28,10 @@ public:
 
 	//REQUIRES 0 < k <= in_combat_Fighters in team
 	//EFFECTS return the kth  in_combat fighter.
-	Fighter* get_kth_in_combat_fighter(const int& k);
+	Fighter* get_kth_fighter(const int& k) const;
+
+	//EFFECTS return all fighters
+	std::vector<Fighter*> get_all_fighters();
 
 	//REQUIRES team is in combat
 	//EFFECTS return true if all members are out of combat.
@@ -75,9 +78,6 @@ private:
 	int total_size;
 	bool in_brawl;
 	std::vector<Fighter*> all_fighters;
-
-	int in_combat_size;
-	std::vector<int> in_combat_fighters;
 };
 
 #endif

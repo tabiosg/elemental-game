@@ -51,7 +51,7 @@ Wood is effective against earth.
 Fire is effective against metal.
 Earth is effective against water.
 Metal is effective against wood.
-Water is seffective against fire.
+Water is effective against fire.
 This explains interactions between weapons and the target.
 
 ## Contributing
