@@ -1,8 +1,12 @@
-# elemental-game
+# Elemental Game
 
-This is a turn-based RPG. 
-Fighters form teams to battle one another in brawls. 
-Users can customize their fighters outside of brawls.
+Elemental Game was created in a week using C++.
+The game was created as way to help me learn basic C++ while creating a basic game.
+
+# Background
+
+This is a turn-based game where two teams of fighters battle until one team remains standing.
+It is a text-based game.
 
 ## Running the game
 
@@ -15,35 +19,15 @@ make play
 
 ## Brawls
 
-Brawls are fights between two teams of fighters. 
-Fighters are out once they lose all health and may not be revived until the brawl ends. 
-The team left standing wins.
-Each team and each member takes turns making an action.
-Fighters drop their weapons if they lose during a brawl.
-Downed fighters will get their weapons back at the end of the brawl.
+Brawls are fights between two teams of fighters.
+By default, the brawl is a 3v3.
+
+Fighters drop their weapons if they die during a brawl.
 The actions include healing, attacking, picking up a dropped weapon, or skipping their turn.
 
-## Teams
-
-Teams may have any number of players. 
-Those in the same team may heal one another during a brawl.
-Those in the same team may not attack one another.
-
-## Fighters
-
-A fighter may have various weapons, but they may only use one at a time.
-Fighters can swap between weapons during combat.
-Each fighter has an element.
-Each fighter can strengthen their weapon.
-Depending on elemental affinities, the weapon will be even stronger at the cost of wearing down the user.
-Fighters can heal allies.
-Depending on elemental affinities, the healing will be even stronger at the cost of wearing down the healer.
-
-## Weapons
-
-A weapon has an element.
+Each weapon and fighter has an element.
 Depending on elemental affinities, a weapon may wear down its user.
-A weapon may be extremely effective against an opponent, at no downsides.
+A weapon may be extremely effective against at attacking an opponent or healing an ally, at no downsides.
 
 ## Elements
 
