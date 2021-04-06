@@ -103,7 +103,7 @@ const Team Brawl::get_team_two() const {
 //EFFECTS return team two
 std::vector<Weapon*> Brawl::get_all_dropped_weapons() {
 	return dropped_weapons;
-};
+}
 
 //REQUIRES 0 <= k < total_dropped_weapons
 //EFFECTS return kth dropped weapon
@@ -146,6 +146,7 @@ void Brawl::request_and_enact_action(Fighter* f, Team& allies, Team& opponents) 
 			std::cout << *defender << " has exited the combat due to lack of health." << std::endl << std::endl;
 			int drop_index = defender->get_active_weapon();
 			Weapon* dropped_weapon = defender->get_k_weapon(drop_index);
+			std::cout << *defender << " has dropped the " << *dropped_weapon << "." << std::endl << std::endl;
 			add_dropped_weapon(dropped_weapon);
 			opponents.member_exits_combat(target);
 		}
@@ -169,8 +170,7 @@ void Brawl::fighter_exits_combat(Fighter* fighter) {
 	fighter->exit_combat();
 	int active_weapon = fighter->get_active_weapon();
 	Weapon* copied_weapon = fighter->get_k_weapon(active_weapon);
-	Weapon* dropped_weapon = Weapon_factory(copied_weapon);
-	add_dropped_weapon(dropped_weapon);
+	add_dropped_weapon(copied_weapon);
 }
 
 //EFFECTS Prints dropped_weapons to stream as "Dropped Weapon 1: Excalibur" 

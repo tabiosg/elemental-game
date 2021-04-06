@@ -1,27 +1,21 @@
 
-all: Element.cpp Weapon.cpp Fighter.cpp Team.cpp Brawl.cpp World.cpp
-	g++ Element.cpp Weapon.cpp Fighter.cpp Team.cpp Brawl.cpp World.cpp -o World
+CXX ?= g++
+CXXFLAGS ?= -Wall -Werror -pedantic --std=c++11 -g
 
-game: Element.cpp Weapon.cpp Fighter.cpp Team.cpp Brawl.cpp World.cpp
-	g++ Element.cpp Weapon.cpp Fighter.cpp Team.cpp Brawl.cpp World.cpp -o World
+play: Element.cpp Weapon.cpp Fighter.cpp Team.cpp Brawl.cpp World.cpp
+	g++ Element.cpp Weapon.cpp Fighter.cpp Team.cpp Brawl.cpp World.cpp -o world.exe
+	./world.exe
 
-element: Element.cpp
-	g++ Element.cpp -o world.exe
-
-weapon: Element.cpp Weapon.cpp
-	g++ Element.cpp Weapon.cpp -o world.exe
-
-fighter: Element.cpp Weapon.cpp Fighter.cpp
-	g++ Element.cpp Weapon.cpp Fighter.cpp -o world.exe
-
-team: Element.cpp Weapon.cpp Fighter.cpp Team.cpp
-	g++ Element.cpp Weapon.cpp Fighter.cpp Team.cpp -o world.exe
-
-brawl: Element.cpp Weapon.cpp Fighter.cpp Team.cpp Brawl.cpp
-	g++ Element.cpp Weapon.cpp Fighter.cpp Team.cpp Brawl.cpp -o world.exe
+world.exe: Element.cpp Weapon.cpp Fighter.cpp Team.cpp Brawl.cpp World.cpp
+	$(CXX) $(CXXFLAGS) Element.cpp Weapon.cpp Fighter.cpp Team.cpp Brawl.cpp World.cpp -o $@
 
 world: Element.cpp Weapon.cpp Fighter.cpp Team.cpp Brawl.cpp World.cpp
 	g++ Element.cpp Weapon.cpp Fighter.cpp Team.cpp Brawl.cpp World.cpp -o world.exe
 
+# disable built-in rules
+.SUFFIXES:
+
+# these targets do not create any files
+.PHONY: clean
 clean:
-	rm -rvf *.exe *~ *.out *.dSYM *.stackdump
+	rm -vrf *.o *.exe *.gch *.dSYM *.stackdump *.out

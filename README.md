@@ -4,6 +4,15 @@ This is a turn-based RPG.
 Fighters form teams to battle one another in brawls. 
 Users can customize their fighters outside of brawls.
 
+## Running the game
+
+Change your directory to the elemental-game. Then run make play.
+
+```c++
+cd /documents/elemental-game
+make play
+```
+
 ## Brawls
 
 Brawls are fights between two teams of fighters. 

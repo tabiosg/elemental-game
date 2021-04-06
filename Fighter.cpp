@@ -170,7 +170,8 @@ public:
     //EFFECTS gives fighter the extra weapon
     void add_weapon(Weapon* weapon) override {
         ++number_of_weapons;
-        weapons.push_back(weapon);
+        Weapon* added_weapon = Weapon_factory(weapon);
+        weapons.push_back(added_weapon);
         if (active_weapon == -1) {
             active_weapon = 0;
         }
@@ -368,7 +369,6 @@ public:
         assert(get_combat_status());
         double multiplier = 1.0;
         Element damaging_element = attacker->get_element();
-        int active = attacker->get_active_weapon();
         Element weapon_element = damaging_weapon->get_element();
         if (weapon_element.is_special_strength(damaging_element)) {
             if (weapon_element.is_effective_strength(damaging_element)) {
@@ -414,7 +414,7 @@ public:
     //EFFECTS Prints dropped_weapons to stream as "Weapon 1: Excalibur" 
     //followed by newline and then "Weapon 2: Gate of Babylon"
     std::ostream& print_list_of_weapons(std::ostream& os, const std::vector<Weapon*> weapons) const override {
-        for (int i = 0; i < weapons.size(); ++i) {
+        for (size_t i = 0; i < weapons.size(); ++i) {
             Weapon* ithweapon = weapons[i];
             os << "Weapon " << i + 1 << ": " << *ithweapon << std::endl;
         }
@@ -452,7 +452,7 @@ private:
         int target;
         std::cin >> target;
         std::cout << std::endl;
-        assert(target <= opponents.size() && target > 0);
+        assert((size_t)target <= opponents.size() && target > 0);
         return target - 1;
     }
 
@@ -466,7 +466,7 @@ private:
         int target;
         std::cin >> target;
         std::cout << std::endl;
-        assert(target <= allies.size() && target > 0);
+        assert((size_t)target <= allies.size() && target > 0);
         return target - 1;
     }
 
@@ -654,7 +654,8 @@ public:
     //EFFECTS gives fighter the extra weapon
     void add_weapon(Weapon* weapon) override {
         ++number_of_weapons;
-        weapons.push_back(weapon);
+        Weapon* added_weapon = Weapon_factory(weapon);
+        weapons.push_back(added_weapon);
         if (active_weapon == -1) {
             active_weapon = 0;
         }
@@ -666,6 +667,9 @@ public:
         --number_of_weapons;
         delete weapons[weapon_index];
         weapons.erase(weapons.begin() + weapon_index);
+        if (active_weapon >= number_of_weapons) {
+            active_weapon = number_of_weapons - 1;
+        }
     }
 
     //REQUIRES 0 <= k < number_of_weapons
@@ -774,9 +778,8 @@ public:
         Element active_weapon_element = weapons[active_weapon]->get_element();
 
         int target = 0;
-        bool target_ideal = false;
         bool worst_target = true;
-        for (int i = 0; i < opponents.size(); ++i) {
+        for (size_t i = 0; i < opponents.size(); ++i) {
             Fighter* potential_defender = opponents[i];
             Element opponent_element = potential_defender->get_element();
 
@@ -786,7 +789,6 @@ public:
                         worst_target = false;
                     }
                     target = i;
-                    target_ideal = true;
                 }
             }
             else {
@@ -821,7 +823,6 @@ public:
         assert(get_combat_status());
         double multiplier = 1.0;
         Element healer_element = healer->get_element();
-        int active = healer->get_active_weapon();
         Element weapon_element = healing_weapon->get_element();
         if (weapon_element.is_special_resource(healer_element)) {
             if (weapon_element.is_strengthening(healer_element)) {
@@ -858,7 +859,6 @@ public:
         assert(get_combat_status());
         double multiplier = 1.0;
         Element damaging_element = attacker->get_element();
-        int active = attacker->get_active_weapon();
         Element weapon_element = damaging_weapon->get_element();
         if (weapon_element.is_special_strength(damaging_element)) {
             if (weapon_element.is_effective_strength(damaging_element)) {
@@ -903,7 +903,7 @@ public:
     //EFFECTS Prints dropped_weapons to stream as "Weapon 1: Excalibur" 
     //followed by newline and then "Weapon 2: Gate of Babylon"
     std::ostream& print_list_of_weapons(std::ostream& os, const std::vector<Weapon*> weapons) const override {
-        for (int i = 0; i < weapons.size(); ++i) {
+        for (size_t i = 0; i < weapons.size(); ++i) {
             Weapon* ithweapon = weapons[i];
             os << "Weapon " << i + 1 << ": " << *ithweapon << std::endl;
         }
@@ -1009,7 +1009,7 @@ std::ostream& print_weapons(std::ostream& os, const Fighter& f) {
 //EFFECTS Prints fighters to stream as "Fighter 1: Alex" 
 //followed by newline and then "Fighter 2: Harry"
 std::ostream& print_list_of_fighters(std::ostream& os, std::vector<Fighter*> fighters) {
-    for (int i = 0; i < fighters.size(); ++i) {
+    for (size_t i = 0; i < fighters.size(); ++i) {
         Fighter* ithfighter = fighters[i];
         os << "Fighter " << i + 1 << ": " << *ithfighter << std::endl;
     }

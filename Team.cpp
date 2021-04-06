@@ -43,7 +43,6 @@ Team& Team::operator=(const Team& rhs) {
 	}
 	std::vector<Fighter*> all_fighters;
 
-	int in_combat_size;
 	std::vector<int> in_combat_fighters;
 
 	return *this;
@@ -121,9 +120,8 @@ void Team::enter_brawl() {
 //This changes in_combat_fighters
 //and changes in_combat_size.
 void Team::member_exits_combat(const int& k) {
-	assert(in_brawl);
 	assert(0 <= k && k < total_size);
-	all_fighters[k]->exit_combat(); // kinda useless
+	delete all_fighters[k];
 	all_fighters.erase(all_fighters.begin() + k);
 	--total_size;
 }
@@ -132,26 +130,29 @@ void Team::member_exits_combat(const int& k) {
 //EFFECTS makes the team exit a brawl. 
 //changes in_combat_fighters and out_of_combat_fighters.
 void Team::exit_brawl() {
-	assert(in_brawl);
 	in_brawl = false;
+	while (total_size != 0) {
+		member_exits_combat(0);
+	}
 }
 
 //REQUIRES team is not in combat and fighter is not in combat
 //EFFECTS add fighter to team
 void Team::add_member(Fighter* fighter) {
 	assert(!in_brawl);
+	Fighter* added_member = Fighter_factory(fighter);
 	++total_size;
-	all_fighters.push_back(fighter);
+	all_fighters.push_back(added_member);
 }
 
 //REQUIRES team is not in combat
 //EFFECTS remove fighter from team
 void Team::remove_member(int& fighter_index) {
-	assert(!in_brawl);
 	--total_size;
+	delete all_fighters[fighter_index];
 	all_fighters.erase(all_fighters.begin() + fighter_index);
 }
 
 Team::~Team() {
-
+	exit_brawl();
 }
