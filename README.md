@@ -3,6 +3,8 @@
 This is a turn-based game where two teams of fighters battle until one team remains standing.
 It is a console-based game.
 
+---
+
 ## Work Done
 
 The World.cpp file is treated as the main file. The current main file 
@@ -17,6 +19,8 @@ new main file (by reworking World.cpp).
 It may be worth expanding the game to have better customization 
 features and more players on a team.
 
+---
+
 ## Running the Game
 
 Change your directory to the elemental-game. Then run make play.
@@ -25,6 +29,8 @@ Change your directory to the elemental-game. Then run make play.
 cd /documents/elemental-game
 make play
 ```
+
+---
 
 ## Brawls
 
@@ -37,6 +43,8 @@ The actions include healing, attacking, picking up a dropped weapon, or skipping
 Each weapon and fighter has an element.
 Depending on elemental affinities, a weapon may wear down its user.
 A weapon may be extremely effective against at attacking an opponent or healing an ally, at no downsides.
+
+---
 
 ## Elements
 
