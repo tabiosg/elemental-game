@@ -26,6 +26,7 @@ There are two types of relationships between elements:
 ## Resource Dependency of Elements
 
 The element resource dependency graph can be seen in the following image:
+
 ![Resource Graph](images/demo/resource_graph.png)
 
 This graph shows the relationship of how specific elements use others.
@@ -45,6 +46,7 @@ The amplification can stack.
 ## Effectiveness of Elements
 
 The element effectiveness graph can be seen in the following image:
+
 ![Effectiveness Graph](images/demo/effectiveness_graph.png)
 
 This graph shows the relationship of how some elements are effective on others.
