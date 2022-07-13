@@ -5,6 +5,59 @@ It can be played on the terminal.
 
 ---
 
+## Unique Mechanics
+
+The most unique mechanic about this game is that elements play an extremely vital role in gameplay.
+In this game, both fighters and weapons have elements. The relationship between elements affects how stats come into play.
+
+Other various mechanics include picking up weapons dropped by defeated fighters and healing.
+Also, fighters may wield multiple weapons.
+
+---
+
+## Element
+
+The five elements are water, wood, fire, earth, and metal.
+
+There are two types of relationships between elements:
+1. Elements may find another element useful as a resource to strengthen itself.
+2. Elements may be more effective than another
+
+## Resource Dependency of Elements
+
+The element resource dependency graph can be seen in the following image:
+![Resource Graph](images/demo/resource_graph.png)
+
+This graph shows the relationship of how specific elements use others.
+For example, wood is strengthened by water at the cost of wearing down water.
+Here, we call wood the strengthened and wood the weakened element.
+
+In the game, this is reflected by the interactions between fighters and their weapons being used for healing.
+If a fighter chooses to heal and their weapon's element is the strengthened element in relation to the fighter's element,
+then the healing action is amplified at the cost of reducing the fighter's health.
+Also, if the healed person's element is the strengthened element in relation to the healing weapon's element,
+then the healing action is amplified at NO cost.
+
+The amplification can stack.
+
+---
+
+## Effectiveness of Elements
+
+The element effectiveness graph can be seen in the following image:
+![Effectiveness Graph](images/demo/effectiveness_graph.png)
+
+This graph shows the relationship of how some elements are effective on others.
+For example, water is effective against fire.
+
+In the game, this is reflected by the interactions between fighters and their weapons being used for attacking.
+If an attacker has an element that is effective against the victim's element, then the attacking action is amplified at NO cost.
+Also, if the attacker's weapon has an element that is effective against the victim's element, then the attacking action is amplified at NO cost.
+
+The amplfiication can stack.
+
+---
+
 ## Running the Game
 
 Change your directory to the elemental-game. Then run make play.
@@ -16,37 +69,9 @@ make play
 
 ---
 
-## Brawls
+## Current Storyline
 
-Brawls are fights between two teams of fighters.
-By default, the brawl is a 3v3.
-
-Fighters drop their weapons if they die during a brawl.
-The actions include healing, attacking, picking up a dropped weapon, or skipping their turn.
-
-Each weapon and fighter has an element.
-Depending on elemental affinities, a weapon may wear down its user.
-A weapon may be extremely effective against at attacking an opponent or healing an ally, at no downsides.
-
----
-
-## Elements
-
-The five elements are water, wood, fire, earth, and metal.
-Wood is strengthened by water at the cost of wearing down water.
-Fire is strengthened by wood at the cost of wearing down wood.
-Earth is strengthened by fire at the cost of wearing down fire.
-Metal is strengthened by earth at the cost of wearing down earth.
-Water is strengthened by metal at the cost of wearing down metal.
-This explains interactions between healers and the healed.
-This also explains interactions between weapons and its user.
-
-Wood is effective against earth.
-Fire is effective against metal.
-Earth is effective against water.
-Metal is effective against wood.
-Water is effective against fire.
-This explains interactions between weapons and the target.
+Currently, the program just runs through one brawl where the user is in a party with two other AI fighting against 3 other AI.
 
 ---
 
