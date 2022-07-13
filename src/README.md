@@ -12,7 +12,7 @@ Brawl, Element, Fighter, Team, Weapon, and World.
 
 Here is a simplified graph showing the general dependencies of all files.
 
-![Simple Graph](images/demo/simple_graph.png)
+![Simple Graph](simple_graph.png)
 
 ---
 
