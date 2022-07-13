@@ -1,23 +1,7 @@
 # Elemental Game
 
 This is a turn-based game where two teams of fighters battle until one team remains standing.
-It is a console-based game.
-
----
-
-## Work Done
-
-The World.cpp file is treated as the main file. The current main file 
-only allows the user to play one brawl between 
-two teams of three fighters.
-The fighters can either be computer-controlled (Warrior) or human-controlled (Human) 
-and they can be of any type and weapon.
-There are three currently supported weapons (the Staff, Spear, and Cross). 
-In order to expand the game, one could consider 
-introducing more fighter types, weapon types, or an all 
-new main file (by reworking World.cpp). 
-It may be worth expanding the game to have better customization 
-features and more players on a team.
+It can be played on the terminal.
 
 ---
 
@@ -66,6 +50,22 @@ This explains interactions between weapons and the target.
 
 ---
 
+## Future plans
+
+In order to expand the game, one could consider 
+introducing more fighter types, weapon types, or an all 
+new main file (by reworking World.cpp). 
+It may be worth expanding the game to have better customization 
+features and more players on a team.
+
+---
+
 ## Documentation
 
 You can read documentation on the source code in this [`README.md`](src/README.md).
+
+---
+
+## Work Done
+
+Most of the work I did was in [`src/`](src/).
