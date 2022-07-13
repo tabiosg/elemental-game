@@ -60,6 +60,16 @@ The amplfiication can stack.
 
 ---
 
+## Elements Cheatsheet
+
+This is a cheatsheet that combines both of the above graphs.
+
+![Combined Graph](images/demo/combined_graph.png)
+
+The pentagon (outside) represents the elements resource dependency graph while the star (inside) represents the elements effectiveness graph.
+
+---
+
 ## Running the Game
 
 Change your directory to the elemental-game. Then run make play.
