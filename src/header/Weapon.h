@@ -14,22 +14,22 @@
 #include <string>
 #include <vector>
 
-class Weapon {
+class Weapon
+{
 public:
-    //weapon names
-    static constexpr const char* const WEAPON_STAFF = "Staff";
-    static constexpr const char* const WEAPON_SPEAR = "Spear";
-    static constexpr const char* const WEAPON_CROSS = "Cross";
-    //list
-    static constexpr const char* const WEAPON_LIST[] = {
-      Weapon::WEAPON_STAFF,
-      Weapon::WEAPON_SPEAR,
-      Weapon::WEAPON_CROSS
-    };
+    // weapon names
+    static constexpr const char *const WEAPON_STAFF = "Staff";
+    static constexpr const char *const WEAPON_SPEAR = "Spear";
+    static constexpr const char *const WEAPON_CROSS = "Cross";
+    // list
+    static constexpr const char *const WEAPON_LIST[] = {
+        Weapon::WEAPON_STAFF,
+        Weapon::WEAPON_SPEAR,
+        Weapon::WEAPON_CROSS};
     static constexpr const int NUM_WEAPON_TYPES = 3;
 
     // EFFECTS returns weapon's name
-    virtual const std::string& get_name() const = 0;
+    virtual const std::string &get_name() const = 0;
 
     // REQUIRES weapon has an element
     // EFFECTS  returns element of weapon
@@ -48,15 +48,15 @@ public:
 
     // REQUIRES weapon has a name
     // EFFECTS  changes name of weapon
-    virtual void change_name(const std::string& name_change) = 0;
+    virtual void change_name(const std::string &name_change) = 0;
 
     // REQUIRES weapon has an attack strength
     // EFFECTS  changes attack strength of weapon
-    virtual void change_attack_strength(const int& changed_attack_strength) = 0;
+    virtual void change_attack_strength(const int &changed_attack_strength) = 0;
 
     // REQUIRES weapon has a healing strength
     // EFFECTS  changes healing strength of weapon
-    virtual void change_healing_strength(const int& changed_heal_strength) = 0;
+    virtual void change_healing_strength(const int &changed_heal_strength) = 0;
 
     // Needed to avoid some compiler errors
     virtual ~Weapon() {}
@@ -70,17 +70,16 @@ private:
 };
 
 // EFFECTS Returns a pointer to a weapon with the given name, element, and type
-Weapon* Weapon_factory(const std::string& name, const Element& element,
-    const std::string& weapon_type);
+Weapon *Weapon_factory(const std::string &name, const Element &element,
+                       const std::string &weapon_type);
 
 // EFFECTS Returns a pointer to a weapon with the given weapon_type
-Weapon* Weapon_factory(const std::string& weapon_type);
+Weapon *Weapon_factory(const std::string &weapon_type);
 
 // EFFECTS Returns a pointer to a weapon that is copy of copied_weapon
-Weapon* Weapon_factory(const Weapon* copied_weapon);
+Weapon *Weapon_factory(const Weapon *copied_weapon);
 
 // EFFECTS Prints weapon's name to os
-std::ostream& operator<<(std::ostream& os, const Weapon& w);
+std::ostream &operator<<(std::ostream &os, const Weapon &w);
 
 #endif
-
