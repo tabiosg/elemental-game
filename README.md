@@ -17,7 +17,7 @@ new main file (by reworking World.cpp).
 It may be worth expanding the game to have better customization 
 features and more players on a team.
 
-## Running the game
+## Running the Game
 
 Change your directory to the elemental-game. Then run make play.
 
@@ -55,3 +55,7 @@ Earth is effective against water.
 Metal is effective against wood.
 Water is effective against fire.
 This explains interactions between weapons and the target.
+
+## Documentation
+
+You can read documentation on the source code in this [`README.md`](src/README.md).
