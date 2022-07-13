@@ -64,6 +64,8 @@ Metal is effective against wood.
 Water is effective against fire.
 This explains interactions between weapons and the target.
 
+---
+
 ## Documentation
 
 You can read documentation on the source code in this [`README.md`](src/README.md).
