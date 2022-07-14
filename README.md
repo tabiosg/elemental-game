@@ -29,17 +29,15 @@ The element resource dependency graph can be seen in the following image:
 
 ![Resource Graph](images/demo/resource_graph.png)
 
-This graph shows the relationship of how specific elements use others.
-For example, wood is strengthened by water at the cost of wearing down water.
-Here, we call wood the strengthened and water the weakened element.
+The key to memorizing the resource dependency relationships is thinking about what consumes what (fire consumes wood).
 
-In the game, this is reflected by the interactions between fighters and their weapons being used for healing.
-If a fighter chooses to heal and their weapon's element is the strengthened element in relation to the fighter's element,
-then the healing action is amplified at the cost of reducing the fighter's health.
-Also, if the healed person's element is the strengthened element in relation to the healing weapon's element,
-then the healing action is amplified at NO cost.
+There are two ways this affects mechanics in the game:
 
-The amplification can stack.
+1. Heals being stronger (+3, -1) (if weapon->healed or healer->healed). Heals are stronger and users loses health. Heal amplification stacks but health loss does not.
+e.g. A healed fire type would be significantly healed by a wood healer with a wood healing weapon.
+
+2. Both heals and attacks are significantly stronger (+4, +4) (if fighter->weapon). If the fighter's element strengthens the weapon's element, then both heals and attacks are more far more effective at the cost of making the user weaker.
+e.g. A wood weapon would be greatly strengthened by a water fighter.
 
 ---
 
@@ -49,14 +47,15 @@ The element effectiveness graph can be seen in the following image:
 
 ![Effectiveness Graph](images/demo/effectiveness_graph.png)
 
-This graph shows the relationship of how some elements are effective on others.
-For example, water is effective against fire.
+The key to memorizing effectiveness relationships is thinking about what eliminates what (water gets rid of fire).
 
-In the game, this is reflected by the interactions between fighters and their weapons being used for attacking.
-If an attacker has an element that is effective against the victim's element, then the attacking action is amplified at NO cost.
-Also, if the attacker's weapon has an element that is effective against the victim's element, then the attacking action is amplified at NO cost.
+There are two ways this affects mechanics in the game:
 
-The amplfiication can stack.
+1. Attacks being stronger (+2) (if weapon->attacked or attacker->attacked): Attacks are stronger. Attack amplification stacks.
+e.g. A fire type would be significantly hurt by a water fighter with a water weapon.
+
+2. Attacks being significantly weaker (-4) (if attacked->weapon or attacked->attacker): Attacks are weaker. Attack amplification stacks.
+e.g. A water victim would barely be hurt by a fire fighter with a fire weapon.
 
 ---
 
