@@ -347,13 +347,25 @@ public:
         allies[target]->receiveHealing(currentWeapon, this);
 
         Element weaponElement = currentWeapon->getElement();
-        if (weaponElement.isStrengthening(elementType))
+        double lostHealthMultiplier = 0;
+        if (
+            weaponElement.isStrengthening(allies[target]->getElement()) ||
+            elementType.isStrengthening(allies[target]->getElement())
+        )
         {
-            if (currentHealth >= 0.2 * maxHealth)
-            {
-                currentHealth -= 0.1 * maxHealth;
-            }
+            lostHealthMultiplier += 0.1;
         }
+        if (elementType.isStrengthening(weaponElement))
+        {
+            lostHealthMultiplier += 0.2;
+        }
+        if (lostHealthMultiplier) {
+            double lostHealth = losthealthMultiplier * maxHealth;
+            lostHealth = max(currentHealth, lostHealth);
+            std::cout << *this << " lost " <<
+            lostHealth << " when healing!" << std::endl;
+        }
+        
     }
 
     // REQUIRES fighter wants to fight
@@ -369,6 +381,18 @@ public:
         std::cout << *this << " used " << *currentWeapon << " to attack " << *opponents[target] << std::endl;
 
         opponents[target]->receiveAttack(currentWeapon, this);
+
+        Element weaponElement = currentWeapon->getElement();
+        if (elementType.isStrengthening(weaponElement))
+        {
+            lostHealthMultiplier += 0.4;
+        }
+        if (lostHealthMultiplier) {
+            double lostHealth = losthealthMultiplier * maxHealth;
+            lostHealth = max(currentHealth, lostHealth);
+            std::cout << *this << " lost " <<
+            lostHealth << " when attacking!" << std::endl;
+        }
 
         return target;
     }
@@ -398,42 +422,30 @@ public:
         double multiplier = 1.0;
         Element healerElement = healer->getElement();
         Element weaponElement = healingWeapon->getElement();
-        if (weaponElement.isSpecialResource(healerElement))
+        if (healerElement.isStrengthening(weaponElement))
         {
-            if (weaponElement.isStrengthening(healerElement))
-            {
-                multiplier = multiplier + 0.2;
-                std::cout << *healingWeapon << " was more effective because of " << *healer << "'s element!" << std::endl;
-                std::cout << *healer << " lost " << 0.1 * maxHealth << " when healing!" << std::endl;
-            }
-            else if (!weaponElement.isStrengthening(healerElement))
-            {
-                multiplier = multiplier - 0.2;
-                std::cout << *healingWeapon << " was less effective because of " << *healer << "'s element!" << std::endl;
-            }
+            lostHealthMultiplier += 0.4;
+            std::cout << *healer << "'s action was significantly more effective because of " << 
+            *healer << "'s and " << *healingWeapon << "'s element!" << std::endl;
         }
-        if (elementType.isSpecialResource(weaponElement))
+        if (weaponElement.isStrengthening(elementType))
         {
-            if (elementType.isStrengthening(weaponElement))
-            {
-                multiplier = multiplier + 0.2;
-                std::cout << *healingWeapon << " was more effective because of " << *this << "'s element!" << std::endl;
-            }
-            else if (!elementType.isStrengthening(weaponElement))
-            {
-                multiplier = multiplier - 0.2;
-                std::cout << *healingWeapon << " was less effective because of " << *this << "'s element!" << std::endl;
-            }
+            multiplier = multiplier + 0.2;
+            std::cout << *healer << "'s action was more effective because of " << 
+            *healingWeapon << "'s and " << *this << "'s element!" << std::endl;
+        }
+        if (healerElement.isStrengthening(elementType))
+        {
+            multiplier = multiplier + 0.2;
+            std::cout << *healer << "'s action more effective because of " << 
+            *healingWeapon << "'s and " << *this << "'s element!" << std::endl;
         }
 
         double healingStrength = healingWeapon->getHealingStrength();
-        double totalHealing = (healingStrength)*multiplier;
+        double totalHealing = healingStrength * multiplier;
 
+        totalHealing = min(maxHealth - currentHealth, totalHealing);
         currentHealth += totalHealing;
-        if (currentHealth > maxHealth)
-        {
-            currentHealth = maxHealth;
-        }
 
         std::cout << *this << " received " << totalHealing << " healing from " << *healer << "." << std::endl
                   << *this << " now has " << currentHealth << " health." << std::endl
@@ -449,41 +461,41 @@ public:
         double multiplier = 1.0;
         Element damagingElement = attacker->getElement();
         Element weaponElement = damagingWeapon->getElement();
-        if (weaponElement.isSpecialStrength(damagingElement))
+        if (damagingElement.isEffectiveStrength(weaponElement))
         {
-            if (weaponElement.isEffectiveStrength(damagingElement))
-            {
-                multiplier = multiplier + 0.2;
-                std::cout << *damagingWeapon << " was more effective because of " << *attacker << "'s element!" << std::endl;
-            }
-            else if (!weaponElement.isSpecialStrength(damagingElement))
-            {
-                multiplier = multiplier - 0.2;
-                std::cout << *damagingWeapon << " was less effective because of " << *attacker << "'s element!" << std::endl;
-            }
+            lostHealthMultiplier += 0.4;
+            std::cout << *attacker << "'s action was significantly more effective because of " << 
+            *attacker << "'s and " << *damagingWeapon << "'s element!" << std::endl;
         }
-        if (elementType.isSpecialStrength(weaponElement))
+        if (weaponElement.isEffectiveStrength(elementType))
         {
-            if (elementType.isEffectiveStrength(weaponElement))
-            {
-                multiplier = multiplier + 0.2;
-                std::cout << *damagingWeapon << " was more effective because of " << *this << "'s element!" << std::endl;
-            }
-            else if (!elementType.isEffectiveStrength(weaponElement))
-            {
-                multiplier = multiplier - 0.2;
-                std::cout << *damagingWeapon << " was less effective because of " << *this << "'s element!" << std::endl;
-            }
+            multiplier = multiplier + 0.2;
+            std::cout << *attacker << "'s action was more effective because of " << 
+            *damagingWeapon << "'s and " << *this << "'s element!" << std::endl;
+        }
+        else if (elementType.isEffectiveStrength(weaponElement))
+        {
+            multiplier = multiplier - 0.4;
+            std::cout << *attacker << "'s action was significantly weaker because of " << 
+            *this << "'s and " << *damagingWeapon << "'s element!" << std::endl;
+        }
+        if (damagingElement.isEffectiveStrength(elementType))
+        {
+            multiplier = multiplier + 0.2;
+            std::cout << *damagingWeapon << " was more effective because of " << 
+            *damagingWeapon << "'s and " << *this << "'s element!" << std::endl;
+        }
+        else if (elementType.isEffectiveStrength(damagingElement))
+        {
+            multiplier = multiplier - 0.4;
+            std::cout << *attacker << "'s action was significantly weaker because of " << 
+            *this << "'s and " << *attacker << "'s element!" << std::endl;
         }
 
-        double healingStrength = damagingWeapon->getAttackStrength();
-        double totalDamage = (healingStrength)*multiplier;
-
+        double attackStrength = damagingWeapon->getAttackStrength();
+        double totalDamage = attackStrength * multiplier;
+        totalDamage = min(currentHealth, totalDamage);
         currentHealth -= totalDamage;
-        if (currentHealth <= 0)
-        {
-            currentHealth = 0;
-        }
 
         std::cout << *this << " received " << totalDamage << " damage from " << *attacker << "." << std::endl
                   << *this << " now has " << currentHealth << " health." << std::endl
@@ -1109,13 +1121,13 @@ public:
             }
         }
 
-        double healingStrength = damagingWeapon->getAttackStrength();
+        double healingStrength = healingWeapon->getHealingStrength();
         double totalDamage = (healingStrength)*multiplier;
 
-        currentHealth -= totalDamage;
-        if (currentHealth <= 0)
+        currentHealth += totalDamage;
+        if (currentHealth > maxHealth)
         {
-            currentHealth = 0;
+            currentHealth = maxHealth;
         }
         std::cout << *this << " received " << totalDamage << " damage from " << *attacker << "." << std::endl
                   << *this << " now has " << currentHealth << " health." << std::endl
