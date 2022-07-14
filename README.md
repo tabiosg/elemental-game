@@ -33,12 +33,13 @@ The key to memorizing the resource dependency relationships is thinking about wh
 
 There are two ways this affects mechanics in the game:
 
-1. Heals being stronger (+3, -1) (if weapon->healed or healer->healed). Heals are stronger and users loses health. Heal amplification stacks but health loss does not.
+1. Heals being stronger (+2, -1) (if weapon->healed or healer->healed). Heals are stronger and users loses health. Heal amplification stacks but health loss does not.
 e.g. A healed fire type would be significantly healed by a wood healer with a wood healing weapon.
 
-2. Both heals and attacks are significantly stronger (+4, +4) (if fighter->weapon). If the fighter's element strengthens the weapon's element, then both heals and attacks are more far more effective at the cost of making the user weaker.
+2. Both heals and attacks are significantly stronger (+4, -2) (if fighter->weapon). If the fighter's element strengthens the weapon's element, then both heals and attacks are more far more effective at the cost of making the user weaker.
 e.g. A wood weapon would be greatly strengthened by a water fighter.
 
+Healers may die from healing.
 ---
 
 ## Effectiveness of Elements
