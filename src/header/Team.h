@@ -27,12 +27,12 @@ public:
 	// EFFECTS return true if team is in brawl, returns false otherwise.
 	bool get_brawl_status() const;
 
-	// REQUIRES 0 < k <= in_combat_Fighters in team
-	// EFFECTS return the kth  in_combat fighter.
+	// REQUIRES 0 < k <= inCombat_Fighters in team
+	// EFFECTS return the kth  inCombat fighter.
 	Fighter *get_kth_fighter(const int &k) const;
 
 	// EFFECTS return all fighters
-	std::vector<Fighter *> get_all_fighters();
+	std::vector<Fighter *> getAllFighters();
 
 	// REQUIRES team is in combat
 	// EFFECTS return true if all members are out of combat.
@@ -40,30 +40,30 @@ public:
 
 	// EFFECTS Prints all fighters to stream as "Fighter 1: Alex"
 	// followed by newline and then "Fighter 2: Harry"
-	std::ostream &print_all_fighters(std::ostream &os);
+	std::ostream &printAllFighters(std::ostream &os);
 
 	// REQUIRES team is in combat
 	// EFFECTS return size of team in combat
-	int get_in_combat_size() const;
+	int get_inCombat_size() const;
 
 	// EFFECTS Prints in combat fighters to stream as "Fighter 1: Alex"
 	// followed by newline and then "Fighter 2: Harry"
-	std::ostream &print_in_combat_fighters(std::ostream &os) const;
+	std::ostream &print_inCombat_fighters(std::ostream &os) const;
 
 	// REQUIRES team is not in combat
-	// EFFECTS makes the team enter a brawl. changes in_combat_fighters
-	void enter_brawl();
+	// EFFECTS makes the team enter a brawl. changes inCombat_fighters
+	void enterBrawl();
 
 	// REQUIRES team is in combat and member is exiting combat due to lack of health.
 	// EFFECTS makes a member exit combat
-	// This changes in_combat_fighters
-	// and changes in_combat_size.
-	void member_exits_combat(const int &k);
+	// This changes inCombat_fighters
+	// and changes inCombat_size.
+	void memberExitsCombat(const int &k);
 
 	// REQUIRES team is in combat
 	// EFFECTS makes the team exit a brawl.
-	// changes in_combat_fighters and out_of_combat_fighters.
-	void exit_brawl();
+	// changes inCombat_fighters and out_of_combat_fighters.
+	void exitBrawl();
 
 	// REQUIRES team is not in combat
 	// EFFECTS add fighter to team

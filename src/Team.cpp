@@ -40,7 +40,7 @@ Team &Team::operator=(const Team &rhs)
 	}
 	std::vector<Fighter *> all_fighters;
 
-	std::vector<int> in_combat_fighters;
+	std::vector<int> inCombat_fighters;
 
 	return *this;
 }
@@ -65,7 +65,7 @@ Fighter *Team::get_kth_fighter(const int &k) const
 }
 
 // EFFECTS return all fighters
-std::vector<Fighter *> Team::get_all_fighters()
+std::vector<Fighter *> Team::getAllFighters()
 {
 	return all_fighters;
 }
@@ -80,25 +80,25 @@ bool Team::all_members_died() const
 
 // EFFECTS Prints all fighters to stream as "Fighter 1: Alex"
 // followed by newline and then "Fighter 2: Harry"
-std::ostream &Team::print_all_fighters(std::ostream &os)
+std::ostream &Team::printAllFighters(std::ostream &os)
 {
 	for (int i = 0; i < total_size; ++i)
 	{
-		os << "Fighter " << i + 1 << ": " << *all_fighters[i] << " (Type: " << all_fighters[i]->get_element() << ", Current Health: " << all_fighters[i]->get_current_health() << ")" << std::endl;
+		os << "Fighter " << i + 1 << ": " << *all_fighters[i] << " (Type: " << all_fighters[i]->getElement() << ", Current Health: " << all_fighters[i]->getCurrentHealth() << ")" << std::endl;
 	}
 	return os;
 }
 
 // REQUIRES team is in combat
 // EFFECTS return size of team in combat
-int Team::get_in_combat_size() const
+int Team::get_inCombat_size() const
 {
 	return total_size;
 }
 
 // EFFECTS Prints in combat fighters to stream as "Fighter 1: Alex"
 // followed by newline and then "Fighter 2: Harry"
-std::ostream &Team::print_in_combat_fighters(std::ostream &os) const
+std::ostream &Team::print_inCombat_fighters(std::ostream &os) const
 {
 	for (int i = 0; i < total_size; ++i)
 	{
@@ -109,8 +109,8 @@ std::ostream &Team::print_in_combat_fighters(std::ostream &os) const
 }
 
 // REQUIRES team is not in combat
-// EFFECTS makes the team enter a brawl. changes in_combat_fighters
-void Team::enter_brawl()
+// EFFECTS makes the team enter a brawl. changes inCombat_fighters
+void Team::enterBrawl()
 {
 	assert(!in_brawl);
 	in_brawl = true;
@@ -121,11 +121,11 @@ void Team::enter_brawl()
 }
 
 // REQUIRES team is in combat and member is exiting combat due to lack of health.
-// 0 <= k < in_combat_size. k represents kth person on team starting from 0.
+// 0 <= k < inCombat_size. k represents kth person on team starting from 0.
 // EFFECTS makes a member exit combat
-// This changes in_combat_fighters
-// and changes in_combat_size.
-void Team::member_exits_combat(const int &k)
+// This changes inCombat_fighters
+// and changes inCombat_size.
+void Team::memberExitsCombat(const int &k)
 {
 	assert(0 <= k && k < total_size);
 	delete all_fighters[k];
@@ -135,13 +135,13 @@ void Team::member_exits_combat(const int &k)
 
 // REQUIRES team is in combat
 // EFFECTS makes the team exit a brawl.
-// changes in_combat_fighters and out_of_combat_fighters.
-void Team::exit_brawl()
+// changes inCombat_fighters and out_of_combat_fighters.
+void Team::exitBrawl()
 {
 	in_brawl = false;
 	while (total_size != 0)
 	{
-		member_exits_combat(0);
+		memberExitsCombat(0);
 	}
 }
 
@@ -166,5 +166,5 @@ void Team::remove_member(int &fighter_index)
 
 Team::~Team()
 {
-	exit_brawl();
+	exitBrawl();
 }

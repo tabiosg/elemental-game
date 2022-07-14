@@ -31,7 +31,7 @@ The element resource dependency graph can be seen in the following image:
 
 This graph shows the relationship of how specific elements use others.
 For example, wood is strengthened by water at the cost of wearing down water.
-Here, we call wood the strengthened and wood the weakened element.
+Here, we call wood the strengthened and water the weakened element.
 
 In the game, this is reflected by the interactions between fighters and their weapons being used for healing.
 If a fighter chooses to heal and their weapon's element is the strengthened element in relation to the fighter's element,

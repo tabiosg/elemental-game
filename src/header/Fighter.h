@@ -28,39 +28,39 @@ public:
     static constexpr const int NUM_FIGHTER_TYPES = 2;
 
     // EFFECTS returns fighter's name
-    virtual const std::string &get_name() const = 0;
+    virtual const std::string &getName() const = 0;
 
     // EFFECTS returns fighter's type
-    virtual const std::string &get_type() const = 0;
+    virtual const std::string &getType() const = 0;
 
     // REQUIRES fighter has an element
     // EFFECTS  returns element of fighter
-    virtual Element get_element() const = 0;
+    virtual Element getElement() const = 0;
 
     // EFFECTS returns number of weapons on fighter
-    virtual int get_number_of_weapons() const = 0;
+    virtual int getNumberOfWeapons() const = 0;
 
     // REQUIRES fighter has a weapon
     // EFFECTS  returns active weapon of fighter
-    virtual int get_active_weapon() const = 0;
+    virtual int getActiveWeapon() const = 0;
 
     // EFFECTS returns kth weapons of fighter
-    virtual Weapon *get_k_weapon(const int &k) const = 0;
+    virtual Weapon *getWeaponK(const int &k) const = 0;
 
     // EFFECTS  returns combat status of fighter
     virtual bool get_combat_status() const = 0;
 
     // EFFECTS  returns max health of fighter
-    virtual double get_max_health() const = 0;
+    virtual double get_maxHealth() const = 0;
 
     // EFFECTS  returns current health of fighter
-    virtual double get_current_health() const = 0;
+    virtual double getCurrentHealth() const = 0;
 
     // EFFECTS  returns attack_strength of fighter
-    virtual double get_attack_strength() const = 0;
+    virtual double getAttackStrength() const = 0;
 
     // EFFECTS  returns healing_strength of fighter
-    virtual double get_healing_strength() const = 0;
+    virtual double getHealingStrength() const = 0;
 
     // REQUIRES fighter wants to add weapon
     // EFFECTS gives fighter the extra weapon
@@ -70,32 +70,32 @@ public:
     // EFFECTS deletes weapon
     virtual void delete_weapon(const int &weapon_index) = 0;
 
-    // REQUIRES 0 < k <= number_of_weapons
+    // REQUIRES 0 < k <= numberOfWeapons
     // EFFECTS returns the kth weapon's name
     virtual const std::string &get_k_name(const int &k) const = 0;
 
-    // REQUIRES 0 < k <= number_of_weapons
+    // REQUIRES 0 < k <= numberOfWeapons
     // EFFECTS  returns element of the kth weapon
     virtual Element get_k_element(const int &k) const = 0;
 
-    /// REQUIRES 0 < k <= number_of_weapons
+    /// REQUIRES 0 < k <= numberOfWeapons
     // EFFECTS  returns attack strength of the kth weapon
     virtual double get_k_attack_strength(const int &k) const = 0;
 
-    // REQUIRES 0 < k <= number_of_weapons
+    // REQUIRES 0 < k <= numberOfWeapons
     // EFFECTS  returns healing strength of the kth weapon
     virtual double get_k_healing_strength(const int &k) const = 0;
 
-    // REQUIRES 0 < k <= number_of_weapons
+    // REQUIRES 0 < k <= numberOfWeapons
     // EFFECTS returns the kth weapon's type
-    virtual const std::string get_k_weapon_type(const int &k) const = 0;
+    virtual const std::string getWeaponK_type(const int &k) const = 0;
 
     // REQUIRES fighter wants to change name
     // EFFECTS changes fighter name
     virtual void change_name(const std::string &name_change) = 0;
 
     // EFFECTS changes fighter max health
-    virtual void change_max_health(const int &health_change) = 0;
+    virtual void change_maxHealth(const int &health_change) = 0;
 
     // EFFECTS changes fighter current health
     virtual void change_current_health(const int &health_change) = 0;
@@ -115,8 +115,8 @@ public:
     virtual void exit_combat() = 0;
 
     // EFFECTS request action of fighter. should either be attack heal grab or skip.
-    virtual std::string request_action(std::vector<Fighter *> allies, std::vector<Fighter *> opponents,
-                                       const std::vector<Weapon *> dropped_weapons) = 0;
+    virtual std::string requestAction(std::vector<Fighter *> allies, std::vector<Fighter *> opponents,
+                                       const std::vector<Weapon *> droppedWeapons) = 0;
 
     // REQUIRES fighter wants to heal
     // MODIFIES allies
@@ -126,12 +126,12 @@ public:
     // REQUIRES fighter wants to fight
     // MODIFIES opponents
     // EFFECTS  make fighter attack opponents. return who was attacked
-    virtual int go_attack(std::vector<Fighter *> opponents) = 0;
+    virtual int goAttack(std::vector<Fighter *> opponents) = 0;
 
     // REQUIRES fighter wants to fight
     // EFFECTS  make fighter grab weapon
     virtual int go_grab_weapon(std::vector<Fighter *> allies, std::vector<Fighter *> opponents,
-                               const std::vector<Weapon *> dropped_weapons) = 0;
+                               const std::vector<Weapon *> droppedWeapons) = 0;
 
     // REQUIRES fighter must be in combat
     // EFFECTS  change health based on amount healed
@@ -152,12 +152,12 @@ public:
 
 private:
     std::string name;
-    Element element_type;
+    Element elementType;
     std::vector<Weapon *> weapons;
-    int number_of_weapons;
-    int active_weapon;
-    bool in_combat;
-    double max_health;
+    int numberOfWeapons;
+    int activeWeapon;
+    bool inCombat;
+    double maxHealth;
     double current_health;
 
     double attack_strength;

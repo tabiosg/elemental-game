@@ -8,58 +8,58 @@
 class Staff : public Weapon
 {
 public:
-    Staff() : name("A Magical Staff"), element(Element::ELE_WATER),
+    Staff() : name("A Magical Staff"), element(Element::WATER),
               attack_strength(40.0), healing_strength(20.0),
-              weapon_type(WEAPON_STAFF) {}
+              weaponType(WEAPON_STAFF) {}
 
-    Staff(const std::string &given_name, const Element &given_element) : Staff()
+    Staff(const std::string &givenName, const Element &givenElement) : Staff()
     {
-        name = given_name;
-        element = given_element;
+        name = givenName;
+        element = givenElement;
     }
 
-    Staff(const std::string &given_name, const Element &given_element,
-          const double &given_attack_strength,
-          const double &given_healing_strength) : Staff()
+    Staff(const std::string &givenName, const Element &givenElement,
+          const double &givenAttackStrength,
+          const double &givenHealingStrength) : Staff()
     {
-        name = given_name;
-        element = given_element;
-        attack_strength = given_attack_strength;
-        healing_strength = given_healing_strength;
+        name = givenName;
+        element = givenElement;
+        attack_strength = givenAttackStrength;
+        healing_strength = givenHealingStrength;
     }
 
     // EFFECTS returns weapon's name
-    const std::string &get_name() const override
+    const std::string &getName() const override
     {
         return name;
     }
 
     // REQUIRES weapon has an element
     // EFFECTS  returns element of weapon
-    Element get_element() const override
+    Element getElement() const override
     {
         return element;
     }
 
     // REQUIRES weapon has an attack strength
     // EFFECTS  returns attack strength of weapon
-    double get_attack_strength() const override
+    double getAttackStrength() const override
     {
         return attack_strength;
     }
 
     // REQUIRES weapon has a healing strength
     // EFFECTS  returns healing strength of weapon
-    double get_healing_strength() const override
+    double getHealingStrength() const override
     {
         return healing_strength;
     }
 
     // EFFECTS returns weapon's type
-    const std::string get_weapon_type() const override
+    const std::string get_weaponType() const override
     {
-        std::string weapon_type = Weapon::WEAPON_STAFF;
-        return weapon_type;
+        std::string weaponType = Weapon::WEAPON_STAFF;
+        return weaponType;
     }
 
     // REQUIRES weapon has a name
@@ -93,64 +93,64 @@ private:
     Element element;
     double attack_strength;
     double healing_strength;
-    std::string weapon_type;
+    std::string weaponType;
 };
 
 class Spear : public Weapon
 {
 public:
-    Spear() : name("Super Strong Spear"), element(Element::ELE_WATER),
+    Spear() : name("Super Strong Spear"), element(Element::WATER),
               attack_strength(50.0), healing_strength(10.0),
-              weapon_type("Spear") {}
+              weaponType("Spear") {}
 
-    Spear(const std::string &given_name, const Element &given_element) : Spear()
+    Spear(const std::string &givenName, const Element &givenElement) : Spear()
     {
-        name = given_name;
-        element = given_element;
+        name = givenName;
+        element = givenElement;
     }
 
-    Spear(const std::string &given_name, const Element &given_element,
-          const double &given_attack_strength,
-          const double &given_healing_strength) : Spear()
+    Spear(const std::string &givenName, const Element &givenElement,
+          const double &givenAttackStrength,
+          const double &givenHealingStrength) : Spear()
     {
-        name = given_name;
-        element = given_element;
-        attack_strength = given_attack_strength;
-        healing_strength = given_healing_strength;
+        name = givenName;
+        element = givenElement;
+        attack_strength = givenAttackStrength;
+        healing_strength = givenHealingStrength;
     }
 
     // EFFECTS returns weapon's name
-    const std::string &get_name() const override
+    const std::string &getName() const override
     {
         return name;
     }
 
     // REQUIRES weapon has an element
     // EFFECTS  returns element of weapon
-    Element get_element() const override
+    Element getElement() const override
     {
         return element;
     }
 
     // REQUIRES weapon has an attack strength
     // EFFECTS  returns attack strength of weapon
-    double get_attack_strength() const override
+    double getAttackStrength() const override
     {
         return attack_strength;
     }
 
     // REQUIRES weapon has a healing strength
     // EFFECTS  returns healing strength of weapon
-    double get_healing_strength() const override
+    double getHealingStrength() const override
     {
         return healing_strength;
     }
 
     // EFFECTS returns weapon's type
-    const std::string get_weapon_type() const override
+    const std::string get_weaponType() const override
     {
-        std::string weapon_type = Weapon::WEAPON_SPEAR;
-        return weapon_type;
+        std::string weaponType = Weapon::WEAPON_SPEAR;
+        return weaponType;
     }
 
     // REQUIRES weapon has a name
@@ -184,64 +184,64 @@ private:
     Element element;
     double attack_strength;
     double healing_strength;
-    std::string weapon_type;
+    std::string weaponType;
 };
 
 class Cross : public Weapon
 {
 public:
-    Cross() : name("The Coolest Cross"), element(Element::ELE_WATER),
+    Cross() : name("The Coolest Cross"), element(Element::WATER),
               attack_strength(30.0), healing_strength(50.0),
-              weapon_type("Cross") {}
+              weaponType("Cross") {}
 
-    Cross(const std::string &given_name, const Element &given_element) : Cross()
+    Cross(const std::string &givenName, const Element &givenElement) : Cross()
     {
-        name = given_name;
-        element = given_element;
+        name = givenName;
+        element = givenElement;
     }
 
-    Cross(const std::string &given_name, const Element &given_element,
-          const double &given_attack_strength,
-          const double &given_healing_strength) : Cross()
+    Cross(const std::string &givenName, const Element &givenElement,
+          const double &givenAttackStrength,
+          const double &givenHealingStrength) : Cross()
     {
-        name = given_name;
-        element = given_element;
-        attack_strength = given_attack_strength;
-        healing_strength = given_healing_strength;
+        name = givenName;
+        element = givenElement;
+        attack_strength = givenAttackStrength;
+        healing_strength = givenHealingStrength;
     }
 
     // EFFECTS returns weapon's name
-    const std::string &get_name() const override
+    const std::string &getName() const override
     {
         return name;
     }
 
     // REQUIRES weapon has an element
     // EFFECTS  returns element of weapon
-    Element get_element() const override
+    Element getElement() const override
     {
         return element;
     }
 
     // REQUIRES weapon has an attack strength
     // EFFECTS  returns attack strength of weapon
-    double get_attack_strength() const override
+    double getAttackStrength() const override
     {
         return attack_strength;
     }
 
     // REQUIRES weapon has a healing strength
     // EFFECTS  returns healing strength of weapon
-    double get_healing_strength() const override
+    double getHealingStrength() const override
     {
         return healing_strength;
     }
 
     // EFFECTS returns weapon's type
-    const std::string get_weapon_type() const override
+    const std::string get_weaponType() const override
     {
-        std::string weapon_type = Weapon::WEAPON_CROSS;
-        return weapon_type;
+        std::string weaponType = Weapon::WEAPON_CROSS;
+        return weaponType;
     }
 
     // REQUIRES weapon has a name
@@ -275,23 +275,23 @@ private:
     Element element;
     double attack_strength;
     double healing_strength;
-    std::string weapon_type;
+    std::string weaponType;
 };
 
 // EFFECTS Returns a pointer to a weapon with the given name, element, and type
-Weapon *Weapon_factory(const std::string &name, const Element &element,
-                       const std::string &weapon_type)
+Weapon *WeaponFactory(const std::string &name, const Element &element,
+                       const std::string &weaponType)
 {
 
-    if (weapon_type == Weapon::WEAPON_STAFF)
+    if (weaponType == Weapon::WEAPON_STAFF)
     {
         return new Staff(name, element);
     }
-    else if (weapon_type == Weapon::WEAPON_SPEAR)
+    else if (weaponType == Weapon::WEAPON_SPEAR)
     {
         return new Spear(name, element);
     }
-    else if (weapon_type == Weapon::WEAPON_CROSS)
+    else if (weaponType == Weapon::WEAPON_CROSS)
     {
         return new Cross(name, element);
     }
@@ -299,18 +299,18 @@ Weapon *Weapon_factory(const std::string &name, const Element &element,
     return nullptr;
 }
 
-// EFFECTS Returns a pointer to a weapon with the given weapon_type
-Weapon *Weapon_factory(const std::string &weapon_type)
+// EFFECTS Returns a pointer to a weapon with the given weaponType
+Weapon *WeaponFactory(const std::string &weaponType)
 {
-    if (weapon_type == Weapon::WEAPON_STAFF)
+    if (weaponType == Weapon::WEAPON_STAFF)
     {
         return new Staff();
     }
-    else if (weapon_type == Weapon::WEAPON_SPEAR)
+    else if (weaponType == Weapon::WEAPON_SPEAR)
     {
         return new Spear();
     }
-    else if (weapon_type == Weapon::WEAPON_CROSS)
+    else if (weaponType == Weapon::WEAPON_CROSS)
     {
         return new Cross();
     }
@@ -319,24 +319,24 @@ Weapon *Weapon_factory(const std::string &weapon_type)
 }
 
 // EFFECTS Returns a pointer to a weapon that is copy of copied_weapon
-Weapon *Weapon_factory(const Weapon *copied_weapon)
+Weapon *WeaponFactory(const Weapon *copied_weapon)
 {
 
-    std::string name = copied_weapon->get_name();
-    Element element = copied_weapon->get_element();
-    double attack_strength = copied_weapon->get_attack_strength();
-    double healing_strength = copied_weapon->get_healing_strength();
-    std::string weapon_type = copied_weapon->get_weapon_type();
+    std::string name = copied_weapon->getName();
+    Element element = copied_weapon->getElement();
+    double attack_strength = copied_weapon->getAttackStrength();
+    double healing_strength = copied_weapon->getHealingStrength();
+    std::string weaponType = copied_weapon->get_weaponType();
 
-    if (weapon_type == Weapon::WEAPON_STAFF)
+    if (weaponType == Weapon::WEAPON_STAFF)
     {
         return new Staff(name, element, attack_strength, healing_strength);
     }
-    else if (weapon_type == Weapon::WEAPON_SPEAR)
+    else if (weaponType == Weapon::WEAPON_SPEAR)
     {
         return new Spear(name, element, attack_strength, healing_strength);
     }
-    else if (weapon_type == Weapon::WEAPON_CROSS)
+    else if (weaponType == Weapon::WEAPON_CROSS)
     {
         return new Cross(name, element, attack_strength, healing_strength);
     }
@@ -347,6 +347,6 @@ Weapon *Weapon_factory(const Weapon *copied_weapon)
 // EFFECTS Prints weapon's name to os
 std::ostream &operator<<(std::ostream &os, const Weapon &w)
 {
-    os << w.get_name() << " (Type: " << w.get_weapon_type() << ")";
+    os << w.getName() << " (Type: " << w.get_weaponType() << ")";
     return os;
 }

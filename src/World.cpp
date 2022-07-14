@@ -35,19 +35,19 @@ int main()
 		std::cin >> response;
 		if (response == "Staff")
 		{
-			fighter1 = Fighter_factory(name1, Element(Element::ELE_METAL),
+			fighter1 = Fighter_factory(name1, Element(Element::METAL),
 									   Weapon::WEAPON_STAFF, Fighter::FIGHTER_HUMAN);
 			break;
 		}
 		if (response == "Cross")
 		{
-			fighter1 = Fighter_factory(name1, Element(Element::ELE_METAL),
+			fighter1 = Fighter_factory(name1, Element(Element::METAL),
 									   Weapon::WEAPON_CROSS, Fighter::FIGHTER_HUMAN);
 			break;
 		}
 		if (response == "Spear")
 		{
-			fighter1 = Fighter_factory(name1, Element(Element::ELE_METAL),
+			fighter1 = Fighter_factory(name1, Element(Element::METAL),
 									   Weapon::WEAPON_SPEAR, Fighter::FIGHTER_HUMAN);
 			break;
 		}
@@ -67,9 +67,9 @@ int main()
 	std::cout << "Choose the name of the wood-type fighter." << std::endl;
 	std::cin >> name3;
 
-	Fighter *fighter2 = Fighter_factory(name2, Element(Element::ELE_FIRE),
+	Fighter *fighter2 = Fighter_factory(name2, Element(Element::FIRE),
 										Weapon::WEAPON_SPEAR, Fighter::FIGHTER_WARRIOR);
-	Fighter *fighter3 = Fighter_factory(name3, Element(Element::ELE_WOOD),
+	Fighter *fighter3 = Fighter_factory(name3, Element(Element::WOOD),
 										Weapon::WEAPON_SPEAR, Fighter::FIGHTER_WARRIOR);
 
 	Team GoodTeam;
@@ -99,11 +99,11 @@ int main()
 			  << "Choose the name of the third enemy." << std::endl;
 	std::cin >> name6;
 
-	Fighter *enemy1 = Fighter_factory(name4, Element(Element::ELE_EARTH),
+	Fighter *enemy1 = Fighter_factory(name4, Element(Element::EARTH),
 									  Weapon::WEAPON_CROSS, Fighter::FIGHTER_WARRIOR);
-	Fighter *enemy2 = Fighter_factory(name5, Element(Element::ELE_EARTH),
+	Fighter *enemy2 = Fighter_factory(name5, Element(Element::EARTH),
 									  Weapon::WEAPON_STAFF, Fighter::FIGHTER_WARRIOR);
-	Fighter *enemy3 = Fighter_factory(name6, Element(Element::ELE_EARTH),
+	Fighter *enemy3 = Fighter_factory(name6, Element(Element::EARTH),
 									  Weapon::WEAPON_SPEAR, Fighter::FIGHTER_WARRIOR);
 
 	Team EvilTeam;

@@ -26,25 +26,25 @@ public:
         Weapon::WEAPON_STAFF,
         Weapon::WEAPON_SPEAR,
         Weapon::WEAPON_CROSS};
-    static constexpr const int NUM_WEAPON_TYPES = 3;
+    static constexpr const int NUM_weaponTypeS = 3;
 
     // EFFECTS returns weapon's name
-    virtual const std::string &get_name() const = 0;
+    virtual const std::string &getName() const = 0;
 
     // REQUIRES weapon has an element
     // EFFECTS  returns element of weapon
-    virtual Element get_element() const = 0;
+    virtual Element getElement() const = 0;
 
     // REQUIRES weapon has an attack strength
     // EFFECTS  returns attack strength of weapon
-    virtual double get_attack_strength() const = 0;
+    virtual double getAttackStrength() const = 0;
 
     // REQUIRES weapon has a healing strength
     // EFFECTS  returns healing strength of weapon
-    virtual double get_healing_strength() const = 0;
+    virtual double getHealingStrength() const = 0;
 
     // EFFECTS returns weapon's type
-    virtual const std::string get_weapon_type() const = 0;
+    virtual const std::string get_weaponType() const = 0;
 
     // REQUIRES weapon has a name
     // EFFECTS  changes name of weapon
@@ -66,18 +66,18 @@ private:
     Element element;
     double attack_strength;
     double healing_strength;
-    std::string weapon_type;
+    std::string weaponType;
 };
 
 // EFFECTS Returns a pointer to a weapon with the given name, element, and type
-Weapon *Weapon_factory(const std::string &name, const Element &element,
-                       const std::string &weapon_type);
+Weapon *WeaponFactory(const std::string &name, const Element &element,
+                       const std::string &weaponType);
 
-// EFFECTS Returns a pointer to a weapon with the given weapon_type
-Weapon *Weapon_factory(const std::string &weapon_type);
+// EFFECTS Returns a pointer to a weapon with the given weaponType
+Weapon *WeaponFactory(const std::string &weaponType);
 
 // EFFECTS Returns a pointer to a weapon that is copy of copied_weapon
-Weapon *Weapon_factory(const Weapon *copied_weapon);
+Weapon *WeaponFactory(const Weapon *copied_weapon);
 
 // EFFECTS Prints weapon's name to os
 std::ostream &operator<<(std::ostream &os, const Weapon &w);
