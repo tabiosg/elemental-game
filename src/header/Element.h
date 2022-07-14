@@ -40,7 +40,7 @@ public:
 
   // REQUIRES element is "Water", "Wood", "Fire", "Earth", or "Metal"
   // EFFECTS Changes element type to specified element.
-  void change_element(const std::string &element);
+  void changeElement(const std::string &element);
 
   // REQUIRES resource is a valid element
   // EFFECTS Returns true if other resource element strengthens
@@ -59,7 +59,7 @@ public:
   // REQUIRES current element is extremely effective or extremely ineffective against defender element.
   // EFFECTS Returns true if current element is extremely effective
   // against defender element. False otherwise.
-  bool is_effective_strength(const Element &defender) const;
+  bool isEffectiveStrength(const Element &defender) const;
 
 private:
   std::string element;

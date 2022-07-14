@@ -35,11 +35,11 @@ public:
 
 	// REQUIRES 0 <= k < totalDroppedWeapons
 	// EFFECTS return kth dropped weapon
-	Weapon *getDroppedWeaponK(const int &k);
+	Weapon *getDroppedOfWeaponK(const int &k);
 
 	// REQUIRES 0 <= k < totalDroppedWeapons
 	// EFFECTS remove kth dropped weapon
-	void removeDroppedWeaponK(const int &k);
+	void removeDroppedOfWeaponK(const int &k);
 
 	// EFFECTS add dropped weapon
 	void addDroppedWeapon(const Weapon *weapon);
@@ -52,7 +52,7 @@ public:
 
 	// REQUIRES fighter health drops to zero
 	// EFFECTS if fighter exits combat, change dropped weapons
-	void fighter_exits_combat(Fighter *fighter);
+	void fighterExitsCombat(Fighter *fighter);
 
 	// EFFECTS Prints droppedWeapons to stream as "Dropped Weapon 1: Excalibur"
 	// followed by newline and then "Dropped Weapon 2: Gate of Babylon"

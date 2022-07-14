@@ -35,20 +35,20 @@ int main()
 		std::cin >> response;
 		if (response == "Staff")
 		{
-			fighter1 = Fighter_factory(name1, Element(Element::METAL),
-									   Weapon::WEAPON_STAFF, Fighter::FIGHTER_HUMAN);
+			fighter1 = FighterFactory(name1, Element(Element::METAL),
+									   Weapon::STAFF, Fighter::HUMAN);
 			break;
 		}
 		if (response == "Cross")
 		{
-			fighter1 = Fighter_factory(name1, Element(Element::METAL),
-									   Weapon::WEAPON_CROSS, Fighter::FIGHTER_HUMAN);
+			fighter1 = FighterFactory(name1, Element(Element::METAL),
+									   Weapon::CROSS, Fighter::HUMAN);
 			break;
 		}
 		if (response == "Spear")
 		{
-			fighter1 = Fighter_factory(name1, Element(Element::METAL),
-									   Weapon::WEAPON_SPEAR, Fighter::FIGHTER_HUMAN);
+			fighter1 = FighterFactory(name1, Element(Element::METAL),
+									   Weapon::SPEAR, Fighter::HUMAN);
 			break;
 		}
 		std::cout << "You did not put in a valid output. Please try again. " << std::endl;
@@ -67,16 +67,16 @@ int main()
 	std::cout << "Choose the name of the wood-type fighter." << std::endl;
 	std::cin >> name3;
 
-	Fighter *fighter2 = Fighter_factory(name2, Element(Element::FIRE),
-										Weapon::WEAPON_SPEAR, Fighter::FIGHTER_WARRIOR);
-	Fighter *fighter3 = Fighter_factory(name3, Element(Element::WOOD),
-										Weapon::WEAPON_SPEAR, Fighter::FIGHTER_WARRIOR);
+	Fighter *fighter2 = FighterFactory(name2, Element(Element::FIRE),
+										Weapon::SPEAR, Fighter::WARRIOR);
+	Fighter *fighter3 = FighterFactory(name3, Element(Element::WOOD),
+										Weapon::SPEAR, Fighter::WARRIOR);
 
 	Team GoodTeam;
 
-	GoodTeam.add_member(fighter1);
-	GoodTeam.add_member(fighter2);
-	GoodTeam.add_member(fighter3);
+	GoodTeam.addMember(fighter1);
+	GoodTeam.addMember(fighter2);
+	GoodTeam.addMember(fighter3);
 
 	std::cout << std::endl
 			  << "\033[2J"
@@ -99,17 +99,17 @@ int main()
 			  << "Choose the name of the third enemy." << std::endl;
 	std::cin >> name6;
 
-	Fighter *enemy1 = Fighter_factory(name4, Element(Element::EARTH),
-									  Weapon::WEAPON_CROSS, Fighter::FIGHTER_WARRIOR);
-	Fighter *enemy2 = Fighter_factory(name5, Element(Element::EARTH),
-									  Weapon::WEAPON_STAFF, Fighter::FIGHTER_WARRIOR);
-	Fighter *enemy3 = Fighter_factory(name6, Element(Element::EARTH),
-									  Weapon::WEAPON_SPEAR, Fighter::FIGHTER_WARRIOR);
+	Fighter *enemy1 = FighterFactory(name4, Element(Element::EARTH),
+									  Weapon::CROSS, Fighter::WARRIOR);
+	Fighter *enemy2 = FighterFactory(name5, Element(Element::EARTH),
+									  Weapon::STAFF, Fighter::WARRIOR);
+	Fighter *enemy3 = FighterFactory(name6, Element(Element::EARTH),
+									  Weapon::SPEAR, Fighter::WARRIOR);
 
 	Team EvilTeam;
-	EvilTeam.add_member(enemy1);
-	EvilTeam.add_member(enemy2);
-	EvilTeam.add_member(enemy3);
+	EvilTeam.addMember(enemy1);
+	EvilTeam.addMember(enemy2);
+	EvilTeam.addMember(enemy3);
 
 	Brawl myBrawl(GoodTeam, EvilTeam);
 
