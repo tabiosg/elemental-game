@@ -9,7 +9,6 @@
  * 2021-04-01
  */
 
-#include "Element.h"
 #include "Team.h"
 #include "Weapon.h"
 #include "Brawl.h"

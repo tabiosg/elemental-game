@@ -3,7 +3,6 @@
 #include <cassert>
 
 #include "header/Brawl.h"
-#include "header/Element.h"
 #include "header/Team.h"
 #include "header/Weapon.h"
 
