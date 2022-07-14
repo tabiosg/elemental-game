@@ -6,21 +6,15 @@
 
 // EFFECTS Initializes Element to Water
 Element::Element()
-    : element(WATER),
-      bestHealingElement(METAL),
-      bestOpponentElement(EARTH) {}
+{
+    changeElement(WATER);
+}
 
 // REQUIRES element is "Water", "Wood", "Fire", "Earth", or "Metal"
 // EFFECTS Initializes Element to specified element.
 Element::Element(const std::string &elementChange) : Element()
 {
-    assert(
-        elementChange == "Water" || elementChange == "Wood" ||
-        elementChange == "Fire" || elementChange == "Earth" ||
-        elementChange == "Metal");
-    element = elementChange;
-    bestHealingElement = findBestHealingElement(elementChange);
-    bestOpponentElement = findBestOpponentElement(elementChange);
+    changeElement(elementChange);
 }
 
 // EFFECTS Returns the element
@@ -32,83 +26,72 @@ std::string Element::getElement() const
 // EFFECTS Returns the best healing element
 std::string Element::getBestHealingElement() const
 {
-    return bestHealingElement;
+    return healsThisElementBest;
 }
 
 // EFFECTS Returns the best opponent element
 std::string Element::getBestOpponentElement() const
 {
-    return bestOpponentElement;
+    return beatsThisElementBest;
 }
 
 // REQUIRES element is "Water", "Wood", "Fire", "Earth", or "Metal"
 // EFFECTS Changes element type to specified element.
 void Element::changeElement(const std::string &elementChange)
 {
+    assert(
+        elementChange == WATER || elementChange == WOOD ||
+        elementChange == FIRE || elementChange == EARTH ||
+        elementChange == METAL);
     element = elementChange;
-    bestHealingElement = findBestHealingElement(elementChange);
-    bestOpponentElement = findBestOpponentElement(elementChange);
+    healsThisElementBest = findElementThatThisBenefits(elementChange);
+    beatsThisElementBest = findElementThatThisBeats(elementChange);
+    isWeakAgainstThisElement = findElementThatThisIsWeakAgainst(elementChange);
 }
 
-// REQUIRES resource is a valid element
-// EFFECTS Returns true if other resource element strengthens
-// or harms current element. False otherwise.
-bool Element::isSpecialResource(const Element &resource) const
+// REQUIRES resource is valid element
+// EFFECTS Returns true if current element benefits other element. False if not.
+bool Element::isBeneficialResourceTo(const Element &resource) const
 {
-    bool strengthener = resource == bestHealingElement;
-    std::string resourceElement = resource.getElement();
-    bool harmer = element == findBestHealingElement(resourceElement);
-    return strengthener || harmer;
+    return resource == healsThisElementBest;
 }
 
-// REQUIRES resource either strengthens or harms current element
-// EFFECTS Returns true if other resource element strengthens current element. False if harms.
-bool Element::isStrengthening(const Element &resource) const
-{
-    return resource == bestHealingElement;
-}
-
-// REQUIRES defender is a valid element
-// EFFECTS Returns true if current element is extremely effective or
-// extremely ineffective against defender element. False otherwise.
-bool Element::isSpecialStrength(const Element &defender) const
-{
-    bool effective = defender == bestOpponentElement;
-    std::string defenderElement = defender.getElement();
-    bool harmer = element == findBestOpponentElement(defenderElement);
-    return effective || harmer;
-}
-
-// REQUIRES current element is extremely effective or extremely ineffective against defender element.
 // EFFECTS Returns true if current element is extremely effective
 // against defender element. False otherwise.
-bool Element::isEffectiveStrength(const Element &defender) const
+bool Element::isEffectiveAgainst(const Element &defender) const
 {
-    return defender == bestOpponentElement;
+    return defender == beatsThisElementBest;
 }
 
-// EFFECTS Returns the element that current element would like to receive healing from
-std::string findBestHealingElement(const std::string &element)
+// EFFECTS Returns true if current element is extremely weak
+// against attacker element. False otherwise.
+bool Element::isWeakAgainst(const Element &attacker) const
 {
-    if (element == Element::WATER)
+    return attacker == isWeakAgainstThisElement;
+}
+
+// EFFECTS Returns the element that the current one benefits
+std::string findElementThatThisBenefits(const std::string &element)
+{
+    if (element == Element::METAL)
     {
-        return Element::METAL;
-    }
-    else if (element == Element::METAL)
-    {
-        return Element::EARTH;
+        return Element::WATER;
     }
     else if (element == Element::EARTH)
     {
-        return Element::FIRE;
+        return Element::METAL;
     }
     else if (element == Element::FIRE)
     {
-        return Element::WOOD;
+        return Element::EARTH;
     }
     else if (element == Element::WOOD)
     {
-        return Element::WATER;
+        return Element::FIRE;
+    }
+    else if (element == Element::WATER)
+    {
+        return Element::WOOD;
     }
     else
     {
@@ -117,7 +100,7 @@ std::string findBestHealingElement(const std::string &element)
 }
 
 // EFFECTS Returns the element that current element would like to fight as opponent
-std::string findBestOpponentElement(const std::string &element)
+std::string findElementThatThisBeats(const std::string &element)
 {
     if (element == Element::WATER)
     {
@@ -138,6 +121,35 @@ std::string findBestOpponentElement(const std::string &element)
     else if (element == Element::WOOD)
     {
         return Element::EARTH;
+    }
+    else
+    {
+        assert(false);
+    }
+}
+
+// EFFECTS Returns the element that current element is weak against
+std::string findElementThatThisIsWeakAgainst(const std::string &element)
+{
+    if (element == Element::FIRE)
+    {
+        return Element::WATER;
+    }
+    else if (element == Element::WOOD)
+    {
+        return Element::METAL;
+    }
+    else if (element == Element::WATER)
+    {
+        return Element::EARTH;
+    }
+    else if (element == Element::METAL)
+    {
+        return Element::FIRE;
+    }
+    else if (element == Element::EARTH)
+    {
+        return Element::WOOD;
     }
     else
     {

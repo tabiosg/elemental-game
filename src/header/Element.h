@@ -42,36 +42,33 @@ public:
   // EFFECTS Changes element type to specified element.
   void changeElement(const std::string &element);
 
-  // REQUIRES resource is a valid element
-  // EFFECTS Returns true if other resource element strengthens
-  // or harms current element. False otherwise.
-  bool isSpecialResource(const Element &resource) const;
+  // REQUIRES resource is valid element
+  // EFFECTS Returns true if current element benefits other element. False if not.
+  bool isBeneficialResourceTo(const Element &resource) const;
 
-  // REQUIRES resource either strengthens or harms current element
-  // EFFECTS Returns true if other resource element strengthens current element. False if harms.
-  bool isStrengthening(const Element &resource) const;
-
-  // REQUIRES defender is a valid element
-  // EFFECTS Returns true if current element is extremely effective or
-  // extremely ineffective against defender element. False otherwise.
-  bool isSpecialStrength(const Element &defender) const;
-
-  // REQUIRES current element is extremely effective or extremely ineffective against defender element.
   // EFFECTS Returns true if current element is extremely effective
   // against defender element. False otherwise.
-  bool isEffectiveStrength(const Element &defender) const;
+  bool isEffectiveAgainst(const Element &defender) const;
+
+  // EFFECTS Returns true if current element is extremely weak
+  // against attacker element. False otherwise.
+  bool isWeakAgainst(const Element &attacker) const;
 
 private:
   std::string element;
-  std::string bestHealingElement;  // element that current element would like to receive healing from
-  std::string bestOpponentElement; // element that current element would like to have as opponent
+  std::string healsThisElementBest;  // element that current element heals the best
+  std::string beatsThisElementBest; // element that current element beats the best
+  std::string isWeakAgainstThisElement; // element that current element is weak against
 };
 
-// EFFECTS Returns the element that current element would like to receive healing from
-std::string findBestHealingElement(const std::string &element);
+// EFFECTS Returns the element that the current one benefits
+std::string findElementThatThisBenefits(const std::string &element);
 
 // EFFECTS Returns the element that current element would like to fight as opponent
-std::string findBestOpponentElement(const std::string &element);
+std::string findElementThatThisBeats(const std::string &element);
+
+// EFFECTS Returns the element that current element is weak against
+std::string findElementThatThisIsWeakAgainst(const std::string &element);
 
 // EFFECTS Returns true if lhs is same as rhs
 bool operator==(const Element &lhs, const Element &rhs);
