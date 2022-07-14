@@ -128,7 +128,7 @@ public:
     // REQUIRES ally is in combat and weapon belongs to fighter
     // MODIFIES allies
     // EFFECTS make fighter heal allies or self
-    virtual void goHealAllyWithWeapon(Fighter* ally, Weapon* weapon);
+    virtual void goHealAllyWithWeapon(Fighter *ally, Weapon *weapon);
 
     // REQUIRES fighter wants to fight
     // MODIFIES opponents
@@ -138,7 +138,7 @@ public:
     // REQUIRES fighter wants to fight
     // MODIFIES opponent
     // EFFECTS  make fighter attack opponent.
-    virtual void goAttackTargetWithWeapon(Fighter* opponent, Weapon* weapon);
+    virtual void goAttackTargetWithWeapon(Fighter *opponent, Weapon *weapon);
 
     // REQUIRES fighter wants to fight
     // EFFECTS  make fighter grab weapon

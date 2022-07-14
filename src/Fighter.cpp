@@ -22,65 +22,77 @@ public:
     static constexpr const int NUM_FIGHTER_TYPES = 2;
 
     // EFFECTS returns fighter's name
-    virtual const std::string &getName() const {
+    virtual const std::string &getName() const
+    {
         return name;
     }
 
     // EFFECTS returns fighter's type
-    virtual const std::string &getType() const {
+    virtual const std::string &getType() const
+    {
         return type;
     };
 
     // REQUIRES fighter has an element
     // EFFECTS  returns element of fighter
-    virtual Element getElement() const {
+    virtual Element getElement() const
+    {
         return elementType;
     };
 
     // EFFECTS returns number of weapons on fighter
-    virtual int getNumberOfWeapons() const {
+    virtual int getNumberOfWeapons() const
+    {
         return numberOfWeapons;
     };
 
     // REQUIRES fighter has a weapon
     // EFFECTS  returns active weapon of fighter
-    virtual int getActiveWeapon() const {
+    virtual int getActiveWeapon() const
+    {
         return activeWeapon;
     };
 
     // EFFECTS returns kth weapons of fighter
-    virtual Weapon *getOfWeaponK(const int &k) const {
+    virtual Weapon *getOfWeaponK(const int &k) const
+    {
         return weapons[k];
     };
 
     // EFFECTS  returns combat status of fighter
-    virtual bool getCombatStatus() const {
+    virtual bool getCombatStatus() const
+    {
         return inCombat;
     };
 
     // EFFECTS  returns max health of fighter
-    virtual double getMaxHealth() const {
+    virtual double getMaxHealth() const
+    {
         return maxHealth;
     };
 
     // EFFECTS  returns current health of fighter
-    virtual double getCurrentHealth() const {
+    virtual double getCurrentHealth() const
+    {
         return currentHealth;
     };
 
     // EFFECTS  returns attackStrength of fighter
-    virtual double getAttackStrength() const {
+    virtual double getAttackStrength() const
+    {
         return attackStrength;
     };
 
     // EFFECTS  returns healingStrength of fighter
-    virtual double getHealingStrength() const {
+    virtual double getHealingStrength() const
+    {
         return healingStrength;
     };
 
     // REQUIRES fighter wants to add weapon
     // EFFECTS gives fighter the extra weapon
-    virtual void addWeapon(Weapon *weapon) {
+    virtual void addWeapon(Weapon *weapon)
+    {
         ++numberOfWeapons;
         Weapon *addedWeapon = WeaponFactory(weapon);
         weapons.push_back(addedWeapon);
@@ -92,7 +104,8 @@ public:
 
     // REQUIRES fighter wants to delete a weapon
     // EFFECTS deletes weapon
-    virtual void deleteWeapon(const int &weaponIndex) {
+    virtual void deleteWeapon(const int &weaponIndex)
+    {
         --numberOfWeapons;
         delete weapons[weaponIndex];
         weapons.erase(weapons.begin() + weaponIndex);
@@ -101,70 +114,80 @@ public:
 
     // REQUIRES 0 < k <= numberOfWeapons
     // EFFECTS returns the kth weapon's name
-    virtual const std::string &getNameOfWeaponK(const int &k) const {
+    virtual const std::string &getNameOfWeaponK(const int &k) const
+    {
         return weapons[k]->getName();
     };
 
     // REQUIRES 0 < k <= numberOfWeapons
     // EFFECTS  returns element of the kth weapon
-    virtual Element getElementOfWeaponK(const int &k) const {
+    virtual Element getElementOfWeaponK(const int &k) const
+    {
         return weapons[k]->getElement();
     };
 
     /// REQUIRES 0 < k <= numberOfWeapons
     // EFFECTS  returns attack strength of the kth weapon
-    virtual double getAttackStrengthOfWeaponK(const int &k) const {
+    virtual double getAttackStrengthOfWeaponK(const int &k) const
+    {
         return weapons[k]->getAttackStrength();
     };
 
     // REQUIRES 0 < k <= numberOfWeapons
     // EFFECTS  returns healing strength of the kth weapon
-    virtual double getHealingStrengthOfWeaponK(const int &k) const {
+    virtual double getHealingStrengthOfWeaponK(const int &k) const
+    {
         return weapons[k]->getHealingStrength();
     };
 
     // REQUIRES 0 < k <= numberOfWeapons
     // EFFECTS returns the kth weapon's type
-    virtual const std::string getTypeOfWeaponK(const int &k) const {
+    virtual const std::string getTypeOfWeaponK(const int &k) const
+    {
         return weapons[k]->getWeaponType();
     };
 
     // REQUIRES fighter wants to change name
     // EFFECTS changes fighter name
-    virtual void changeName(const std::string &newName) {
+    virtual void changeName(const std::string &newName)
+    {
         name = newName;
     };
 
     // EFFECTS changes fighter max health
-    virtual void changeMaxHealth(const int &newMaxHealth) {
-        maxHealth = newMaxHealth
-    };
+    virtual void changeMaxHealth(const int &newMaxHealth){
+        maxHealth = newMaxHealth};
 
     // EFFECTS changes fighter current health
-    virtual void changeCurrentHealth(const int &newMaxHealth) {
+    virtual void changeCurrentHealth(const int &newMaxHealth)
+    {
         currentHealth = newMaxHealth;
     };
 
     // EFFECTS changes fighter attack strength
-    virtual void changeAttackStrength(const int &newAttackStrength) {
+    virtual void changeAttackStrength(const int &newAttackStrength)
+    {
         attackStrength = newAttackStrength;
     };
 
     // EFFECTS changes fighter healing strength
-    virtual void changeHealingStrength(const int &newHealingStrength) {
+    virtual void changeHealingStrength(const int &newHealingStrength)
+    {
         healingStrength = newHealingStrength;
     };
 
     // REQUIRES fighter is currently not in combat
     // EFFECTS make fighter enter combat
-    virtual void enterCombat() {
+    virtual void enterCombat()
+    {
         assert(!inCombat);
         inCombat = true;
     };
 
     // REQUIRES fighter is currently in combat
     // EFFECTS make fighter exit combat
-    virtual void exitCombat() {
+    virtual void exitCombat()
+    {
         assert(inCombat);
         inCombat = false;
     };
@@ -183,7 +206,8 @@ public:
     // REQUIRES ally is in combat and weapon belongs to fighter
     // MODIFIES allies
     // EFFECTS make fighter heal allies or self
-    virtual void goHealAllyWithWeapon(Fighter* ally, Weapon* weapon) {
+    virtual void goHealAllyWithWeapon(Fighter *ally, Weapon *weapon)
+    {
         std::cout << *this << " used " << *weapon << " to heal " << *ally << std::endl;
 
         ally->receiveHealing(weapon, this);
@@ -192,8 +216,7 @@ public:
         double lostHealthMultiplier = 0;
         if (
             weaponElement.isBeneficialResourceTo(ally->getElement()) ||
-            elementType.isBeneficialResourceTo(ally->getElement())
-        )
+            elementType.isBeneficialResourceTo(ally->getElement()))
         {
             lostHealthMultiplier += 0.1;
         }
@@ -201,11 +224,11 @@ public:
         {
             lostHealthMultiplier += 0.2;
         }
-        if (lostHealthMultiplier) {
+        if (lostHealthMultiplier)
+        {
             double lostHealth = losthealthMultiplier * maxHealth;
             lostHealth = max(currentHealth, lostHealth);
-            std::cout << *this << " lost " <<
-            lostHealth << " when healing!" << std::endl;
+            std::cout << *this << " lost " << lostHealth << " when healing!" << std::endl;
         }
     };
 
@@ -217,7 +240,8 @@ public:
     // REQUIRES fighter wants to fight
     // MODIFIES opponent
     // EFFECTS  make fighter attack opponent.
-    virtual void goAttackTargetWithWeapon(Fighter* opponent, Weapon* weapon) {
+    virtual void goAttackTargetWithWeapon(Fighter *opponent, Weapon *weapon)
+    {
         std::cout << *this << " used " << *weapon << " to attack " << *opponents[target] << std::endl;
 
         opponent->receiveAttack(weapon, this);
@@ -227,13 +251,12 @@ public:
         {
             lostHealthMultiplier += 0.4;
         }
-        if (lostHealthMultiplier) {
+        if (lostHealthMultiplier)
+        {
             double lostHealth = losthealthMultiplier * maxHealth;
             lostHealth = max(currentHealth, lostHealth);
-            std::cout << *this << " lost " <<
-            lostHealth << " when attacking!" << std::endl;
+            std::cout << *this << " lost " << lostHealth << " when attacking!" << std::endl;
         }
-
     };
 
     // REQUIRES fighter wants to fight
@@ -245,7 +268,8 @@ public:
 
     // REQUIRES fighter wants to fight
     // EFFECTS  make fighter grab weapon
-    virtual void goGrabThisWeapon(Weapon *droppedWeapon) {
+    virtual void goGrabThisWeapon(Weapon *droppedWeapon)
+    {
         addWeapon(wantedWeapon);
         std::cout << *this << " has picked up " << *wantedWeapon << "." << std::endl
                   << std::endl;
@@ -253,7 +277,8 @@ public:
 
     // REQUIRES fighter must be in combat
     // EFFECTS  change health based on amount healed
-    virtual void receiveHealing(const Weapon *healingWeapon, Fighter *healer) {
+    virtual void receiveHealing(const Weapon *healingWeapon, Fighter *healer)
+    {
         assert(getCombatStatus());
         double multiplier = 1.0;
         Element healerElement = healer->getElement();
@@ -261,20 +286,17 @@ public:
         if (healerElement.isBeneficialResourceTo(weaponElement))
         {
             lostHealthMultiplier += 0.4;
-            std::cout << *healer << "'s action was significantly more effective because of " << 
-            *healer << "'s and " << *healingWeapon << "'s element!" << std::endl;
+            std::cout << *healer << "'s action was significantly more effective because of " << *healer << "'s and " << *healingWeapon << "'s element!" << std::endl;
         }
         if (weaponElement.isBeneficialResourceTo(elementType))
         {
             multiplier = multiplier + 0.2;
-            std::cout << *healer << "'s action was more effective because of " << 
-            *healingWeapon << "'s and " << *this << "'s element!" << std::endl;
+            std::cout << *healer << "'s action was more effective because of " << *healingWeapon << "'s and " << *this << "'s element!" << std::endl;
         }
         if (healerElement.isBeneficialResourceTo(elementType))
         {
             multiplier = multiplier + 0.2;
-            std::cout << *healer << "'s action more effective because of " << 
-            *healingWeapon << "'s and " << *this << "'s element!" << std::endl;
+            std::cout << *healer << "'s action more effective because of " << *healingWeapon << "'s and " << *this << "'s element!" << std::endl;
         }
 
         double healingStrength = healingWeapon->getHealingStrength();
@@ -291,7 +313,8 @@ public:
     // REQUIRES fighter is focused by enemy
     // EFFECTS  change health based on attack
     // do not change combat status if below 0 hp here.
-    virtual void receiveAttack(const Weapon *damagingWeapon, const Fighter *attacker) {
+    virtual void receiveAttack(const Weapon *damagingWeapon, const Fighter *attacker)
+    {
         assert(getCombatStatus());
         double multiplier = 1.0;
         Element damagingElement = attacker->getElement();
@@ -299,32 +322,27 @@ public:
         if (damagingElement.isEffectiveAgainst(weaponElement))
         {
             lostHealthMultiplier += 0.4;
-            std::cout << *attacker << "'s action was significantly more effective because of " << 
-            *attacker << "'s and " << *damagingWeapon << "'s element!" << std::endl;
+            std::cout << *attacker << "'s action was significantly more effective because of " << *attacker << "'s and " << *damagingWeapon << "'s element!" << std::endl;
         }
         if (weaponElement.isEffectiveAgainst(elementType))
         {
             multiplier = multiplier + 0.2;
-            std::cout << *attacker << "'s action was more effective because of " << 
-            *damagingWeapon << "'s and " << *this << "'s element!" << std::endl;
+            std::cout << *attacker << "'s action was more effective because of " << *damagingWeapon << "'s and " << *this << "'s element!" << std::endl;
         }
         else if (weaponElement.isWeakAgainst(weaponElement))
         {
             multiplier = multiplier - 0.4;
-            std::cout << *attacker << "'s action was significantly weaker because of " << 
-            *this << "'s and " << *damagingWeapon << "'s element!" << std::endl;
+            std::cout << *attacker << "'s action was significantly weaker because of " << *this << "'s and " << *damagingWeapon << "'s element!" << std::endl;
         }
         if (damagingElement.isEffectiveAgainst(elementType))
         {
             multiplier = multiplier + 0.2;
-            std::cout << *damagingWeapon << " was more effective because of " << 
-            *damagingWeapon << "'s and " << *this << "'s element!" << std::endl;
+            std::cout << *damagingWeapon << " was more effective because of " << *damagingWeapon << "'s and " << *this << "'s element!" << std::endl;
         }
         else if (damagingElement.isWeakAgainst(elementType))
         {
             multiplier = multiplier - 0.4;
-            std::cout << *attacker << "'s action was significantly weaker because of " << 
-            *this << "'s and " << *attacker << "'s element!" << std::endl;
+            std::cout << *attacker << "'s action was significantly weaker because of " << *this << "'s and " << *attacker << "'s element!" << std::endl;
         }
 
         double attackStrength = damagingWeapon->getAttackStrength();
@@ -338,7 +356,8 @@ public:
     };
 
     // EFFECTS: Prints weapons of fighter to os
-    virtual std::ostream &printWeapons(std::ostream &os) const {
+    virtual std::ostream &printWeapons(std::ostream &os) const
+    {
         for (int i = 0; i < numberOfWeapons; ++i)
         {
             os << "Weapon " << i + 1 << ": " << *weapons[i] << std::endl;
@@ -348,8 +367,9 @@ public:
 
     virtual std::ostream &printListOfWeapons(
         std::ostream &os,
-        const std::vector<Weapon *> weapons) const {
-            for (size_t i = 0; i < weapons.size(); ++i)
+        const std::vector<Weapon *> weapons) const
+    {
+        for (size_t i = 0; i < weapons.size(); ++i)
         {
             Weapon *ithweapon = weapons[i];
             os << "Weapon " << i + 1 << ": " << *ithweapon << std::endl;
@@ -358,7 +378,8 @@ public:
     };
 
     // Needed to avoid some compiler errors
-    virtual ~Fighter() {
+    virtual ~Fighter()
+    {
         while (numberOfWeapons != 0)
         {
             deleteWeapon(0);
@@ -533,7 +554,7 @@ public:
         int target = requestHealTarget(allies);
         activeWeapon = requestActiveWeaponK();
         Weapon *currentWeapon = getOfWeaponK(activeWeapon);
-        Fighter* ally = allies[target];
+        Fighter *ally = allies[target];
         goHealAllyWithWeapon(ally, currentWeapon);
     }
 
@@ -870,7 +891,7 @@ public:
         }
 
         Weapon *currentWeapon = getOfWeaponK(activeWeapon);
-        Fighter* opponent = opponents[target];
+        Fighter *opponent = opponents[target];
         goAttackTargetWithWeapon(opponent, currentWeapon);
 
         return target;
