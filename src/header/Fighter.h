@@ -136,27 +136,33 @@ public:
     virtual int goAttack(std::vector<Fighter *> opponents) = 0;
 
     // REQUIRES fighter wants to fight
+    // MODIFIES opponent
+    // EFFECTS  make fighter attack opponent.
+    virtual void goAttackTargetWithWeapon(Fighter* opponent, Weapon* weapon);
+
+    // REQUIRES fighter wants to fight
     // EFFECTS  make fighter grab weapon
-    virtual int goGrabWeapon(
-        std::vector<Fighter *> allies,
-        std::vector<Fighter *> opponents,
-        const std::vector<Weapon *> droppedWeapons) = 0;
+    virtual int goGrabWeapon(const std::vector<Weapon *> droppedWeapons) = 0;
+
+    // REQUIRES fighter wants to fight
+    // EFFECTS  make fighter grab weapon
+    virtual void goGrabThisWeapon(Weapon *droppedWeapon);
 
     // REQUIRES fighter must be in combat
     // EFFECTS  change health based on amount healed
-    virtual void receiveHealing(const Weapon *healingWeapon, Fighter *healer) = 0;
+    virtual void receiveHealing(const Weapon *healingWeapon, Fighter *healer);
 
     // REQUIRES fighter is focused by enemy
     // EFFECTS  change health based on attack
     // do not change combat status if below 0 hp here.
-    virtual void receiveAttack(const Weapon *damagingWeapon, const Fighter *attacker) = 0;
+    virtual void receiveAttack(const Weapon *damagingWeapon, const Fighter *attacker);
 
     // EFFECTS: Prints weapons of fighter to os
-    virtual std::ostream &printWeapons(std::ostream &os) const = 0;
+    virtual std::ostream &printWeapons(std::ostream &os) const;
 
     virtual std::ostream &printListOfWeapons(
         std::ostream &os,
-        const std::vector<Weapon *> weapons) const = 0;
+        const std::vector<Weapon *> weapons) const;
 
     // Needed to avoid some compiler errors
     virtual ~Fighter() {}

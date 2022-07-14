@@ -178,7 +178,7 @@ void Brawl::requestAndEnactAction(Fighter *f, Team &allies, Team &opponents)
 	}
 	else if (response == "Grab")
 	{
-		int target = f->goGrabWeapon(allAllies, allOpponents, droppedWeapons);
+		int target = f->goGrabWeapon(droppedWeapons);
 		removeDroppedOfWeaponK(target);
 	}
 	else if (response == "Skip")
