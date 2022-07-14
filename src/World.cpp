@@ -6,11 +6,11 @@
 #include <cassert>
 #include <vector>
 
-#include "header/Brawl.h"
-#include "header/Element.h"
-#include "header/Fighter.h"
-#include "header/Team.h"
-#include "header/Weapon.h"
+#include "Brawl.h"
+#include "Element.h"
+#include "Fighter.h"
+#include "Team.h"
+#include "Weapon.h"
 
 class Game
 {

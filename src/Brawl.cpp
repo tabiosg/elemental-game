@@ -2,9 +2,9 @@
 #include <vector>
 #include <cassert>
 
-#include "header/Brawl.h"
-#include "header/Team.h"
-#include "header/Weapon.h"
+#include "Brawl.h"
+#include "Team.h"
+#include "Weapon.h"
 
 Brawl::Brawl(
 	Team givenTeamZero,
@@ -178,7 +178,7 @@ void Brawl::requestAndEnactAction(Fighter *f, Team &allies, Team &opponents)
 	}
 	else if (response == "Grab")
 	{
-		int target = f->goGrabWeapon(allAllies, allOpponents, droppedWeapons);
+		int target = f->goGrabWeapon(droppedWeapons);
 		removeDroppedOfWeaponK(target);
 	}
 	else if (response == "Skip")

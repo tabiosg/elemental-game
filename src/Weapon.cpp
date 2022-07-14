@@ -2,8 +2,8 @@
 #include <vector>
 #include <cassert>
 
-#include "header/Element.h"
-#include "header/Weapon.h"
+#include "Element.h"
+#include "Weapon.h"
 
 class Staff : public Weapon
 {
