@@ -3,8 +3,8 @@
 #include <cassert>
 #include <numeric>
 
-#include "header/Team.h"
-#include "header/Fighter.h"
+#include "Team.h"
+#include "Fighter.h"
 
 Team::Team() : totalSize(0), inBrawl(false)
 {

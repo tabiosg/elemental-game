@@ -2,9 +2,9 @@
 #include <vector>
 #include <cassert>
 
-#include "header/Brawl.h"
-#include "header/Team.h"
-#include "header/Weapon.h"
+#include "Brawl.h"
+#include "Team.h"
+#include "Weapon.h"
 
 Brawl::Brawl(
 	Team givenTeamZero,

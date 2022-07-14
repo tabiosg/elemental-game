@@ -4,10 +4,10 @@
 #include <vector>
 #include <sstream>
 
-#include "header/Fighter.h"
+#include "Fighter.h"
 
-#include "header/Weapon.h"
-#include "header/Element.h"
+#include "Weapon.h"
+#include "Element.h"
 
 class Fighter
 {
