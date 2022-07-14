@@ -6,9 +6,15 @@
 #include "header/Team.h"
 #include "header/Weapon.h"
 
-Brawl::Brawl(Team givenTeamZero, Team givenTeamOne) : teamZero(givenTeamZero),
-												   teamOne(givenTeamOne), totalDroppedWeapons(0), teamZeroTurn(0),
-												   teamOneTurn(0), isTeamZeroTurn(true)
+Brawl::Brawl(
+	Team givenTeamZero,
+	Team givenTeamOne)
+	: teamZero(givenTeamZero),
+	  teamOne(givenTeamOne),
+	  totalDroppedWeapons(0),
+	  teamZeroTurn(0),
+	  teamOneTurn(0),
+	  isTeamZeroTurn(true)
 {
 }
 

@@ -5,15 +5,19 @@
 #include "header/Element.h"
 
 // EFFECTS Initializes Element to Water
-Element::Element() : element(WATER),
-                     bestHealingElement(METAL),
-                     bestOpponentElement(EARTH) {}
+Element::Element()
+    : element(WATER),
+      bestHealingElement(METAL),
+      bestOpponentElement(EARTH) {}
 
 // REQUIRES element is "Water", "Wood", "Fire", "Earth", or "Metal"
 // EFFECTS Initializes Element to specified element.
 Element::Element(const std::string &elementChange) : Element()
 {
-    assert(elementChange == "Water" || elementChange == "Wood" || elementChange == "Fire" || elementChange == "Earth" || elementChange == "Metal");
+    assert(
+        elementChange == "Water" || elementChange == "Wood" ||
+        elementChange == "Fire" || elementChange == "Earth" ||
+        elementChange == "Metal");
     element = elementChange;
     bestHealingElement = findBestHealingElement(elementChange);
     bestOpponentElement = findBestOpponentElement(elementChange);

@@ -115,8 +115,10 @@ public:
     virtual void exitCombat() = 0;
 
     // EFFECTS request action of fighter. should either be attack heal grab or skip.
-    virtual std::string requestAction(std::vector<Fighter *> allies, std::vector<Fighter *> opponents,
-                                       const std::vector<Weapon *> droppedWeapons) = 0;
+    virtual std::string requestAction(
+        std::vector<Fighter *> allies,
+        std::vector<Fighter *> opponents,
+        const std::vector<Weapon *> droppedWeapons) = 0;
 
     // REQUIRES fighter wants to heal
     // MODIFIES allies
@@ -130,8 +132,10 @@ public:
 
     // REQUIRES fighter wants to fight
     // EFFECTS  make fighter grab weapon
-    virtual int goGrabWeapon(std::vector<Fighter *> allies, std::vector<Fighter *> opponents,
-                               const std::vector<Weapon *> droppedWeapons) = 0;
+    virtual int goGrabWeapon(
+        std::vector<Fighter *> allies,
+        std::vector<Fighter *> opponents,
+        const std::vector<Weapon *> droppedWeapons) = 0;
 
     // REQUIRES fighter must be in combat
     // EFFECTS  change health based on amount healed
@@ -145,7 +149,9 @@ public:
     // EFFECTS: Prints weapons of fighter to os
     virtual std::ostream &printWeapons(std::ostream &os) const = 0;
 
-    virtual std::ostream &printListOfWeapons(std::ostream &os, const std::vector<Weapon *> weapons) const = 0;
+    virtual std::ostream &printListOfWeapons(
+        std::ostream &os,
+        const std::vector<Weapon *> weapons) const = 0;
 
     // Needed to avoid some compiler errors
     virtual ~Fighter() {}
@@ -159,19 +165,23 @@ private:
     bool inCombat;
     double maxHealth;
     double currentHealth;
-
     double attackStrength;
     double healingStrength;
     std::string type;
 };
 
 // EFFECTS Returns a pointer to a fighter with the given name, element, and type
-Fighter *FighterFactory(const std::string &name, const Element &element,
-                         const std::string &type);
+Fighter *FighterFactory(
+    const std::string &name,
+    const Element &element,
+    const std::string &type);
 
 // EFFECTS: Returns a pointer to a fighter with the given name, element, weapon, and type
-Fighter *FighterFactory(const std::string &name, const Element &element,
-                         const std::string &weapon, const std::string &type);
+Fighter *FighterFactory(
+    const std::string &name,
+    const Element &element,
+    const std::string &weapon,
+    const std::string &type);
 
 // EFFECTS Returns a pointer to a fighter that is copy of copiedFighter
 Fighter *FighterFactory(const Fighter *copiedFighter);
@@ -185,6 +195,8 @@ std::ostream &printWeapons(std::ostream &os, const Fighter &f);
 
 // EFFECTS Prints fighters to stream as "Fighter 1: Alex"
 // followed by newline and then "Fighter 2: Harry"
-std::ostream &printListOfFighters(std::ostream &os, std::vector<Fighter *> fighters);
+std::ostream &printListOfFighters(
+    std::ostream &os,
+    std::vector<Fighter *> fighters);
 
 #endif

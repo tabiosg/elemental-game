@@ -70,8 +70,10 @@ private:
 };
 
 // EFFECTS Returns a pointer to a weapon with the given name, element, and type
-Weapon *WeaponFactory(const std::string &name, const Element &element,
-                       const std::string &weaponType);
+Weapon *WeaponFactory(
+    const std::string &name,
+    const Element &element,
+    const std::string &weaponType);
 
 // EFFECTS Returns a pointer to a weapon with the given weaponType
 Weapon *WeaponFactory(const std::string &weaponType);

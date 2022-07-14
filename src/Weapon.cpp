@@ -8,9 +8,12 @@
 class Staff : public Weapon
 {
 public:
-    Staff() : name("A Magical Staff"), element(Element::WATER),
-              attackStrength(40.0), healingStrength(20.0),
-              weaponType(STAFF) {}
+    Staff()
+        : name("A Magical Staff"),
+          element(Element::WATER),
+          attackStrength(40.0),
+          healingStrength(20.0),
+          weaponType(STAFF) {}
 
     Staff(const std::string &givenName, const Element &givenElement) : Staff()
     {
@@ -18,9 +21,11 @@ public:
         element = givenElement;
     }
 
-    Staff(const std::string &givenName, const Element &givenElement,
-          const double &givenAttackStrength,
-          const double &givenHealingStrength) : Staff()
+    Staff(
+        const std::string &givenName,
+        const Element &givenElement,
+        const double &givenAttackStrength,
+        const double &givenHealingStrength) : Staff()
     {
         name = givenName;
         element = givenElement;
@@ -99,9 +104,12 @@ private:
 class Spear : public Weapon
 {
 public:
-    Spear() : name("Super Strong Spear"), element(Element::WATER),
-              attackStrength(50.0), healingStrength(10.0),
-              weaponType("Spear") {}
+    Spear()
+        : name("Super Strong Spear"),
+          element(Element::WATER),
+          attackStrength(50.0),
+          healingStrength(10.0),
+          weaponType("Spear") {}
 
     Spear(const std::string &givenName, const Element &givenElement) : Spear()
     {
@@ -109,9 +117,11 @@ public:
         element = givenElement;
     }
 
-    Spear(const std::string &givenName, const Element &givenElement,
-          const double &givenAttackStrength,
-          const double &givenHealingStrength) : Spear()
+    Spear(
+        const std::string &givenName,
+        const Element &givenElement,
+        const double &givenAttackStrength,
+        const double &givenHealingStrength) : Spear()
     {
         name = givenName;
         element = givenElement;
@@ -190,9 +200,12 @@ private:
 class Cross : public Weapon
 {
 public:
-    Cross() : name("The Coolest Cross"), element(Element::WATER),
-              attackStrength(30.0), healingStrength(50.0),
-              weaponType("Cross") {}
+    Cross()
+        : name("The Coolest Cross"),
+          element(Element::WATER),
+          attackStrength(30.0),
+          healingStrength(50.0),
+          weaponType("Cross") {}
 
     Cross(const std::string &givenName, const Element &givenElement) : Cross()
     {
@@ -200,9 +213,11 @@ public:
         element = givenElement;
     }
 
-    Cross(const std::string &givenName, const Element &givenElement,
-          const double &givenAttackStrength,
-          const double &givenHealingStrength) : Cross()
+    Cross(
+        const std::string &givenName,
+        const Element &givenElement,
+        const double &givenAttackStrength,
+        const double &givenHealingStrength) : Cross()
     {
         name = givenName;
         element = givenElement;
@@ -279,8 +294,10 @@ private:
 };
 
 // EFFECTS Returns a pointer to a weapon with the given name, element, and type
-Weapon *WeaponFactory(const std::string &name, const Element &element,
-                       const std::string &weaponType)
+Weapon *WeaponFactory(
+    const std::string &name,
+    const Element &element,
+    const std::string &weaponType)
 {
 
     if (weaponType == Weapon::STAFF)

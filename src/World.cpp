@@ -35,20 +35,23 @@ int main()
 		std::cin >> response;
 		if (response == "Staff")
 		{
-			fighter1 = FighterFactory(name1, Element(Element::METAL),
-									   Weapon::STAFF, Fighter::HUMAN);
+			fighter1 = FighterFactory(
+				name1, Element(Element::METAL),
+				Weapon::STAFF, Fighter::HUMAN);
 			break;
 		}
 		if (response == "Cross")
 		{
-			fighter1 = FighterFactory(name1, Element(Element::METAL),
-									   Weapon::CROSS, Fighter::HUMAN);
+			fighter1 = FighterFactory(
+				name1, Element(Element::METAL),
+				Weapon::CROSS, Fighter::HUMAN);
 			break;
 		}
 		if (response == "Spear")
 		{
-			fighter1 = FighterFactory(name1, Element(Element::METAL),
-									   Weapon::SPEAR, Fighter::HUMAN);
+			fighter1 = FighterFactory(
+				name1, Element(Element::METAL),
+				Weapon::SPEAR, Fighter::HUMAN);
 			break;
 		}
 		std::cout << "You did not put in a valid output. Please try again. " << std::endl;
@@ -67,10 +70,12 @@ int main()
 	std::cout << "Choose the name of the wood-type fighter." << std::endl;
 	std::cin >> name3;
 
-	Fighter *fighter2 = FighterFactory(name2, Element(Element::FIRE),
-										Weapon::SPEAR, Fighter::WARRIOR);
-	Fighter *fighter3 = FighterFactory(name3, Element(Element::WOOD),
-										Weapon::SPEAR, Fighter::WARRIOR);
+	Fighter *fighter2 = FighterFactory(
+		name2, Element(Element::FIRE),
+		Weapon::SPEAR, Fighter::WARRIOR);
+	Fighter *fighter3 = FighterFactory(
+		name3, Element(Element::WOOD),
+		Weapon::SPEAR, Fighter::WARRIOR);
 
 	Team GoodTeam;
 
@@ -84,7 +89,8 @@ int main()
 
 	std::cout << "Three enemies looking to start a fight showed up." << std::endl
 			  << std::endl;
-	std::cout << "You ask " << name1 << ", " << name2 << ", and " << name3 << " if they've heard of these enemies, but they have not! " << std::endl;
+	std::cout << "You ask " << name1 << ", " << name2
+			  << ", and " << name3 << " if they've heard of these enemies, but they have not! " << std::endl;
 	std::cout << "The only thing you know about them is that they are all earth-type fighters. " << std::endl;
 	std::cout << "One has a cross, one has a staff, and one has a spear." << std::endl;
 	std::cout << "In order to lead your team to victory, you should first give the enemies some names." << std::endl;
@@ -99,12 +105,15 @@ int main()
 			  << "Choose the name of the third enemy." << std::endl;
 	std::cin >> name6;
 
-	Fighter *enemy1 = FighterFactory(name4, Element(Element::EARTH),
-									  Weapon::CROSS, Fighter::WARRIOR);
-	Fighter *enemy2 = FighterFactory(name5, Element(Element::EARTH),
-									  Weapon::STAFF, Fighter::WARRIOR);
-	Fighter *enemy3 = FighterFactory(name6, Element(Element::EARTH),
-									  Weapon::SPEAR, Fighter::WARRIOR);
+	Fighter *enemy1 = FighterFactory(
+		name4, Element(Element::EARTH),
+		Weapon::CROSS, Fighter::WARRIOR);
+	Fighter *enemy2 = FighterFactory(
+		name5, Element(Element::EARTH),
+		Weapon::STAFF, Fighter::WARRIOR);
+	Fighter *enemy3 = FighterFactory(
+		name6, Element(Element::EARTH),
+		Weapon::SPEAR, Fighter::WARRIOR);
 
 	Team EvilTeam;
 	EvilTeam.addMember(enemy1);

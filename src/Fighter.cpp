@@ -12,10 +12,17 @@
 class Human : public Fighter
 {
 public:
-    Human() : name("Angel"), elementType(Element::WATER),
-              numberOfWeapons(0), activeWeapon(-1), inCombat(false), maxHealth(200.0),
-              currentHealth(maxHealth), attackStrength(25.0),
-              healingStrength(25.0), type("Human") {}
+    Human()
+        : name("Angel"),
+          elementType(Element::WATER),
+          numberOfWeapons(0),
+          activeWeapon(-1),
+          inCombat(false),
+          maxHealth(200.0),
+          currentHealth(maxHealth),
+          attackStrength(25.0),
+          healingStrength(25.0),
+          type("Human") {}
 
     Human(const std::string &givenName, const Element &element) : Human()
     {
@@ -23,8 +30,10 @@ public:
         elementType = element;
     }
 
-    Human(const std::string &givenName, const Element &element,
-          const std::string &weaponType) : Human()
+    Human(
+        const std::string &givenName,
+        const Element &element,
+        const std::string &weaponType) : Human()
     {
         name = givenName;
         elementType = element;
@@ -48,17 +57,29 @@ public:
         addWeapon(defaultWeapon);
     }
 
-    Human(const std::string &givenName, const Element &givenElement,
-          std::vector<Weapon *> givenWeapons, const int &givenNumberOfWeapons,
-          const int &givenActiveWeapon, const bool &givenInCombat,
-          const double &givenMaxHealth, const double &givenCurrentHealth,
-          const double &givenAttackStrength, const double &givenHealingStrength,
-          std::string &givenType) : name(givenName), elementType(givenElement),
-                                     weapons(givenWeapons), numberOfWeapons(givenNumberOfWeapons),
-                                     activeWeapon(givenActiveWeapon), inCombat(givenInCombat),
-                                     maxHealth(givenMaxHealth), currentHealth(givenCurrentHealth),
-                                     attackStrength(givenAttackStrength), healingStrength(givenHealingStrength),
-                                     type(givenType)
+    Human(
+        const std::string &givenName,
+        const Element &givenElement,
+        std::vector<Weapon *> givenWeapons,
+        const int &givenNumberOfWeapons,
+        const int &givenActiveWeapon,
+        const bool &givenInCombat,
+        const double &givenMaxHealth,
+        const double &givenCurrentHealth,
+        const double &givenAttackStrength,
+        const double &givenHealingStrength,
+        std::string &givenType)
+        : name(givenName),
+          elementType(givenElement),
+          weapons(givenWeapons),
+          numberOfWeapons(givenNumberOfWeapons),
+          activeWeapon(givenActiveWeapon),
+          inCombat(givenInCombat),
+          maxHealth(givenMaxHealth),
+          currentHealth(givenCurrentHealth),
+          attackStrength(givenAttackStrength),
+          healingStrength(givenHealingStrength),
+          type(givenType)
     {
     }
 
@@ -287,8 +308,10 @@ public:
     }
 
     // EFFECTS request action of fighter. should either be attack heal grab or skip.
-    std::string requestAction(std::vector<Fighter *> allies, std::vector<Fighter *> opponents,
-                               const std::vector<Weapon *> droppedWeapons) override
+    std::string requestAction(
+        std::vector<Fighter *> allies,
+        std::vector<Fighter *> opponents,
+        const std::vector<Weapon *> droppedWeapons) override
     {
         std::cout << name << ", would you like to attack, heal, grab a weapon, or skip your turn?" << std::endl
                   << "Answer with \"Attack\", \"Heal\", \"Grab\", or \"Skip\": " << std::endl;
@@ -352,8 +375,10 @@ public:
 
     // REQUIRES fighter wants to fight
     // EFFECTS  make fighter grab weapon
-    int goGrabWeapon(std::vector<Fighter *> allies, std::vector<Fighter *> opponents,
-                       const std::vector<Weapon *> droppedWeapons) override
+    int goGrabWeapon(
+        std::vector<Fighter *> allies,
+        std::vector<Fighter *> opponents,
+        const std::vector<Weapon *> droppedWeapons) override
     {
         assert(getCombatStatus());
         int target = requestGrabTarget(droppedWeapons);
@@ -618,10 +643,17 @@ private:
 class Warrior : public Fighter
 {
 public:
-    Warrior() : name("Default Name"), elementType(Element::WATER),
-                numberOfWeapons(0), activeWeapon(0), inCombat(false), maxHealth(200.0),
-                currentHealth(maxHealth), attackStrength(25.0),
-                healingStrength(25.0), type("Warrior") {}
+    Warrior()
+        : name("Default Name"),
+          elementType(Element::WATER),
+          numberOfWeapons(0),
+          activeWeapon(0),
+          inCombat(false),
+          maxHealth(200.0),
+          currentHealth(maxHealth),
+          attackStrength(25.0),
+          healingStrength(25.0),
+          type("Warrior") {}
 
     Warrior(const std::string &givenName, const Element &element) : Warrior()
     {
@@ -629,8 +661,10 @@ public:
         elementType = element;
     }
 
-    Warrior(const std::string &givenName, const Element &element,
-            const std::string &weaponType) : Warrior()
+    Warrior(
+        const std::string &givenName,
+        const Element &element,
+        const std::string &weaponType) : Warrior()
     {
         name = givenName;
         elementType = element;
@@ -654,17 +688,29 @@ public:
         addWeapon(defaultWeapon);
     }
 
-    Warrior(const std::string &givenName, const Element &givenElement,
-            std::vector<Weapon *> givenWeapons, const int &givenNumberOfWeapons,
-            const int &givenActiveWeapon, const bool &givenInCombat,
-            const double &givenMaxHealth, const double &givenCurrentHealth,
-            const double &givenAttackStrength, const double &givenHealingStrength,
-            std::string &givenType) : name(givenName), elementType(givenElement),
-                                       weapons(givenWeapons), numberOfWeapons(givenNumberOfWeapons),
-                                       activeWeapon(givenActiveWeapon), inCombat(givenInCombat),
-                                       maxHealth(givenMaxHealth), currentHealth(givenCurrentHealth),
-                                       attackStrength(givenAttackStrength), healingStrength(givenHealingStrength),
-                                       type(givenType)
+    Warrior(
+        const std::string &givenName,
+        const Element &givenElement,
+        std::vector<Weapon *> givenWeapons,
+        const int &givenNumberOfWeapons,
+        const int &givenActiveWeapon,
+        const bool &givenInCombat,
+        const double &givenMaxHealth,
+        const double &givenCurrentHealth,
+        const double &givenAttackStrength,
+        const double &givenHealingStrength,
+        std::string &givenType)
+        : name(givenName),
+          elementType(givenElement),
+          weapons(givenWeapons),
+          numberOfWeapons(givenNumberOfWeapons),
+          activeWeapon(givenActiveWeapon),
+          inCombat(givenInCombat),
+          maxHealth(givenMaxHealth),
+          currentHealth(givenCurrentHealth),
+          attackStrength(givenAttackStrength),
+          healingStrength(givenHealingStrength),
+          type(givenType)
     {
     }
 
@@ -894,8 +940,10 @@ public:
     }
 
     // EFFECTS request action of fighter. should either be attack heal grab or skip.
-    std::string requestAction(std::vector<Fighter *> allies, std::vector<Fighter *> opponents,
-                               const std::vector<Weapon *> droppedWeapons) override
+    std::string requestAction(
+        std::vector<Fighter *> allies,
+        std::vector<Fighter *> opponents,
+        const std::vector<Weapon *> droppedWeapons) override
     {
         std::string response = "Attack";
         return response;
@@ -972,8 +1020,10 @@ public:
 
     // REQUIRES fighter wants to fight
     // EFFECTS  make fighter grab weapon
-    int goGrabWeapon(std::vector<Fighter *> allies, std::vector<Fighter *> opponents,
-                       const std::vector<Weapon *> droppedWeapons) override
+    int goGrabWeapon(
+        std::vector<Fighter *> allies,
+        std::vector<Fighter *> opponents,
+        const std::vector<Weapon *> droppedWeapons) override
     {
         assert(getCombatStatus());
         assert(false);
@@ -1119,8 +1169,10 @@ private:
 };
 
 // EFFECTS Returns a pointer to a fighter with the given name, element, and type
-Fighter *FighterFactory(const std::string &name, const Element &element,
-                         const std::string &type)
+Fighter *FighterFactory(
+    const std::string &name,
+    const Element &element,
+    const std::string &type)
 {
     if (type == "Human")
     {
@@ -1135,8 +1187,11 @@ Fighter *FighterFactory(const std::string &name, const Element &element,
 }
 
 // EFFECTS: Returns a pointer to a fighter with the given name, element, weapon, and type
-Fighter *FighterFactory(const std::string &name, const Element &element,
-                         const std::string &weapon, const std::string &type)
+Fighter *FighterFactory(
+    const std::string &name,
+    const Element &element,
+    const std::string &weapon,
+    const std::string &type)
 {
     if (type == "Human")
     {
@@ -1178,13 +1233,15 @@ Fighter *FighterFactory(const Fighter *copiedFighter)
 
     if (type == "Human")
     {
-        return new Human(name, element, weapons, numberOfWeapons, activeWeapon,
-                         inCombat, maxHealth, currentHealth, attackStrength, healingStrength, type);
+        return new Human(
+            name, element, weapons, numberOfWeapons, activeWeapon,
+            inCombat, maxHealth, currentHealth, attackStrength, healingStrength, type);
     }
     else if (type == "Warrior")
     {
-        return new Warrior(name, element, weapons, numberOfWeapons, activeWeapon,
-                           inCombat, maxHealth, currentHealth, attackStrength, healingStrength, type);
+        return new Warrior(
+            name, element, weapons, numberOfWeapons, activeWeapon,
+            inCombat, maxHealth, currentHealth, attackStrength, healingStrength, type);
     }
     assert(false);
     return nullptr;
