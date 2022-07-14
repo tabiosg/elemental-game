@@ -28,91 +28,91 @@ public:
     static constexpr const int NUM_FIGHTER_TYPES = 2;
 
     // EFFECTS returns fighter's name
-    virtual const std::string &getName() const = 0;
+    virtual const std::string &getName() const;
 
     // EFFECTS returns fighter's type
-    virtual const std::string &getType() const = 0;
+    virtual const std::string &getType() const;
 
     // REQUIRES fighter has an element
     // EFFECTS  returns element of fighter
-    virtual Element getElement() const = 0;
+    virtual Element getElement() const;
 
     // EFFECTS returns number of weapons on fighter
-    virtual int getNumberOfWeapons() const = 0;
+    virtual int getNumberOfWeapons() const;
 
     // REQUIRES fighter has a weapon
     // EFFECTS  returns active weapon of fighter
-    virtual int getActiveWeapon() const = 0;
+    virtual int getActiveWeapon() const;
 
     // EFFECTS returns kth weapons of fighter
-    virtual Weapon *getOfWeaponK(const int &k) const = 0;
+    virtual Weapon *getOfWeaponK(const int &k) const;
 
     // EFFECTS  returns combat status of fighter
-    virtual bool getCombatStatus() const = 0;
+    virtual bool getCombatStatus() const;
 
     // EFFECTS  returns max health of fighter
-    virtual double getMaxHealth() const = 0;
+    virtual double getMaxHealth() const;
 
     // EFFECTS  returns current health of fighter
-    virtual double getCurrentHealth() const = 0;
+    virtual double getCurrentHealth() const;
 
     // EFFECTS  returns attackStrength of fighter
-    virtual double getAttackStrength() const = 0;
+    virtual double getAttackStrength() const;
 
     // EFFECTS  returns healingStrength of fighter
-    virtual double getHealingStrength() const = 0;
+    virtual double getHealingStrength() const;
 
     // REQUIRES fighter wants to add weapon
     // EFFECTS gives fighter the extra weapon
-    virtual void addWeapon(Weapon *weapon) = 0;
+    virtual void addWeapon(Weapon *weapon);
 
     // REQUIRES fighter wants to delete a weapon
     // EFFECTS deletes weapon
-    virtual void deleteWeapon(const int &weaponIndex) = 0;
+    virtual void deleteWeapon(const int &weaponIndex);
 
     // REQUIRES 0 < k <= numberOfWeapons
     // EFFECTS returns the kth weapon's name
-    virtual const std::string &getNameOfWeaponK(const int &k) const = 0;
+    virtual const std::string &getNameOfWeaponK(const int &k) const;
 
     // REQUIRES 0 < k <= numberOfWeapons
     // EFFECTS  returns element of the kth weapon
-    virtual Element getElementOfWeaponK(const int &k) const = 0;
+    virtual Element getElementOfWeaponK(const int &k) const;
 
     /// REQUIRES 0 < k <= numberOfWeapons
     // EFFECTS  returns attack strength of the kth weapon
-    virtual double getAttackStrengthOfWeaponK(const int &k) const = 0;
+    virtual double getAttackStrengthOfWeaponK(const int &k) const;
 
     // REQUIRES 0 < k <= numberOfWeapons
     // EFFECTS  returns healing strength of the kth weapon
-    virtual double getHealingStrengthOfWeaponK(const int &k) const = 0;
+    virtual double getHealingStrengthOfWeaponK(const int &k) const;
 
     // REQUIRES 0 < k <= numberOfWeapons
     // EFFECTS returns the kth weapon's type
-    virtual const std::string getTypeOfWeaponK(const int &k) const = 0;
+    virtual const std::string getTypeOfWeaponK(const int &k) const;
 
     // REQUIRES fighter wants to change name
     // EFFECTS changes fighter name
-    virtual void changeName(const std::string &newName) = 0;
+    virtual void changeName(const std::string &newName);
 
     // EFFECTS changes fighter max health
-    virtual void changeMaxHealth(const int &newMaxHealth) = 0;
+    virtual void changeMaxHealth(const int &newMaxHealth);
 
     // EFFECTS changes fighter current health
-    virtual void changeCurrentHealth(const int &newMaxHealth) = 0;
+    virtual void changeCurrentHealth(const int &newMaxHealth);
 
     // EFFECTS changes fighter attack strength
-    virtual void changeAttackStrength(const int &newAttackStrength) = 0;
+    virtual void changeAttackStrength(const int &newAttackStrength);
 
     // EFFECTS changes fighter healing strength
-    virtual void changeHealingStrength(const int &newHealingStrength) = 0;
+    virtual void changeHealingStrength(const int &newHealingStrength);
 
     // REQUIRES fighter is currently not in combat
     // EFFECTS make fighter enter combat
-    virtual void enterCombat() = 0;
+    virtual void enterCombat();
 
     // REQUIRES fighter is currently in combat
     // EFFECTS make fighter exit combat
-    virtual void exitCombat() = 0;
+    virtual void exitCombat();
 
     // EFFECTS request action of fighter. should either be attack heal grab or skip.
     virtual std::string requestAction(
@@ -124,6 +124,11 @@ public:
     // MODIFIES allies
     // EFFECTS  make fighter heal allies or self
     virtual void goHeal(std::vector<Fighter *> allies) = 0;
+
+    // REQUIRES ally is in combat and weapon belongs to fighter
+    // MODIFIES allies
+    // EFFECTS make fighter heal allies or self
+    virtual void goHealAllyWithWeapon(Fighter* ally, Weapon* weapon);
 
     // REQUIRES fighter wants to fight
     // MODIFIES opponents

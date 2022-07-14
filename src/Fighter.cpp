@@ -9,6 +9,225 @@
 #include "header/Weapon.h"
 #include "header/Element.h"
 
+class Fighter
+{
+public:
+    // fighter types
+    static constexpr const char *const HUMAN = "Human";
+    static constexpr const char *const WARRIOR = "Warrior";
+    // list
+    static constexpr const char *const FIGHTER_LIST[] = {
+        Fighter::HUMAN,
+        Fighter::WARRIOR};
+    static constexpr const int NUM_FIGHTER_TYPES = 2;
+
+    // EFFECTS returns fighter's name
+    virtual const std::string &getName() const {
+        return name;
+    }
+
+    // EFFECTS returns fighter's type
+    virtual const std::string &getType() const {
+        return type;
+    };
+
+    // REQUIRES fighter has an element
+    // EFFECTS  returns element of fighter
+    virtual Element getElement() const {
+        return elementType;
+    };
+
+    // EFFECTS returns number of weapons on fighter
+    virtual int getNumberOfWeapons() const {
+        return numberOfWeapons;
+    };
+
+    // REQUIRES fighter has a weapon
+    // EFFECTS  returns active weapon of fighter
+    virtual int getActiveWeapon() const {
+        return activeWeapon;
+    };
+
+    // EFFECTS returns kth weapons of fighter
+    virtual Weapon *getOfWeaponK(const int &k) const {
+        return weapons[k];
+    };
+
+    // EFFECTS  returns combat status of fighter
+    virtual bool getCombatStatus() const {
+        return inCombat;
+    };
+
+    // EFFECTS  returns max health of fighter
+    virtual double getMaxHealth() const {
+        return maxHealth;
+    };
+
+    // EFFECTS  returns current health of fighter
+    virtual double getCurrentHealth() const {
+        return currentHealth;
+    };
+
+    // EFFECTS  returns attackStrength of fighter
+    virtual double getAttackStrength() const {
+        return attackStrength;
+    };
+
+    // EFFECTS  returns healingStrength of fighter
+    virtual double getHealingStrength() const {
+        return healingStrength;
+    };
+
+    // REQUIRES fighter wants to add weapon
+    // EFFECTS gives fighter the extra weapon
+    virtual void addWeapon(Weapon *weapon) {
+        ++numberOfWeapons;
+        Weapon *addedWeapon = WeaponFactory(weapon);
+        weapons.push_back(addedWeapon);
+        if (activeWeapon == -1)
+        {
+            activeWeapon = 0;
+        }
+    };
+
+    // REQUIRES fighter wants to delete a weapon
+    // EFFECTS deletes weapon
+    virtual void deleteWeapon(const int &weaponIndex) {
+        --numberOfWeapons;
+        delete weapons[weaponIndex];
+        weapons.erase(weapons.begin() + weaponIndex);
+        if (activeWeapon >= numberOfWeapons)
+        {
+            activeWeapon = numberOfWeapons - 1;
+        }
+    };
+
+    // REQUIRES 0 < k <= numberOfWeapons
+    // EFFECTS returns the kth weapon's name
+    virtual const std::string &getNameOfWeaponK(const int &k) const {
+        return weapons[k]->getName();
+    };
+
+    // REQUIRES 0 < k <= numberOfWeapons
+    // EFFECTS  returns element of the kth weapon
+    virtual Element getElementOfWeaponK(const int &k) const {
+        return weapons[k]->getElement();
+    };
+
+    /// REQUIRES 0 < k <= numberOfWeapons
+    // EFFECTS  returns attack strength of the kth weapon
+    virtual double getAttackStrengthOfWeaponK(const int &k) const {
+        return weapons[k]->getAttackStrength();
+    };
+
+    // REQUIRES 0 < k <= numberOfWeapons
+    // EFFECTS  returns healing strength of the kth weapon
+    virtual double getHealingStrengthOfWeaponK(const int &k) const {
+        return weapons[k]->getHealingStrength();
+    };
+
+    // REQUIRES 0 < k <= numberOfWeapons
+    // EFFECTS returns the kth weapon's type
+    virtual const std::string getTypeOfWeaponK(const int &k) const {
+        return weapons[k]->getWeaponType();
+    };
+
+    // REQUIRES fighter wants to change name
+    // EFFECTS changes fighter name
+    virtual void changeName(const std::string &newName) {
+        name = newName;
+    };
+
+    // EFFECTS changes fighter max health
+    virtual void changeMaxHealth(const int &newMaxHealth) {
+        maxHealth = newMaxHealth
+    };
+
+    // EFFECTS changes fighter current health
+    virtual void changeCurrentHealth(const int &newMaxHealth) {
+        currentHealth = newMaxHealth;
+    };
+
+    // EFFECTS changes fighter attack strength
+    virtual void changeAttackStrength(const int &newAttackStrength) {
+        attackStrength = newAttackStrength;
+    };
+
+    // EFFECTS changes fighter healing strength
+    virtual void changeHealingStrength(const int &newHealingStrength) {
+        healingStrength = newHealingStrength;
+    };
+
+    // REQUIRES fighter is currently not in combat
+    // EFFECTS make fighter enter combat
+    virtual void enterCombat() {
+        assert(!inCombat);
+        inCombat = true;
+    };
+
+    // REQUIRES fighter is currently in combat
+    // EFFECTS make fighter exit combat
+    virtual void exitCombat() {
+        assert(inCombat);
+        inCombat = false;
+    };
+
+    // EFFECTS request action of fighter. should either be attack heal grab or skip.
+    virtual std::string requestAction(
+        std::vector<Fighter *> allies,
+        std::vector<Fighter *> opponents,
+        const std::vector<Weapon *> droppedWeapons) = 0;
+
+    // REQUIRES fighter wants to heal
+    // MODIFIES allies
+    // EFFECTS  make fighter heal allies or self
+    virtual void goHeal(std::vector<Fighter *> allies) = 0;
+
+    // REQUIRES fighter wants to fight
+    // MODIFIES opponents
+    // EFFECTS  make fighter attack opponents. return who was attacked
+    virtual int goAttack(std::vector<Fighter *> opponents) = 0;
+
+    // REQUIRES fighter wants to fight
+    // EFFECTS  make fighter grab weapon
+    virtual int goGrabWeapon(
+        std::vector<Fighter *> allies,
+        std::vector<Fighter *> opponents,
+        const std::vector<Weapon *> droppedWeapons) = 0;
+
+    // REQUIRES fighter must be in combat
+    // EFFECTS  change health based on amount healed
+    virtual void receiveHealing(const Weapon *healingWeapon, Fighter *healer) = 0;
+
+    // REQUIRES fighter is focused by enemy
+    // EFFECTS  change health based on attack
+    // do not change combat status if below 0 hp here.
+    virtual void receiveAttack(const Weapon *damagingWeapon, const Fighter *attacker) = 0;
+
+    // EFFECTS: Prints weapons of fighter to os
+    virtual std::ostream &printWeapons(std::ostream &os) const = 0;
+
+    virtual std::ostream &printListOfWeapons(
+        std::ostream &os,
+        const std::vector<Weapon *> weapons) const = 0;
+
+    // Needed to avoid some compiler errors
+    virtual ~Fighter() {}
+
+private:
+    std::string name;
+    Element elementType;
+    std::vector<Weapon *> weapons;
+    int numberOfWeapons;
+    int activeWeapon;
+    bool inCombat;
+    double maxHealth;
+    double currentHealth;
+    double attackStrength;
+    double healingStrength;
+    std::string type;
+};
+
 class Human : public Fighter
 {
 public:
@@ -129,184 +348,6 @@ public:
         return *this;
     }
 
-    // EFFECTS returns fighter's name
-    const std::string &getName() const override
-    {
-        return name;
-    }
-
-    // EFFECTS returns fighter's type
-    const std::string &getType() const override
-    {
-        return type;
-    }
-
-    // REQUIRES fighter has an element
-    // EFFECTS  returns element of fighter
-    Element getElement() const override
-    {
-        return elementType;
-    }
-
-    // EFFECTS returns number of weapons on fighter
-    int getNumberOfWeapons() const override
-    {
-        return numberOfWeapons;
-    }
-
-    // REQUIRES fighter has a weapon
-    // EFFECTS  returns active weapon of fighter
-    int getActiveWeapon() const override
-    {
-        return activeWeapon;
-    }
-
-    // REQUIRES 0 <= k < numberOfWeapons
-    // EFFECTS returns kth weapons of fighter
-    Weapon *getOfWeaponK(const int &k) const override
-    {
-        assert(getNumberOfWeapons() != 0);
-        return weapons[k];
-    }
-
-    // EFFECTS  returns combat status of fighter
-    bool getCombatStatus() const override
-    {
-        return inCombat;
-    }
-
-    // EFFECTS  returns max health of fighter
-    double getMaxHealth() const override
-    {
-        return maxHealth;
-    }
-
-    // EFFECTS  returns current health of fighter
-    double getCurrentHealth() const override
-    {
-        return currentHealth;
-    }
-
-    // EFFECTS  returns attackStrength of fighter
-    double getAttackStrength() const override
-    {
-        return attackStrength;
-    }
-
-    // EFFECTS  returns healingStrength of fighter
-    double getHealingStrength() const override
-    {
-        return healingStrength;
-    }
-
-    // REQUIRES fighter wants to add weapon
-    // EFFECTS gives fighter the extra weapon
-    void addWeapon(Weapon *weapon) override
-    {
-        ++numberOfWeapons;
-        Weapon *addedWeapon = WeaponFactory(weapon);
-        weapons.push_back(addedWeapon);
-        if (activeWeapon == -1)
-        {
-            activeWeapon = 0;
-        }
-    }
-
-    // REQUIRES fighter wants to delete a weapon
-    // EFFECTS deletes weapon
-    void deleteWeapon(const int &weaponIndex)
-    {
-        --numberOfWeapons;
-        delete weapons[weaponIndex];
-        weapons.erase(weapons.begin() + weaponIndex);
-        if (activeWeapon >= numberOfWeapons)
-        {
-            activeWeapon = numberOfWeapons - 1;
-        }
-    }
-
-    // REQUIRES 0 <= k < numberOfWeapons
-    // EFFECTS returns the kth weapon's name
-    const std::string &getNameOfWeaponK(const int &k) const override
-    {
-        return weapons[k]->getName();
-    }
-
-    // REQUIRES 0 <= k < numberOfWeapons
-    // EFFECTS  returns element of the kth weapon
-    Element getElementOfWeaponK(const int &k) const override
-    {
-        return weapons[k]->getElement();
-    }
-
-    // REQUIRES 0 <= k < numberOfWeapons
-    // EFFECTS  returns attack strength of the kth weapon
-    double getAttackStrengthOfWeaponK(const int &k) const override
-    {
-        return weapons[k]->getAttackStrength();
-    }
-
-    // REQUIRES 0 <= k < numberOfWeapons
-    // EFFECTS  returns healing strength of the kth weapon
-    double getHealingStrengthOfWeaponK(const int &k) const override
-    {
-        return weapons[k]->getHealingStrength();
-    }
-
-    // REQUIRES 0 <= k < numberOfWeapons
-    // EFFECTS returns the kth weapon's type
-    const std::string getTypeOfWeaponK(const int &k) const override
-    {
-        return weapons[k]->getWeaponType();
-    }
-
-    // REQUIRES fighter wants to change name
-    // EFFECTS changes fighter name
-    void changeName(const std::string &newName) override
-    {
-        name = newName;
-    }
-
-    // EFFECTS changes fighter max health
-    void changeMaxHealth(const int &newMaxHealth) override
-    {
-        maxHealth = newMaxHealth;
-    }
-
-    // EFFECTS changes fighter current health
-    void changeCurrentHealth(const int &newMaxHealth) override
-    {
-        currentHealth = newMaxHealth;
-    }
-
-    // EFFECTS changes fighter attack strength
-    void changeAttackStrength(const int &newAttackStrength) override
-    {
-        attackStrength = newAttackStrength;
-    }
-
-    // EFFECTS changes fighter healing strength
-    void changeHealingStrength(const int &newHealingStrength) override
-    {
-        healingStrength = newHealingStrength;
-    }
-
-    // REQUIRES fighter is currently not in combat
-    // EFFECTS make fighter enter combat
-    void enterCombat() override
-    {
-        assert(!inCombat);
-        inCombat = true;
-    }
-
-    // REQUIRES fighter is currently in combat
-    // EFFECTS make fighter exit combat
-    void exitCombat() override
-    {
-        assert(inCombat);
-        inCombat = false;
-    }
-
     // EFFECTS request action of fighter. should either be attack heal grab or skip.
     std::string requestAction(
         std::vector<Fighter *> allies,
@@ -339,7 +380,7 @@ public:
     {
         assert(getCombatStatus());
         int target = requestHealTarget(allies);
-        activeWeapon = requestActiveWeapon();
+        activeWeapon = requestActiveWeaponK();
         Weapon *currentWeapon = getOfWeaponK(activeWeapon);
 
         std::cout << *this << " used " << *currentWeapon << " to heal " << *allies[target] << std::endl;
@@ -365,7 +406,6 @@ public:
             std::cout << *this << " lost " <<
             lostHealth << " when healing!" << std::endl;
         }
-        
     }
 
     // REQUIRES fighter wants to fight
@@ -375,7 +415,7 @@ public:
     {
         assert(getCombatStatus());
         int target = requestAttackTarget(opponents);
-        activeWeapon = requestActiveWeapon();
+        activeWeapon = requestActiveWeaponK();
         Weapon *currentWeapon = getOfWeaponK(activeWeapon);
 
         std::cout << *this << " used " << *currentWeapon << " to attack " << *opponents[target] << std::endl;
@@ -599,7 +639,7 @@ private:
 
     // REQUIRES fighter wants to heal or attack
     // EFFECTS see which weapon the fighter wants to use
-    int requestActiveWeapon()
+    int requestActiveWeaponK()
     {
         std::cout << "These are your weapons: " << std::endl;
         printWeapons(std::cout);
@@ -614,7 +654,7 @@ private:
                       << "\033[2J"
                       << "\033[1;1H";
             std::cout << "That was not a valid answer! Please try again. " << std::endl;
-            return requestActiveWeapon();
+            return requestActiveWeaponK();
         }
         std::cout << std::endl
                   << "\033[2J"
@@ -771,184 +811,6 @@ public:
         }
 
         return *this;
-    }
-
-    // EFFECTS returns fighter's name
-    const std::string &getName() const override
-    {
-        return name;
-    }
-
-    // EFFECTS returns fighter's type
-    const std::string &getType() const override
-    {
-        return type;
-    }
-
-    // REQUIRES fighter has an element
-    // EFFECTS  returns element of fighter
-    Element getElement() const override
-    {
-        return elementType;
-    }
-
-    // EFFECTS returns number of weapons on fighter
-    int getNumberOfWeapons() const override
-    {
-        return numberOfWeapons;
-    }
-
-    // REQUIRES fighter has a weapon
-    // EFFECTS  returns active weapon of fighter
-    int getActiveWeapon() const override
-    {
-        return activeWeapon;
-    }
-
-    // REQUIRES 0 <= k < numberOfWeapons
-    // EFFECTS returns kth weapons of fighter
-    Weapon *getOfWeaponK(const int &k) const override
-    {
-        assert(getNumberOfWeapons() != 0);
-        return weapons[k];
-    }
-
-    // EFFECTS  returns combat status of fighter
-    bool getCombatStatus() const override
-    {
-        return inCombat;
-    }
-
-    // EFFECTS  returns max health of fighter
-    double getMaxHealth() const override
-    {
-        return maxHealth;
-    }
-
-    // EFFECTS  returns current health of fighter
-    double getCurrentHealth() const override
-    {
-        return currentHealth;
-    }
-
-    // EFFECTS  returns attackStrength of fighter
-    double getAttackStrength() const override
-    {
-        return attackStrength;
-    }
-
-    // EFFECTS  returns healingStrength of fighter
-    double getHealingStrength() const override
-    {
-        return healingStrength;
-    }
-
-    // REQUIRES fighter wants to add weapon
-    // EFFECTS gives fighter the extra weapon
-    void addWeapon(Weapon *weapon) override
-    {
-        ++numberOfWeapons;
-        Weapon *addedWeapon = WeaponFactory(weapon);
-        weapons.push_back(addedWeapon);
-        if (activeWeapon == -1)
-        {
-            activeWeapon = 0;
-        }
-    }
-
-    // REQUIRES fighter wants to delete a weapon
-    // EFFECTS deletes weapon
-    void deleteWeapon(const int &weaponIndex)
-    {
-        --numberOfWeapons;
-        delete weapons[weaponIndex];
-        weapons.erase(weapons.begin() + weaponIndex);
-        if (activeWeapon >= numberOfWeapons)
-        {
-            activeWeapon = numberOfWeapons - 1;
-        }
-    }
-
-    // REQUIRES 0 <= k < numberOfWeapons
-    // EFFECTS returns the kth weapon's name
-    const std::string &getNameOfWeaponK(const int &k) const override
-    {
-        return weapons[k]->getName();
-    }
-
-    // REQUIRES 0 <= k < numberOfWeapons
-    // EFFECTS  returns element of the kth weapon
-    Element getElementOfWeaponK(const int &k) const override
-    {
-        return weapons[k]->getElement();
-    }
-
-    // REQUIRES 0 <= k < numberOfWeapons
-    // EFFECTS  returns attack strength of the kth weapon
-    double getAttackStrengthOfWeaponK(const int &k) const override
-    {
-        return weapons[k]->getAttackStrength();
-    }
-
-    // REQUIRES 0 <= k < numberOfWeapons
-    // EFFECTS  returns healing strength of the kth weapon
-    double getHealingStrengthOfWeaponK(const int &k) const override
-    {
-        return weapons[k]->getHealingStrength();
-    }
-
-    // REQUIRES 0 <= k < numberOfWeapons
-    // EFFECTS returns the kth weapon's type
-    const std::string getTypeOfWeaponK(const int &k) const override
-    {
-        return weapons[k]->getWeaponType();
-    }
-
-    // REQUIRES fighter wants to change name
-    // EFFECTS changes fighter name
-    void changeName(const std::string &newName) override
-    {
-        name = newName;
-    }
-
-    // EFFECTS changes fighter max health
-    void changeMaxHealth(const int &newMaxHealth) override
-    {
-        maxHealth = newMaxHealth;
-    }
-
-    // EFFECTS changes fighter current health
-    void changeCurrentHealth(const int &newMaxHealth) override
-    {
-        currentHealth = newMaxHealth;
-    }
-
-    // EFFECTS changes fighter attack strength
-    void changeAttackStrength(const int &newAttackStrength) override
-    {
-        attackStrength = newAttackStrength;
-    }
-
-    // EFFECTS changes fighter healing strength
-    void changeHealingStrength(const int &newHealingStrength) override
-    {
-        healingStrength = newHealingStrength;
-    }
-
-    // REQUIRES fighter is currently not in combat
-    // EFFECTS make fighter enter combat
-    void enterCombat() override
-    {
-        assert(!inCombat);
-        inCombat = true;
-    }
-
-    // REQUIRES fighter is currently in combat
-    // EFFECTS make fighter exit combat
-    void exitCombat() override
-    {
-        assert(inCombat);
-        inCombat = false;
     }
 
     // EFFECTS request action of fighter. should either be attack heal grab or skip.
