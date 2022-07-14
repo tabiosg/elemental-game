@@ -18,45 +18,45 @@ class Weapon
 {
 public:
     // weapon names
-    static constexpr const char *const WEAPON_STAFF = "Staff";
-    static constexpr const char *const WEAPON_SPEAR = "Spear";
-    static constexpr const char *const WEAPON_CROSS = "Cross";
+    static constexpr const char *const STAFF = "Staff";
+    static constexpr const char *const SPEAR = "Spear";
+    static constexpr const char *const CROSS = "Cross";
     // list
     static constexpr const char *const WEAPON_LIST[] = {
-        Weapon::WEAPON_STAFF,
-        Weapon::WEAPON_SPEAR,
-        Weapon::WEAPON_CROSS};
-    static constexpr const int NUM_WEAPON_TYPES = 3;
+        Weapon::STAFF,
+        Weapon::SPEAR,
+        Weapon::CROSS};
+    static constexpr const int NUM_weaponTypeS = 3;
 
     // EFFECTS returns weapon's name
-    virtual const std::string &get_name() const = 0;
+    virtual const std::string &getName() const = 0;
 
     // REQUIRES weapon has an element
     // EFFECTS  returns element of weapon
-    virtual Element get_element() const = 0;
+    virtual Element getElement() const = 0;
 
     // REQUIRES weapon has an attack strength
     // EFFECTS  returns attack strength of weapon
-    virtual double get_attack_strength() const = 0;
+    virtual double getAttackStrength() const = 0;
 
     // REQUIRES weapon has a healing strength
     // EFFECTS  returns healing strength of weapon
-    virtual double get_healing_strength() const = 0;
+    virtual double getHealingStrength() const = 0;
 
     // EFFECTS returns weapon's type
-    virtual const std::string get_weapon_type() const = 0;
+    virtual const std::string getWeaponType() const = 0;
 
     // REQUIRES weapon has a name
     // EFFECTS  changes name of weapon
-    virtual void change_name(const std::string &name_change) = 0;
+    virtual void changeName(const std::string &newName) = 0;
 
     // REQUIRES weapon has an attack strength
     // EFFECTS  changes attack strength of weapon
-    virtual void change_attack_strength(const int &changed_attack_strength) = 0;
+    virtual void changeAttackStrength(const int &changedAttackStrength) = 0;
 
     // REQUIRES weapon has a healing strength
     // EFFECTS  changes healing strength of weapon
-    virtual void change_healing_strength(const int &changed_heal_strength) = 0;
+    virtual void changeHealingStrength(const int &changedHealStrength) = 0;
 
     // Needed to avoid some compiler errors
     virtual ~Weapon() {}
@@ -64,20 +64,22 @@ public:
 private:
     std::string name;
     Element element;
-    double attack_strength;
-    double healing_strength;
-    std::string weapon_type;
+    double attackStrength;
+    double healingStrength;
+    std::string weaponType;
 };
 
 // EFFECTS Returns a pointer to a weapon with the given name, element, and type
-Weapon *Weapon_factory(const std::string &name, const Element &element,
-                       const std::string &weapon_type);
+Weapon *WeaponFactory(
+    const std::string &name,
+    const Element &element,
+    const std::string &weaponType);
 
-// EFFECTS Returns a pointer to a weapon with the given weapon_type
-Weapon *Weapon_factory(const std::string &weapon_type);
+// EFFECTS Returns a pointer to a weapon with the given weaponType
+Weapon *WeaponFactory(const std::string &weaponType);
 
-// EFFECTS Returns a pointer to a weapon that is copy of copied_weapon
-Weapon *Weapon_factory(const Weapon *copied_weapon);
+// EFFECTS Returns a pointer to a weapon that is copy of copiedWeapon
+Weapon *WeaponFactory(const Weapon *copiedWeapon);
 
 // EFFECTS Prints weapon's name to os
 std::ostream &operator<<(std::ostream &os, const Weapon &w);

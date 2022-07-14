@@ -3,32 +3,37 @@
 #include <cassert>
 
 #include "header/Brawl.h"
-#include "header/Element.h"
 #include "header/Team.h"
 #include "header/Weapon.h"
 
-Brawl::Brawl(Team given_team1, Team given_team2) : team1(given_team1),
-												   team2(given_team2), total_dropped_weapons(0), team_1_turn(0),
-												   team_2_turn(0), is_team_1_turn(true)
+Brawl::Brawl(
+	Team givenTeamZero,
+	Team givenTeamOne)
+	: teamZero(givenTeamZero),
+	  teamOne(givenTeamOne),
+	  totalDroppedWeapons(0),
+	  teamZeroTurn(0),
+	  teamOneTurn(0),
+	  isTeamZeroTurn(true)
 {
 }
 
 // EFFECTS start the entire brawl until one team loses all members.
 void Brawl::startBrawl()
 {
-	team1.enter_brawl();
-	team2.enter_brawl();
+	teamZero.enterBrawl();
+	teamOne.enterBrawl();
 	std::cout << "Team 1 has entered the brawl! Here are its members:" << std::endl;
-	team1.print_all_fighters(std::cout);
+	teamZero.printAllFighters(std::cout);
 	std::cout << std::endl;
 	std::cout << "Team 2 has entered the brawl! Here are its members:" << std::endl;
-	team2.print_all_fighters(std::cout);
+	teamOne.printAllFighters(std::cout);
 	std::cout << std::endl;
 
-	int team1_size = team1.get_in_combat_size();
-	int team2_size = team2.get_in_combat_size();
-	assert(team1_size != 0 && team2_size != 0);
-	while (team1_size != 0 && team2_size != 0)
+	int teamZeroSize = teamZero.getInCombatSize();
+	int teamOneSize = teamOne.getInCombatSize();
+	assert(teamZeroSize != 0 && teamOneSize != 0);
+	while (teamZeroSize != 0 && teamOneSize != 0)
 	{
 
 		std::string dummy;
@@ -39,48 +44,48 @@ void Brawl::startBrawl()
 				  << "\033[2J"
 				  << "\033[1;1H";
 
-		Fighter *current_fighter;
+		Fighter *currentFighter;
 
-		if (is_team_1_turn)
+		if (isTeamZeroTurn)
 		{
 			std::cout << "Team 1 will send out its fighter! " << std::endl
 					  << std::endl;
-			current_fighter = team1.get_kth_fighter(team_1_turn);
-			request_and_enact_action(current_fighter, team1, team2);
-			++team_1_turn;
-			is_team_1_turn = false;
+			currentFighter = teamZero.getFighterK(teamZeroTurn);
+			requestAndEnactAction(currentFighter, teamZero, teamOne);
+			++teamZeroTurn;
+			isTeamZeroTurn = false;
 		}
 
 		else
 		{
 			std::cout << "Team 2 will send out its fighter! " << std::endl
 					  << std::endl;
-			current_fighter = team2.get_kth_fighter(team_2_turn);
-			request_and_enact_action(current_fighter, team2, team1);
-			++team_2_turn;
-			is_team_1_turn = true;
+			currentFighter = teamOne.getFighterK(teamOneTurn);
+			requestAndEnactAction(currentFighter, teamOne, teamZero);
+			++teamOneTurn;
+			isTeamZeroTurn = true;
 		}
-		team1_size = team1.get_in_combat_size();
-		team2_size = team2.get_in_combat_size();
+		teamZeroSize = teamZero.getInCombatSize();
+		teamOneSize = teamOne.getInCombatSize();
 
-		if (team_1_turn >= team1_size)
+		if (teamZeroTurn >= teamZeroSize)
 		{
-			team_1_turn = 0;
+			teamZeroTurn = 0;
 		}
-		if (team_2_turn >= team2_size)
+		if (teamOneTurn >= teamOneSize)
 		{
-			team_2_turn = 0;
+			teamOneTurn = 0;
 		}
 
 		std::cout << "This is team 1 and its members now:" << std::endl;
-		team1.print_all_fighters(std::cout);
+		teamZero.printAllFighters(std::cout);
 		std::cout << std::endl;
 		std::cout << "This is team 2 and its members now:" << std::endl;
-		team2.print_all_fighters(std::cout);
+		teamOne.printAllFighters(std::cout);
 	}
-	team1_size = team1.get_in_combat_size();
-	team2_size = team2.get_in_combat_size();
-	if (team1_size == 0)
+	teamZeroSize = teamZero.getInCombatSize();
+	teamOneSize = teamOne.getInCombatSize();
+	if (teamZeroSize == 0)
 	{
 		std::cout << "Team 1 wins!" << std::endl
 				  << std::endl;
@@ -90,91 +95,91 @@ void Brawl::startBrawl()
 		std::cout << "Team 2 wins!" << std::endl
 				  << std::endl;
 	}
-	team1.exit_brawl();
-	team2.exit_brawl();
+	teamZero.exitBrawl();
+	teamOne.exitBrawl();
 }
 
 // EFFECTS return team one
-const Team Brawl::get_team_one() const
+const Team Brawl::getTeamZero() const
 {
-	return team1;
+	return teamZero;
 }
 
 // EFFECTS return team two
-const Team Brawl::get_team_two() const
+const Team Brawl::getTeamOne() const
 {
-	return team2;
+	return teamOne;
 }
 
 // EFFECTS return team two
-std::vector<Weapon *> Brawl::get_all_dropped_weapons()
+std::vector<Weapon *> Brawl::getAllDroppedWeapons()
 {
-	return dropped_weapons;
+	return droppedWeapons;
 }
 
-// REQUIRES 0 <= k < total_dropped_weapons
+// REQUIRES 0 <= k < totalDroppedWeapons
 // EFFECTS return kth dropped weapon
-Weapon *Brawl::get_kth_dropped_weapon(const int &k)
+Weapon *Brawl::getDroppedOfWeaponK(const int &k)
 {
-	assert(0 <= k && k < total_dropped_weapons);
-	return dropped_weapons[k];
+	assert(0 <= k && k < totalDroppedWeapons);
+	return droppedWeapons[k];
 }
 
-// REQUIRES 0 <= k < total_dropped_weapons
+// REQUIRES 0 <= k < totalDroppedWeapons
 // EFFECTS remove kth dropped weapon
-void Brawl::remove_kth_dropped_weapon(const int &k)
+void Brawl::removeDroppedOfWeaponK(const int &k)
 {
-	assert(0 <= k && k < total_dropped_weapons);
-	--total_dropped_weapons;
-	delete dropped_weapons[k];
-	dropped_weapons.erase(dropped_weapons.begin() + k);
+	assert(0 <= k && k < totalDroppedWeapons);
+	--totalDroppedWeapons;
+	delete droppedWeapons[k];
+	droppedWeapons.erase(droppedWeapons.begin() + k);
 }
 
 // EFFECTS add dropped weapon
-void Brawl::add_dropped_weapon(const Weapon *weapon)
+void Brawl::addDroppedWeapon(const Weapon *weapon)
 {
-	++total_dropped_weapons;
-	Weapon *added_weapon = Weapon_factory(weapon);
-	dropped_weapons.push_back(added_weapon);
+	++totalDroppedWeapons;
+	Weapon *addedWeapon = WeaponFactory(weapon);
+	droppedWeapons.push_back(addedWeapon);
 }
 
 // REQUIRES fighter has an element and fighter must be in combat
-// If player wants to pick up weapon, make sure that there are dropped_weapons.
+// If player wants to pick up weapon, make sure that there are droppedWeapons.
 // MODIFIES action and target
 // EFFECTS  Ask if fighter wants to attack or heal or grab weapon or skip turn. Do action.
-void Brawl::request_and_enact_action(Fighter *f, Team &allies, Team &opponents)
+void Brawl::requestAndEnactAction(Fighter *f, Team &allies, Team &opponents)
 {
 	std::cout << "It is " << *f << "'s turn." << std::endl
 			  << std::endl;
 
-	std::vector<Fighter *> all_opponents = opponents.get_all_fighters();
-	std::vector<Fighter *> all_allies = allies.get_all_fighters();
+	std::vector<Fighter *> allOpponents = opponents.getAllFighters();
+	std::vector<Fighter *> allAllies = allies.getAllFighters();
 
-	std::string response = f->request_action(all_allies, all_opponents, dropped_weapons);
+	std::string response = f->requestAction(allAllies, allOpponents, droppedWeapons);
 	if (response == "Attack")
 	{
-		int target = f->go_attack(all_opponents);
-		Fighter *defender = opponents.get_kth_fighter(target);
-		if (defender->get_current_health() == 0)
+		int target = f->goAttack(allOpponents);
+		Fighter *defender = opponents.getFighterK(target);
+		if (defender->getCurrentHealth() == 0)
 		{
 			std::cout << *defender << " has exited the combat due to lack of health." << std::endl
 					  << std::endl;
-			int drop_index = defender->get_active_weapon();
-			Weapon *dropped_weapon = defender->get_k_weapon(drop_index);
-			std::cout << *defender << " has dropped the " << *dropped_weapon << "." << std::endl
+			int droppedIndex = defender->getActiveWeapon();
+			Weapon *droppedWeapon = defender->getOfWeaponK(droppedIndex);
+			std::cout << *defender << " has dropped the " << *droppedWeapon << "." << std::endl
 					  << std::endl;
-			add_dropped_weapon(dropped_weapon);
-			opponents.member_exits_combat(target);
+			addDroppedWeapon(droppedWeapon);
+			opponents.memberExitsCombat(target);
 		}
 	}
 	else if (response == "Heal")
 	{
-		f->go_heal(all_allies);
+		f->goHeal(allAllies);
 	}
 	else if (response == "Grab")
 	{
-		int target = f->go_grab_weapon(all_allies, all_opponents, dropped_weapons);
-		remove_kth_dropped_weapon(target);
+		int target = f->goGrabWeapon(allAllies, allOpponents, droppedWeapons);
+		removeDroppedOfWeaponK(target);
 	}
 	else if (response == "Skip")
 	{
@@ -185,22 +190,22 @@ void Brawl::request_and_enact_action(Fighter *f, Team &allies, Team &opponents)
 
 // REQUIRES fighter health drops to zero
 // EFFECTS if fighter exits combat, change dropped weapons
-void Brawl::fighter_exits_combat(Fighter *fighter)
+void Brawl::fighterExitsCombat(Fighter *fighter)
 {
-	assert(fighter->get_current_health() == 0);
-	fighter->exit_combat();
-	int active_weapon = fighter->get_active_weapon();
-	Weapon *copied_weapon = fighter->get_k_weapon(active_weapon);
-	add_dropped_weapon(copied_weapon);
+	assert(fighter->getCurrentHealth() == 0);
+	fighter->exitCombat();
+	int activeWeapon = fighter->getActiveWeapon();
+	Weapon *copiedWeapon = fighter->getOfWeaponK(activeWeapon);
+	addDroppedWeapon(copiedWeapon);
 }
 
-// EFFECTS Prints dropped_weapons to stream as "Dropped Weapon 1: Excalibur"
+// EFFECTS Prints droppedWeapons to stream as "Dropped Weapon 1: Excalibur"
 // followed by newline and then "Dropped Weapon 2: Gate of Babylon"
-std::ostream &Brawl::print_dropped_weapons(std::ostream &os) const
+std::ostream &Brawl::printDroppedWeapons(std::ostream &os) const
 {
-	for (int i = 0; i < total_dropped_weapons; ++i)
+	for (int i = 0; i < totalDroppedWeapons; ++i)
 	{
-		os << "Dropped Weapon " << i + 1 << ": " << *dropped_weapons[i] << std::endl;
+		os << "Dropped Weapon " << i + 1 << ": " << *droppedWeapons[i] << std::endl;
 	}
 	return os;
 }
@@ -208,8 +213,8 @@ std::ostream &Brawl::print_dropped_weapons(std::ostream &os) const
 // EFFECTS delete all dropped weapons
 Brawl::~Brawl()
 {
-	while (total_dropped_weapons != 0)
+	while (totalDroppedWeapons != 0)
 	{
-		remove_kth_dropped_weapon(0);
+		removeDroppedOfWeaponK(0);
 	}
 }
