@@ -78,6 +78,9 @@ public:
     // EFFECTS  returns element of the kth weapon
     virtual Element getElementOfWeaponK(const int &k) const;
 
+    // EFFECTS  returns attack strength of active weapon
+    virtual Element getElementOfActiveWeapon() const;
+
     /// REQUIRES 0 < k <= numberOfWeapons
     // EFFECTS  returns attack strength of the kth weapon
     virtual double getAttackStrengthOfWeaponK(const int &k) const;

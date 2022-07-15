@@ -87,6 +87,15 @@ Currently, the program just runs through one brawl where the user is in a party 
 
 ---
 
+## How the AI works
+
+Currently, the AI only attacks. The way how they select their targets is the following:
+
+1. First, select their strongest weapon without taking elements into consideration.
+2. Then select the best enemy based on elements. It goes through each opponent and calculates the advantage over the opponent (attacks are slightly stronger if weapon->attacked and attacker->attacked, but significantly weaker if attacked->weapon or attacked->attacker). Then it attacks the opponent that it has the best advantage over.
+
+---
+
 ## Future plans
 
 In order to expand the game, one could consider 

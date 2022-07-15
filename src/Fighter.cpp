@@ -242,6 +242,12 @@ public:
         return weapons[k]->getElement();
     };
 
+    // EFFECTS  returns attack strength of active weapon
+    virtual Element getElementOfActiveWeapon() const
+    {
+        return getElementOfWeaponK(activeWeapon);
+    };
+
     /// REQUIRES 0 < k <= numberOfWeapons
     // EFFECTS  returns attack strength of the kth weapon
     virtual double getAttackStrengthOfWeaponK(const int &k) const
@@ -834,44 +840,40 @@ public:
     {
         assert(getCombatStatus());
 
-        int highestDamageWeapon = 0;
-        int highestDamageAmount = weapons[0]->getAttackStrength();
-
-        for (int i = 0; i < numberOfWeapons; ++i)
-        {
-            if (weapons[i]->getAttackStrength() > highestDamageAmount)
-            {
-                highestDamageAmount = weapons[i]->getAttackStrength();
-                highestDamageWeapon = i;
-            }
-        }
-
-        activeWeapon = highestDamageWeapon;
+        int activeWeapon = getHighestDamageWeapon();
 
         Element activeweaponElement = weapons[activeWeapon]->getElement();
 
         int target = 0;
-        bool worstTarget = true;
+        int bestAdvantage = INT_MIN;
         for (size_t i = 0; i < opponents.size(); ++i)
         {
             Fighter *potentialDefender = opponents[i];
             Element opponentElement = potentialDefender->getElement();
+            int potentialAdvantage = 0;
 
             if (activeweaponElement.isEffectiveAgainst(opponentElement))
             {
-                if (worstTarget)
-                {
-                    worstTarget = false;
-                }
-                target = i;
+                potentialAdvantage += 2;
             }
-            else if (opponentElement.isEffectiveAgainst(activeweaponElement))
+            if (elementType.isEffectiveAgainst(opponentElement))
             {
-                if (worstTarget)
-                {
-                    worstTarget = false;
-                    target = i;
-                }
+                potentialAdvantage += 2;
+            }
+            if (opponentElement.isEffectiveAgainst(elementType))
+            {
+                potentialAdvantage -= 4;
+            }
+            Element opponentWeaponElement = potentialDefender->getElementOfActiveWeapon();
+            if (opponentWeaponElement.isEffectiveAgainst(elementType))
+            {
+                potentialAdvantage -= 4;
+            }
+
+            if (potentialAdvantage > bestAdvantage)
+            {
+                bestAdvantage = potentialAdvantage;
+                target = i;
             }
         }
 
@@ -903,6 +905,27 @@ private:
     double attackStrength;
     double healingStrength;
     std::string type;
+
+    // REQUIRES fighter has at least 1 weapon
+    // EFFECTS returns highest damage weapon
+    int getHighestDamageWeapon()
+    {
+        assert(numberOfWeapons != 0);
+        int highestDamageWeapon = 0;
+
+        double highestDamageAmount = DBL_MIN;
+
+        for (int i = 0; i < numberOfWeapons; ++i)
+        {
+            if (weapons[i]->getAttackStrength() > highestDamageAmount)
+            {
+                highestDamageAmount = weapons[i]->getAttackStrength();
+                highestDamageWeapon = i;
+            }
+        }
+
+        return highestDamageWeapon;
+    }
 };
 
 // EFFECTS Returns a pointer to a fighter with the given name, element, and type
