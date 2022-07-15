@@ -28,35 +28,47 @@ public:
         Weapon::CROSS};
     static constexpr const int NUM_weaponTypeS = 3;
 
+    Weapon();
+
+    Weapon(
+        const std::string &givenName,
+        const Element &givenElement,
+        const double &givenAttackStrength,
+        const double &givenHealingStrength);
+
+    Weapon(
+        const std::string &givenName,
+        const Element &givenElement);
+
     // EFFECTS returns weapon's name
-    virtual const std::string &getName() const = 0;
+    virtual const std::string &getName() const;
 
     // REQUIRES weapon has an element
     // EFFECTS  returns element of weapon
-    virtual Element getElement() const = 0;
+    virtual Element getElement() const;
 
     // REQUIRES weapon has an attack strength
     // EFFECTS  returns attack strength of weapon
-    virtual double getAttackStrength() const = 0;
+    virtual double getAttackStrength() const;
 
     // REQUIRES weapon has a healing strength
     // EFFECTS  returns healing strength of weapon
-    virtual double getHealingStrength() const = 0;
+    virtual double getHealingStrength() const;
 
     // EFFECTS returns weapon's type
-    virtual const std::string getWeaponType() const = 0;
+    virtual const std::string getWeaponType() const;
 
     // REQUIRES weapon has a name
     // EFFECTS  changes name of weapon
-    virtual void changeName(const std::string &newName) = 0;
+    virtual void changeName(const std::string &newName);
 
     // REQUIRES weapon has an attack strength
     // EFFECTS  changes attack strength of weapon
-    virtual void changeAttackStrength(const int &changedAttackStrength) = 0;
+    virtual void changeAttackStrength(const int &changedAttackStrength);
 
     // REQUIRES weapon has a healing strength
     // EFFECTS  changes healing strength of weapon
-    virtual void changeHealingStrength(const int &changedHealStrength) = 0;
+    virtual void changeHealingStrength(const int &changedHealStrength);
 
     // Needed to avoid some compiler errors
     virtual ~Weapon() {}
