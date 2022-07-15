@@ -21,6 +21,122 @@ public:
         Fighter::WARRIOR};
     static constexpr const int NUM_FIGHTER_TYPES = 2;
 
+    Fighter()
+        : elementType(Element::WATER),
+          numberOfWeapons(0),
+          activeWeapon(-1),
+          inCombat(false),
+          maxHealth(200.0),
+          currentHealth(maxHealth),
+          attackStrength(25.0),
+          healingStrength(25.0)
+    {
+    }
+
+    Fighter(const std::string &givenName, const Element &element) : Fighter()
+    {
+        name = givenName;
+        elementType = element;
+    }
+
+    Fighter(
+        const std::string &givenName,
+        const Element &element,
+        const std::string &weaponType) : Fighter(givenName, element)
+    {
+        Weapon *defaultWeapon;
+        if (weaponType == Weapon::STAFF)
+        {
+            defaultWeapon = WeaponFactory(Weapon::STAFF);
+        }
+        else if (weaponType == Weapon::SPEAR)
+        {
+            defaultWeapon = WeaponFactory(Weapon::STAFF);
+        }
+        else if (weaponType == Weapon::CROSS)
+        {
+            defaultWeapon = WeaponFactory(Weapon::CROSS);
+        }
+        else
+        {
+            assert(false);
+        }
+        addWeapon(defaultWeapon);
+    }
+
+    Fighter(
+        const std::string &givenName,
+        const Element &givenElement,
+        std::vector<Weapon *> givenWeapons,
+        const int &givenNumberOfWeapons,
+        const int &givenActiveWeapon,
+        const bool &givenInCombat,
+        const double &givenMaxHealth,
+        const double &givenCurrentHealth,
+        const double &givenAttackStrength,
+        const double &givenHealingStrength,
+        std::string &givenType)
+        : name(givenName),
+          elementType(givenElement),
+          weapons(givenWeapons),
+          numberOfWeapons(givenNumberOfWeapons),
+          activeWeapon(givenActiveWeapon),
+          inCombat(givenInCombat),
+          maxHealth(givenMaxHealth),
+          currentHealth(givenCurrentHealth),
+          attackStrength(givenAttackStrength),
+          healingStrength(givenHealingStrength),
+          type(givenType)
+    {
+    }
+
+    Fighter(const Fighter &other)
+    {
+        name = other.getName();
+        elementType = other.getElement();
+        numberOfWeapons = other.getNumberOfWeapons();
+        activeWeapon = other.getActiveWeapon();
+        inCombat = other.getCombatStatus();
+        maxHealth = other.getMaxHealth();
+        currentHealth = other.getCurrentHealth();
+        attackStrength = other.getAttackStrength();
+        healingStrength = other.getHealingStrength();
+        type = other.getType();
+
+        for (int k = 0; numberOfWeapons; ++k)
+        {
+            Weapon *additionWeapon = WeaponFactory(other.getOfWeaponK(k));
+            weapons.push_back(additionWeapon);
+        }
+    }
+
+    Fighter &operator=(const Fighter &rhs)
+    {
+        while (numberOfWeapons != 0)
+        {
+            deleteWeapon(0);
+        }
+
+        name = rhs.getName();
+        elementType = rhs.getElement();
+        numberOfWeapons = rhs.getNumberOfWeapons();
+        activeWeapon = rhs.getActiveWeapon();
+        inCombat = rhs.getCombatStatus();
+        maxHealth = rhs.getMaxHealth();
+        currentHealth = rhs.getCurrentHealth();
+        attackStrength = rhs.getAttackStrength();
+        healingStrength = rhs.getHealingStrength();
+        type = rhs.getType();
+
+        for (int k = 0; numberOfWeapons; ++k)
+        {
+            Weapon *additionWeapon = WeaponFactory(rhs.getOfWeaponK(k));
+            weapons.push_back(additionWeapon);
+        }
+
+        return *this;
+    }
+
     // EFFECTS returns fighter's name
     virtual const std::string &getName() const
     {
@@ -124,6 +240,12 @@ public:
     virtual Element getElementOfWeaponK(const int &k) const
     {
         return weapons[k]->getElement();
+    };
+
+    // EFFECTS  returns attack strength of active weapon
+    virtual Element getElementOfActiveWeapon() const
+    {
+        return getElementOfWeaponK(activeWeapon);
     };
 
     /// REQUIRES 0 < k <= numberOfWeapons
@@ -404,15 +526,8 @@ class Human : public Fighter
 {
 public:
     Human()
-        : name("Angel"),
-          elementType(Element::WATER),
-          numberOfWeapons(0),
-          activeWeapon(-1),
-          inCombat(false),
-          maxHealth(200.0),
-          currentHealth(maxHealth),
-          attackStrength(25.0),
-          healingStrength(25.0),
+        : Fighter(),
+          name("Angel"),
           type("Human") {}
 
     Human(const std::string &givenName, const Element &element) : Human()
@@ -421,31 +536,17 @@ public:
         elementType = element;
     }
 
-    Human(
+    Warrior(const std::string &givenName, const Element &element)
+        : Warrior(givenName, element)
+    {
+    }
+
+    Warrior(
         const std::string &givenName,
         const Element &element,
-        const std::string &weaponType) : Human()
+        const std::string &weaponType)
+        : Fighter(givenName, element, weaponType)
     {
-        name = givenName;
-        elementType = element;
-        Weapon *defaultWeapon;
-        if (weaponType == Weapon::STAFF)
-        {
-            defaultWeapon = WeaponFactory(Weapon::STAFF);
-        }
-        else if (weaponType == Weapon::SPEAR)
-        {
-            defaultWeapon = WeaponFactory(Weapon::STAFF);
-        }
-        else if (weaponType == Weapon::CROSS)
-        {
-            defaultWeapon = WeaponFactory(Weapon::CROSS);
-        }
-        else
-        {
-            assert(false);
-        }
-        addWeapon(defaultWeapon);
     }
 
     Human(
@@ -460,65 +561,24 @@ public:
         const double &givenAttackStrength,
         const double &givenHealingStrength,
         std::string &givenType)
-        : name(givenName),
-          elementType(givenElement),
-          weapons(givenWeapons),
-          numberOfWeapons(givenNumberOfWeapons),
-          activeWeapon(givenActiveWeapon),
-          inCombat(givenInCombat),
-          maxHealth(givenMaxHealth),
-          currentHealth(givenCurrentHealth),
-          attackStrength(givenAttackStrength),
-          healingStrength(givenHealingStrength),
-          type(givenType)
+        : Fighter(
+              givenName,
+              givenElement,
+              givenWeapons,
+              givenNumberOfWeapons,
+              givenActiveWeapon,
+              givenInCombat,
+              givenMaxHealth,
+              givenCurrentHealth,
+              givenAttackStrength,
+              givenHealingStrength,
+              givenType)
     {
     }
 
-    Human(const Human &other)
-    {
-        name = other.getName();
-        elementType = other.getElement();
-        numberOfWeapons = other.getNumberOfWeapons();
-        activeWeapon = other.getActiveWeapon();
-        inCombat = other.getCombatStatus();
-        maxHealth = other.getMaxHealth();
-        currentHealth = other.getCurrentHealth();
-        attackStrength = other.getAttackStrength();
-        healingStrength = other.getHealingStrength();
-        type = other.getType();
+    Human(const Human &other) : Fighter(other) {}
 
-        for (int k = 0; numberOfWeapons; ++k)
-        {
-            Weapon *additionWeapon = WeaponFactory(other.getOfWeaponK(k));
-            weapons.push_back(additionWeapon);
-        }
-    }
-
-    Human &operator=(const Human &rhs)
-    {
-        while (numberOfWeapons != 0)
-        {
-            deleteWeapon(0);
-        }
-
-        name = rhs.getName();
-        elementType = rhs.getElement();
-        numberOfWeapons = rhs.getNumberOfWeapons();
-        activeWeapon = rhs.getActiveWeapon();
-        inCombat = rhs.getCombatStatus();
-        maxHealth = rhs.getMaxHealth();
-        currentHealth = rhs.getCurrentHealth();
-        attackStrength = rhs.getAttackStrength();
-        healingStrength = rhs.getHealingStrength();
-        type = rhs.getType();
-
-        for (int k = 0; numberOfWeapons; ++k)
-        {
-            Weapon *additionWeapon = WeaponFactory(rhs.getOfWeaponK(k));
-            weapons.push_back(additionWeapon);
-        }
-        return *this;
-    }
+    Human &operator=(const Human &rhs) : Fighter(rhs) {}
 
     // EFFECTS request action of fighter. should either be attack heal grab or skip.
     std::string requestAction(
@@ -706,48 +766,21 @@ class Warrior : public Fighter
 {
 public:
     Warrior()
-        : name("Default Name"),
-          elementType(Element::WATER),
-          numberOfWeapons(0),
-          activeWeapon(0),
-          inCombat(false),
-          maxHealth(200.0),
-          currentHealth(maxHealth),
-          attackStrength(25.0),
-          healingStrength(25.0),
+        : Fighter(),
+          name("Default AI Bob"),
           type("Warrior") {}
 
-    Warrior(const std::string &givenName, const Element &element) : Warrior()
+    Warrior(const std::string &givenName, const Element &element)
+        : Warrior(givenName, element)
     {
-        name = givenName;
-        elementType = element;
     }
 
     Warrior(
         const std::string &givenName,
         const Element &element,
-        const std::string &weaponType) : Warrior()
+        const std::string &weaponType)
+        : Fighter(givenName, element, weaponType)
     {
-        name = givenName;
-        elementType = element;
-        Weapon *defaultWeapon;
-        if (weaponType == Weapon::STAFF)
-        {
-            defaultWeapon = WeaponFactory(Weapon::STAFF);
-        }
-        else if (weaponType == Weapon::SPEAR)
-        {
-            defaultWeapon = WeaponFactory(Weapon::STAFF);
-        }
-        else if (weaponType == Weapon::CROSS)
-        {
-            defaultWeapon = WeaponFactory(Weapon::CROSS);
-        }
-        else
-        {
-            assert(false);
-        }
-        addWeapon(defaultWeapon);
     }
 
     Warrior(
@@ -762,66 +795,24 @@ public:
         const double &givenAttackStrength,
         const double &givenHealingStrength,
         std::string &givenType)
-        : name(givenName),
-          elementType(givenElement),
-          weapons(givenWeapons),
-          numberOfWeapons(givenNumberOfWeapons),
-          activeWeapon(givenActiveWeapon),
-          inCombat(givenInCombat),
-          maxHealth(givenMaxHealth),
-          currentHealth(givenCurrentHealth),
-          attackStrength(givenAttackStrength),
-          healingStrength(givenHealingStrength),
-          type(givenType)
+        : Fighter(
+              givenName,
+              givenElement,
+              givenWeapons,
+              givenNumberOfWeapons,
+              givenActiveWeapon,
+              givenInCombat,
+              givenMaxHealth,
+              givenCurrentHealth,
+              givenAttackStrength,
+              givenHealingStrength,
+              givenType)
     {
     }
 
-    Warrior(const Warrior &other)
-    {
-        name = other.getName();
-        elementType = other.getElement();
-        numberOfWeapons = other.getNumberOfWeapons();
-        activeWeapon = other.getActiveWeapon();
-        inCombat = other.getCombatStatus();
-        maxHealth = other.getMaxHealth();
-        currentHealth = other.getCurrentHealth();
-        attackStrength = other.getAttackStrength();
-        healingStrength = other.getHealingStrength();
-        type = other.getType();
+    Warrior(const Warrior &other) : Fighter(other) {}
 
-        for (int k = 0; numberOfWeapons; ++k)
-        {
-            Weapon *additionWeapon = WeaponFactory(other.getOfWeaponK(k));
-            weapons.push_back(additionWeapon);
-        }
-    }
-
-    Warrior &operator=(const Warrior &rhs)
-    {
-        while (numberOfWeapons != 0)
-        {
-            deleteWeapon(0);
-        }
-
-        name = rhs.getName();
-        elementType = rhs.getElement();
-        numberOfWeapons = rhs.getNumberOfWeapons();
-        activeWeapon = rhs.getActiveWeapon();
-        inCombat = rhs.getCombatStatus();
-        maxHealth = rhs.getMaxHealth();
-        currentHealth = rhs.getCurrentHealth();
-        attackStrength = rhs.getAttackStrength();
-        healingStrength = rhs.getHealingStrength();
-        type = rhs.getType();
-
-        for (int k = 0; numberOfWeapons; ++k)
-        {
-            Weapon *additionWeapon = WeaponFactory(rhs.getOfWeaponK(k));
-            weapons.push_back(additionWeapon);
-        }
-
-        return *this;
-    }
+    Warrior &operator=(const Warrior &rhs) : Fighter(rhs) {}
 
     // EFFECTS request action of fighter. should either be attack heal grab or skip.
     std::string requestAction(
@@ -849,44 +840,40 @@ public:
     {
         assert(getCombatStatus());
 
-        int highestDamageWeapon = 0;
-        int highestDamageAmount = weapons[0]->getAttackStrength();
-
-        for (int i = 0; i < numberOfWeapons; ++i)
-        {
-            if (weapons[i]->getAttackStrength() > highestDamageAmount)
-            {
-                highestDamageAmount = weapons[i]->getAttackStrength();
-                highestDamageWeapon = i;
-            }
-        }
-
-        activeWeapon = highestDamageWeapon;
+        int activeWeapon = getHighestDamageWeapon();
 
         Element activeweaponElement = weapons[activeWeapon]->getElement();
 
         int target = 0;
-        bool worstTarget = true;
+        int bestAdvantage = INT_MIN;
         for (size_t i = 0; i < opponents.size(); ++i)
         {
             Fighter *potentialDefender = opponents[i];
             Element opponentElement = potentialDefender->getElement();
+            int potentialAdvantage = 0;
 
             if (activeweaponElement.isEffectiveAgainst(opponentElement))
             {
-                if (worstTarget)
-                {
-                    worstTarget = false;
-                }
-                target = i;
+                potentialAdvantage += 2;
             }
-            else if (opponentElement.isEffectiveAgainst(activeweaponElement))
+            if (elementType.isEffectiveAgainst(opponentElement))
             {
-                if (worstTarget)
-                {
-                    worstTarget = false;
-                    target = i;
-                }
+                potentialAdvantage += 2;
+            }
+            if (opponentElement.isEffectiveAgainst(elementType))
+            {
+                potentialAdvantage -= 4;
+            }
+            Element opponentWeaponElement = potentialDefender->getElementOfActiveWeapon();
+            if (opponentWeaponElement.isEffectiveAgainst(elementType))
+            {
+                potentialAdvantage -= 4;
+            }
+
+            if (potentialAdvantage > bestAdvantage)
+            {
+                bestAdvantage = potentialAdvantage;
+                target = i;
             }
         }
 
@@ -918,6 +905,27 @@ private:
     double attackStrength;
     double healingStrength;
     std::string type;
+
+    // REQUIRES fighter has at least 1 weapon
+    // EFFECTS returns highest damage weapon
+    int getHighestDamageWeapon()
+    {
+        assert(numberOfWeapons != 0);
+        int highestDamageWeapon = 0;
+
+        double highestDamageAmount = DBL_MIN;
+
+        for (int i = 0; i < numberOfWeapons; ++i)
+        {
+            if (weapons[i]->getAttackStrength() > highestDamageAmount)
+            {
+                highestDamageAmount = weapons[i]->getAttackStrength();
+                highestDamageWeapon = i;
+            }
+        }
+
+        return highestDamageWeapon;
+    }
 };
 
 // EFFECTS Returns a pointer to a fighter with the given name, element, and type

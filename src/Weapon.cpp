@@ -5,93 +5,131 @@
 #include "Element.h"
 #include "Weapon.h"
 
-class Staff : public Weapon
+class Weapon
 {
 public:
-    Staff()
-        : name("A Magical Staff"),
-          element(Element::WATER),
-          attackStrength(40.0),
-          healingStrength(20.0),
-          weaponType(STAFF) {}
+    // weapon names
+    static constexpr const char *const STAFF = "Staff";
+    static constexpr const char *const SPEAR = "Spear";
+    static constexpr const char *const CROSS = "Cross";
+    // list
+    static constexpr const char *const WEAPON_LIST[] = {
+        Weapon::STAFF,
+        Weapon::SPEAR,
+        Weapon::CROSS};
+    static constexpr const int NUM_weaponTypeS = 3;
 
-    Staff(const std::string &givenName, const Element &givenElement) : Staff()
-    {
-        name = givenName;
-        element = givenElement;
-    }
+    Weapon() {}
 
-    Staff(
+    Weapon(
         const std::string &givenName,
         const Element &givenElement,
         const double &givenAttackStrength,
-        const double &givenHealingStrength) : Staff()
-    {
-        name = givenName;
-        element = givenElement;
-        attackStrength = givenAttackStrength;
-        healingStrength = givenHealingStrength;
-    }
+        const double &givenHealingStrength)
+        : Weapon(givenName, givenElement),
+          attackStrength(givenAttackStrength),
+          healingStrength(givenHealingStrength) {}
+
+    Weapon(
+        const std::string &givenName,
+        const Element &givenElement)
+        : name(givenName), element(givenElement) {}
 
     // EFFECTS returns weapon's name
-    const std::string &getName() const override
+    virtual const std::string &getName() const
     {
         return name;
-    }
+    };
 
     // REQUIRES weapon has an element
     // EFFECTS  returns element of weapon
-    Element getElement() const override
+    virtual Element getElement() const
     {
         return element;
-    }
+    };
 
     // REQUIRES weapon has an attack strength
     // EFFECTS  returns attack strength of weapon
-    double getAttackStrength() const override
+    virtual double getAttackStrength() const
     {
         return attackStrength;
-    }
+    };
 
     // REQUIRES weapon has a healing strength
     // EFFECTS  returns healing strength of weapon
-    double getHealingStrength() const override
+    virtual double getHealingStrength() const
     {
         return healingStrength;
     }
 
     // EFFECTS returns weapon's type
-    const std::string getWeaponType() const override
+    virtual const std::string getWeaponType() const
     {
-        std::string weaponType = Weapon::STAFF;
         return weaponType;
-    }
+    };
 
     // REQUIRES weapon has a name
     // EFFECTS  changes name of weapon
-    void changeName(const std::string &newName) override
+    virtual void changeName(const std::string &newName)
     {
         name = newName;
-    }
+    };
 
     // REQUIRES weapon has an attack strength
     // EFFECTS  changes attack strength of weapon
-    void changeAttackStrength(const int &changedAttackStrength) override
-    {
-        attackStrength = changedAttackStrength;
-    }
+    virtual void changeAttackStrength(
+        const int &changedAttackStrength){
+        attackStrength = changedAttackStrength};
 
     // REQUIRES weapon has a healing strength
     // EFFECTS  changes healing strength of weapon
-    void changeHealingStrength(const int &changedHealStrength) override
+    virtual void changeHealingStrength(
+        const int &changedHealStrength)
     {
-        healingStrength = healingStrength;
-    }
+        healingStrength = changedHealStrength;
+    };
 
     // Needed to avoid some compiler errors
-    ~Staff()
-    {
-    }
+    virtual ~Weapon() {}
+
+private:
+    std::string name;
+    Element element;
+    double attackStrength;
+    double healingStrength;
+    std::string weaponType;
+};
+
+class Staff : public Weapon
+{
+public:
+    Staff(
+        const std::string &givenName,
+        const Element &givenElement,
+        const double &givenAttackStrength,
+        const double &givenHealingStrength)
+        : Weapon(
+              givenName,
+              givenElement,
+              givenAttackStrength,
+              givenHealingStrength) {}
+
+    Staff(
+        const std::string &givenName,
+        const Element &givenElement)
+        : Weapon(
+              givenName,
+              givenElement,
+              40.0,
+              20.0) {}
+
+    Staff()
+        : Staff(
+              "A Magical Staff",
+              Element::WATER) {}
+
+    // Needed to avoid some compiler errors
+    ~Staff() {}
 
 private:
     std::string name;
@@ -104,90 +142,33 @@ private:
 class Spear : public Weapon
 {
 public:
-    Spear()
-        : name("Super Strong Spear"),
-          element(Element::WATER),
-          attackStrength(50.0),
-          healingStrength(10.0),
-          weaponType("Spear") {}
-
-    Spear(const std::string &givenName, const Element &givenElement) : Spear()
-    {
-        name = givenName;
-        element = givenElement;
-    }
-
     Spear(
         const std::string &givenName,
         const Element &givenElement,
         const double &givenAttackStrength,
-        const double &givenHealingStrength) : Spear()
-    {
-        name = givenName;
-        element = givenElement;
-        attackStrength = givenAttackStrength;
-        healingStrength = givenHealingStrength;
-    }
+        const double &givenHealingStrength)
+        : Weapon(
+              givenName,
+              givenElement,
+              givenAttackStrength,
+              givenHealingStrength) {}
 
-    // EFFECTS returns weapon's name
-    const std::string &getName() const override
-    {
-        return name;
-    }
+    Spear(
+        const std::string &givenName,
+        const Element &givenElement)
+        : Weapon(
+              givenName,
+              givenElement,
+              50.0,
+              10.0) {}
 
-    // REQUIRES weapon has an element
-    // EFFECTS  returns element of weapon
-    Element getElement() const override
-    {
-        return element;
-    }
-
-    // REQUIRES weapon has an attack strength
-    // EFFECTS  returns attack strength of weapon
-    double getAttackStrength() const override
-    {
-        return attackStrength;
-    }
-
-    // REQUIRES weapon has a healing strength
-    // EFFECTS  returns healing strength of weapon
-    double getHealingStrength() const override
-    {
-        return healingStrength;
-    }
-
-    // EFFECTS returns weapon's type
-    const std::string getWeaponType() const override
-    {
-        std::string weaponType = Weapon::SPEAR;
-        return weaponType;
-    }
-
-    // REQUIRES weapon has a name
-    // EFFECTS  changes name of weapon
-    void changeName(const std::string &newName) override
-    {
-        name = newName;
-    }
-
-    // REQUIRES weapon has an attack strength
-    // EFFECTS  changes attack strength of weapon
-    void changeAttackStrength(const int &changedAttackStrength) override
-    {
-        attackStrength = changedAttackStrength;
-    }
-
-    // REQUIRES weapon has a healing strength
-    // EFFECTS  changes healing strength of weapon
-    void changeHealingStrength(const int &changedHealStrength) override
-    {
-        healingStrength = healingStrength;
-    }
+    Spear()
+        : Spear(
+              "Super Strong Spear",
+              Element::WATER) {}
 
     // Needed to avoid some compiler errors
-    ~Spear()
-    {
-    }
+    ~Spear() {}
 
 private:
     std::string name;
@@ -200,90 +181,31 @@ private:
 class Cross : public Weapon
 {
 public:
-    Cross()
-        : name("The Coolest Cross"),
-          element(Element::WATER),
-          attackStrength(30.0),
-          healingStrength(50.0),
-          weaponType("Cross") {}
-
-    Cross(const std::string &givenName, const Element &givenElement) : Cross()
-    {
-        name = givenName;
-        element = givenElement;
-    }
-
     Cross(
         const std::string &givenName,
         const Element &givenElement,
         const double &givenAttackStrength,
-        const double &givenHealingStrength) : Cross()
-    {
-        name = givenName;
-        element = givenElement;
-        attackStrength = givenAttackStrength;
-        healingStrength = givenHealingStrength;
-    }
+        const double &givenHealingStrength)
+        : Weapon(
+              givenName,
+              givenElement,
+              givenAttackStrength,
+              givenHealingStrength) {}
 
-    // EFFECTS returns weapon's name
-    const std::string &getName() const override
-    {
-        return name;
-    }
+    Cross(const std::string &givenName, const Element &givenElement)
+        : Weapon(
+              givenName,
+              givenElement,
+              30.0,
+              50.0) {}
 
-    // REQUIRES weapon has an element
-    // EFFECTS  returns element of weapon
-    Element getElement() const override
-    {
-        return element;
-    }
-
-    // REQUIRES weapon has an attack strength
-    // EFFECTS  returns attack strength of weapon
-    double getAttackStrength() const override
-    {
-        return attackStrength;
-    }
-
-    // REQUIRES weapon has a healing strength
-    // EFFECTS  returns healing strength of weapon
-    double getHealingStrength() const override
-    {
-        return healingStrength;
-    }
-
-    // EFFECTS returns weapon's type
-    const std::string getWeaponType() const override
-    {
-        std::string weaponType = Weapon::CROSS;
-        return weaponType;
-    }
-
-    // REQUIRES weapon has a name
-    // EFFECTS  changes name of weapon
-    void changeName(const std::string &newName) override
-    {
-        name = newName;
-    }
-
-    // REQUIRES weapon has an attack strength
-    // EFFECTS  changes attack strength of weapon
-    void changeAttackStrength(const int &changedAttackStrength) override
-    {
-        attackStrength = changedAttackStrength;
-    }
-
-    // REQUIRES weapon has a healing strength
-    // EFFECTS  changes healing strength of weapon
-    void changeHealingStrength(const int &changedHealStrength) override
-    {
-        healingStrength = healingStrength;
-    }
+    Cross()
+        : Cross(
+              "The Coolest Cross",
+              Element::WATER) {}
 
     // Needed to avoid some compiler errors
-    ~Cross()
-    {
-    }
+    ~Cross() {}
 
 private:
     std::string name;
