@@ -40,10 +40,6 @@ public:
     // EFFECTS returns number of weapons on fighter
     virtual int getNumberOfWeapons() const;
 
-    // REQUIRES fighter has a weapon
-    // EFFECTS  returns best weapon of fighter
-    virtual int getBestWeapon() const;
-
     // EFFECTS returns kth weapons of fighter
     virtual Weapon *getWeaponK(const int &k) const;
 

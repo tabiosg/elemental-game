@@ -153,14 +153,6 @@ public:
         return weapons.size();
     };
 
-    // REQUIRES fighter has a weapon
-    // EFFECTS  returns best weapon of fighter
-    virtual int getBestWeapon() const
-    {
-        // TODO
-        return 0;
-    };
-
     // EFFECTS returns kth weapons of fighter
     virtual Weapon *getWeaponK(const int &k) const
     {
