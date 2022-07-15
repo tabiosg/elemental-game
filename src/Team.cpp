@@ -57,7 +57,7 @@ bool Team::getBrawlStatus() const
 	return inBrawl;
 }
 
-// REQUIRES 0 < k <= total fighters in team
+// REQUIRES 0 <= k < total fighters in team
 // EFFECTS return the kth fighter fighter.
 Fighter *Team::getFighterK(const int &k) const
 {
