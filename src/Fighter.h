@@ -70,26 +70,26 @@ public:
     // EFFECTS deletes weapon
     virtual void deleteWeapon(const int &weaponIndex);
 
-    // REQUIRES 0 <= k < numberOfWeapons
+    // REQUIRES 0 <= k < weapons.size()
     // EFFECTS returns the kth weapon's name
     virtual const std::string &getNameOfWeaponK(const int &k) const;
 
-    // REQUIRES 0 <= k < numberOfWeapons
+    // REQUIRES 0 <= k < weapons.size()
     // EFFECTS  returns element of the kth weapon
     virtual Element getElementOfWeaponK(const int &k) const;
 
     // EFFECTS  returns attack strength of active weapon
     virtual Element getElementOfActiveWeapon() const;
 
-    /// REQUIRES 0 <= k < numberOfWeapons
+    /// REQUIRES 0 <= k < weapons.size()
     // EFFECTS  returns attack strength of the kth weapon
     virtual double getAttackStrengthOfWeaponK(const int &k) const;
 
-    // REQUIRES 0 <= k < numberOfWeapons
+    // REQUIRES 0 <= k < weapons.size()
     // EFFECTS  returns healing strength of the kth weapon
     virtual double getHealingStrengthOfWeaponK(const int &k) const;
 
-    // REQUIRES 0 <= k < numberOfWeapons
+    // REQUIRES 0 <= k < weapons.size()
     // EFFECTS returns the kth weapon's type
     virtual const std::string getTypeOfWeaponK(const int &k) const;
 
@@ -174,7 +174,6 @@ private:
     std::string name;
     Element elementType;
     std::vector<Weapon *> weapons;
-    int numberOfWeapons;
     int activeWeapon;
     bool inCombat;
     double maxHealth;
