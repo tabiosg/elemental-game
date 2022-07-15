@@ -45,7 +45,7 @@ public:
     virtual int getActiveWeapon() const;
 
     // EFFECTS returns kth weapons of fighter
-    virtual Weapon *getOfWeaponK(const int &k) const;
+    virtual Weapon *getWeaponK(const int &k) const;
 
     // EFFECTS  returns combat status of fighter
     virtual bool getCombatStatus() const;

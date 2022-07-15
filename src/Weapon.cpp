@@ -120,8 +120,8 @@ public:
         : Weapon(
               givenName,
               givenElement,
-              40.0,
-              20.0) {}
+              4.0,
+              2.0) {}
 
     Staff()
         : Staff(
@@ -159,8 +159,8 @@ public:
         : Weapon(
               givenName,
               givenElement,
-              50.0,
-              10.0) {}
+              5.0,
+              1.0) {}
 
     Spear()
         : Spear(
@@ -196,8 +196,8 @@ public:
         : Weapon(
               givenName,
               givenElement,
-              30.0,
-              50.0) {}
+              3.0,
+              5.0) {}
 
     Cross()
         : Cross(

@@ -23,12 +23,12 @@ public:
 
     Fighter()
         : elementType(Element::WATER),
-          activeWeapon(-1),
+          activeWeapon(0),
           inCombat(false),
-          maxHealth(200.0),
+          maxHealth(20.0),
           currentHealth(maxHealth),
-          attackStrength(25.0),
-          healingStrength(25.0)
+          attackStrength(2.5),
+          healingStrength(2.5)
     {
     }
 
@@ -101,7 +101,7 @@ public:
 
         for (int k = 0; k < other.weapons.size(); ++k)
         {
-            Weapon *additionWeapon = WeaponFactory(other.getOfWeaponK(k));
+            Weapon *additionWeapon = WeaponFactory(other.weapons[k]);
             weapons.push_back(additionWeapon);
         }
     }
@@ -125,7 +125,7 @@ public:
 
         for (int k = 0; rhs.weapons.size(); ++k)
         {
-            Weapon *additionWeapon = WeaponFactory(rhs.getOfWeaponK(k));
+            Weapon *additionWeapon = WeaponFactory(rhs.weapons[k]);
             weapons.push_back(additionWeapon);
         }
 
@@ -165,7 +165,7 @@ public:
     };
 
     // EFFECTS returns kth weapons of fighter
-    virtual Weapon *getOfWeaponK(const int &k) const
+    virtual Weapon *getWeaponK(const int &k) const
     {
         return weapons[k];
     };
@@ -206,10 +206,7 @@ public:
     {
         Weapon *addedWeapon = WeaponFactory(weapon);
         weapons.push_back(addedWeapon);
-        if (activeWeapon == -1)
-        {
-            activeWeapon = 0;
-        }
+        activeWeapon = 0;
     };
 
     // REQUIRES fighter wants to delete a weapon and 0 <= weaponIndex < weapons.size()
@@ -331,8 +328,8 @@ public:
         Element weaponElement = weapon->getElement();
         double lostHealthMultiplier = 0;
         if (
-            weaponElement.isBeneficialResourceTo(ally->getElement()) ||
-            elementType.isBeneficialResourceTo(ally->getElement()))
+            weaponElement.isBeneficialResourceTo(ally->elementType) ||
+            elementType.isBeneficialResourceTo(ally->elementType))
         {
             lostHealthMultiplier += 0.1;
         }
@@ -397,8 +394,8 @@ public:
     {
         assert(getCombatStatus());
         double multiplier = 1.0;
-        Element healerElement = healer->getElement();
-        Element weaponElement = healingWeapon->getElement();
+        Element healerElement = healer->elementType;
+        Element weaponElement = healingWeapon->elementType;
         if (healerElement.isBeneficialResourceTo(weaponElement))
         {
             lostHealthMultiplier += 0.4;
@@ -433,7 +430,7 @@ public:
     {
         assert(getCombatStatus());
         double multiplier = 1.0;
-        Element damagingElement = attacker->getElement();
+        Element damagingElement = attacker->elementType;
         Element weaponElement = damagingWeapon->getElement();
         if (damagingElement.isEffectiveAgainst(weaponElement))
         {
@@ -604,7 +601,7 @@ public:
         assert(getCombatStatus());
         int target = requestHealTarget(allies);
         activeWeapon = requestActiveWeaponK();
-        Weapon *currentWeapon = getOfWeaponK(activeWeapon);
+        Weapon *currentWeapon = weapons[activeWeapon];
         Fighter *ally = allies[target];
         goHealAllyWithWeapon(ally, currentWeapon);
     }
@@ -617,7 +614,7 @@ public:
         assert(getCombatStatus());
         int target = requestAttackTarget(opponents);
         activeWeapon = requestActiveWeaponK();
-        Weapon *currentWeapon = getOfWeaponK(activeWeapon);
+        Weapon *currentWeapon = weapons[activeWeapon];
         Fighter *opponent = opponents[target];
         goAttackTargetWithWeapon(opponent, currentWeapon);
         return target;
@@ -845,7 +842,7 @@ public:
         for (size_t i = 0; i < opponents.size(); ++i)
         {
             Fighter *potentialDefender = opponents[i];
-            Element opponentElement = potentialDefender->getElement();
+            Element opponentElement = potentialDefender->elementType;
             int potentialAdvantage = 0;
 
             if (activeweaponElement.isEffectiveAgainst(opponentElement))
@@ -873,7 +870,7 @@ public:
             }
         }
 
-        Weapon *currentWeapon = getOfWeaponK(activeWeapon);
+        Weapon *currentWeapon = weapons[activeWeapon];
         Fighter *opponent = opponents[target];
         goAttackTargetWithWeapon(opponent, currentWeapon);
 
