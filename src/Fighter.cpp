@@ -103,7 +103,7 @@ public:
         healingStrength = other.getHealingStrength();
         type = other.getType();
 
-        for (int k = 0; numberOfWeapons; ++k)
+        for (int k = 0; k < numberOfWeapons; ++k)
         {
             Weapon *additionWeapon = WeaponFactory(other.getOfWeaponK(k));
             weapons.push_back(additionWeapon);

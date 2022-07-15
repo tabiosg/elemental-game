@@ -205,7 +205,7 @@ std::ostream &Brawl::printDroppedWeapons(std::ostream &os) const
 {
 	for (int i = 0; i < totalDroppedWeapons; ++i)
 	{
-		os << "Dropped Weapon " << i + 1 << ": " << *droppedWeapons[i] << std::endl;
+		os << "Dropped Weapon " << i << ": " << *droppedWeapons[i] << std::endl;
 	}
 	return os;
 }

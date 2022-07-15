@@ -84,7 +84,7 @@ std::ostream &Team::printAllFighters(std::ostream &os)
 {
 	for (int i = 0; i < totalSize; ++i)
 	{
-		os << "Fighter " << i + 1 << ": " << *allFighters[i] << " (Type: " << allFighters[i]->getElement() << ", Current Health: " << allFighters[i]->getCurrentHealth() << ")" << std::endl;
+		os << "Fighter " << i << ": " << *allFighters[i] << " (Type: " << allFighters[i]->getElement() << ", Current Health: " << allFighters[i]->getCurrentHealth() << ")" << std::endl;
 	}
 	return os;
 }
@@ -103,7 +103,7 @@ std::ostream &Team::printInCombatFighters(std::ostream &os) const
 	for (int i = 0; i < totalSize; ++i)
 	{
 		Fighter *fighterI = allFighters[i];
-		os << "Fighter " << i + 1 << ": " << *fighterI << std::endl;
+		os << "Fighter " << i << ": " << *fighterI << std::endl;
 	}
 	return os;
 }
