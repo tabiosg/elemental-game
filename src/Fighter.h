@@ -40,10 +40,6 @@ public:
     // EFFECTS returns number of weapons on fighter
     virtual int getNumberOfWeapons() const;
 
-    // REQUIRES fighter has a weapon
-    // EFFECTS  returns active weapon of fighter
-    virtual int getActiveWeapon() const;
-
     // EFFECTS returns kth weapons of fighter
     virtual Weapon *getWeaponK(const int &k) const;
 
@@ -77,9 +73,6 @@ public:
     // REQUIRES 0 <= k < weapons.size()
     // EFFECTS  returns element of the kth weapon
     virtual Element getElementOfWeaponK(const int &k) const;
-
-    // EFFECTS  returns attack strength of active weapon
-    virtual Element getElementOfActiveWeapon() const;
 
     /// REQUIRES 0 <= k < weapons.size()
     // EFFECTS  returns attack strength of the kth weapon
@@ -174,7 +167,6 @@ private:
     std::string name;
     Element elementType;
     std::vector<Weapon *> weapons;
-    int activeWeapon;
     bool inCombat;
     double maxHealth;
     double currentHealth;

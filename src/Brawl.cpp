@@ -162,13 +162,7 @@ void Brawl::requestAndEnactAction(Fighter *f, Team &allies, Team &opponents)
 		Fighter *defender = opponents.getFighterK(target);
 		if (defender->getCurrentHealth() == 0)
 		{
-			std::cout << *defender << " has exited the combat due to lack of health." << std::endl
-					  << std::endl;
-			int droppedIndex = defender->getActiveWeapon();
-			Weapon *droppedWeapon = defender->getWeaponK(droppedIndex);
-			std::cout << *defender << " has dropped the " << *droppedWeapon << "." << std::endl
-					  << std::endl;
-			addDroppedWeapon(droppedWeapon);
+			fighterExitsCombat(defender);
 			opponents.memberExitsCombat(target);
 		}
 	}
@@ -193,9 +187,15 @@ void Brawl::requestAndEnactAction(Fighter *f, Team &allies, Team &opponents)
 void Brawl::fighterExitsCombat(Fighter *fighter)
 {
 	assert(fighter->getCurrentHealth() == 0);
+	std::cout << *fighter << " has exited the combat due to lack of health." << std::endl
+					  << std::endl;
 	fighter->exitCombat();
-	int activeWeapon = fighter->getActiveWeapon();
-	Weapon *copiedWeapon = fighter->getWeaponK(activeWeapon);
+	if (fighter->getNumberOfWeapons == 0) {
+		return;
+	}
+	Weapon *copiedWeapon = fighter->getHighestDamageWeapon();
+	std::cout << *fighter << " has dropped the " << *droppedWeapon << "." << std::endl
+					  << std::endl;
 	addDroppedWeapon(copiedWeapon);
 }
 
