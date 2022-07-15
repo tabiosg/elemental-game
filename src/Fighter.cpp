@@ -23,13 +23,12 @@ public:
 
     Fighter()
         : elementType(Element::WATER),
-          numberOfWeapons(0),
-          activeWeapon(-1),
+          activeWeapon(0),
           inCombat(false),
-          maxHealth(200.0),
+          maxHealth(20.0),
           currentHealth(maxHealth),
-          attackStrength(25.0),
-          healingStrength(25.0)
+          attackStrength(2.5),
+          healingStrength(2.5)
     {
     }
 
@@ -68,7 +67,6 @@ public:
         const std::string &givenName,
         const Element &givenElement,
         std::vector<Weapon *> givenWeapons,
-        const int &givenNumberOfWeapons,
         const int &givenActiveWeapon,
         const bool &givenInCombat,
         const double &givenMaxHealth,
@@ -79,7 +77,6 @@ public:
         : name(givenName),
           elementType(givenElement),
           weapons(givenWeapons),
-          numberOfWeapons(givenNumberOfWeapons),
           activeWeapon(givenActiveWeapon),
           inCombat(givenInCombat),
           maxHealth(givenMaxHealth),
@@ -92,45 +89,43 @@ public:
 
     Fighter(const Fighter &other)
     {
-        name = other.getName();
-        elementType = other.getElement();
-        numberOfWeapons = other.getNumberOfWeapons();
-        activeWeapon = other.getActiveWeapon();
-        inCombat = other.getCombatStatus();
-        maxHealth = other.getMaxHealth();
-        currentHealth = other.getCurrentHealth();
-        attackStrength = other.getAttackStrength();
-        healingStrength = other.getHealingStrength();
-        type = other.getType();
+        name = other.name;
+        elementType = other.elementType;
+        activeWeapon = other.activeWeapon;
+        inCombat = other.inCombat;
+        maxHealth = other.maxHealth;
+        currentHealth = other.currentHealth;
+        attackStrength = other.attackStrength;
+        healingStrength = other.healingStrength;
+        type = other.type;
 
-        for (int k = 0; k < numberOfWeapons; ++k)
+        for (int k = 0; k < other.weapons.size(); ++k)
         {
-            Weapon *additionWeapon = WeaponFactory(other.getOfWeaponK(k));
+            Weapon *additionWeapon = WeaponFactory(other.weapons[k]);
             weapons.push_back(additionWeapon);
         }
     }
 
     Fighter &operator=(const Fighter &rhs)
     {
-        while (numberOfWeapons != 0)
+        while (!weapons.empty())
         {
             deleteWeapon(0);
         }
 
-        name = rhs.getName();
-        elementType = rhs.getElement();
-        numberOfWeapons = rhs.getNumberOfWeapons();
-        activeWeapon = rhs.getActiveWeapon();
-        inCombat = rhs.getCombatStatus();
-        maxHealth = rhs.getMaxHealth();
-        currentHealth = rhs.getCurrentHealth();
-        attackStrength = rhs.getAttackStrength();
-        healingStrength = rhs.getHealingStrength();
-        type = rhs.getType();
+        name = rhs.name;
+        elementType = rhs.elementType;
+        activeWeapon = rhs.activeWeapon;
+        inCombat = rhs.inCombat;
+        maxHealth = rhs.maxHealth;
+        currentHealth = rhs.currentHealth;
+        attackStrength = rhs.attackStrength;
+        healingStrength = rhs.healingStrength;
+        type = rhs.type;
 
-        for (int k = 0; numberOfWeapons; ++k)
+        for (int k = 0; rhs.weapons.size(); ++k)
         {
-            Weapon *additionWeapon = WeaponFactory(rhs.getOfWeaponK(k));
+            Weapon *additionWeapon = WeaponFactory(rhs.weapons[k]);
             weapons.push_back(additionWeapon);
         }
 
@@ -159,7 +154,7 @@ public:
     // EFFECTS returns number of weapons on fighter
     virtual int getNumberOfWeapons() const
     {
-        return numberOfWeapons;
+        return weapons.size();
     };
 
     // REQUIRES fighter has a weapon
@@ -170,7 +165,7 @@ public:
     };
 
     // EFFECTS returns kth weapons of fighter
-    virtual Weapon *getOfWeaponK(const int &k) const
+    virtual Weapon *getWeaponK(const int &k) const
     {
         return weapons[k];
     };
@@ -209,33 +204,29 @@ public:
     // EFFECTS gives fighter the extra weapon
     virtual void addWeapon(Weapon *weapon)
     {
-        ++numberOfWeapons;
         Weapon *addedWeapon = WeaponFactory(weapon);
         weapons.push_back(addedWeapon);
-        if (activeWeapon == -1)
-        {
-            activeWeapon = 0;
-        }
+        activeWeapon = 0;
     };
 
-    // REQUIRES fighter wants to delete a weapon
+    // REQUIRES fighter wants to delete a weapon and 0 <= weaponIndex < weapons.size()
     // EFFECTS deletes weapon
     virtual void deleteWeapon(const int &weaponIndex)
     {
-        --numberOfWeapons;
+        assert(0 <= weaponIndex && weaponIndex < weapons.size());
         delete weapons[weaponIndex];
         weapons.erase(weapons.begin() + weaponIndex);
-        activeWeapon = min(activeWeapon, numberOfWeapons - 1)
+        activeWeapon = min(activeWeapon, weapons.size() - 1)
     };
 
-    // REQUIRES 0 <= k < numberOfWeapons
+    // REQUIRES 0 <= k < weapons.size()
     // EFFECTS returns the kth weapon's name
     virtual const std::string &getNameOfWeaponK(const int &k) const
     {
         return weapons[k]->getName();
     };
 
-    // REQUIRES 0 <= k < numberOfWeapons
+    // REQUIRES 0 <= k < weapons.size()
     // EFFECTS  returns element of the kth weapon
     virtual Element getElementOfWeaponK(const int &k) const
     {
@@ -248,21 +239,21 @@ public:
         return getElementOfWeaponK(activeWeapon);
     };
 
-    /// REQUIRES 0 <= k < numberOfWeapons
+    /// REQUIRES 0 <= k < weapons.size()
     // EFFECTS  returns attack strength of the kth weapon
     virtual double getAttackStrengthOfWeaponK(const int &k) const
     {
         return weapons[k]->getAttackStrength();
     };
 
-    // REQUIRES 0 <= k < numberOfWeapons
+    // REQUIRES 0 <= k < weapons.size()
     // EFFECTS  returns healing strength of the kth weapon
     virtual double getHealingStrengthOfWeaponK(const int &k) const
     {
         return weapons[k]->getHealingStrength();
     };
 
-    // REQUIRES 0 <= k < numberOfWeapons
+    // REQUIRES 0 <= k < weapons.size()
     // EFFECTS returns the kth weapon's type
     virtual const std::string getTypeOfWeaponK(const int &k) const
     {
@@ -337,8 +328,8 @@ public:
         Element weaponElement = weapon->getElement();
         double lostHealthMultiplier = 0;
         if (
-            weaponElement.isBeneficialResourceTo(ally->getElement()) ||
-            elementType.isBeneficialResourceTo(ally->getElement()))
+            weaponElement.isBeneficialResourceTo(ally->elementType) ||
+            elementType.isBeneficialResourceTo(ally->elementType))
         {
             lostHealthMultiplier += 0.1;
         }
@@ -403,8 +394,8 @@ public:
     {
         assert(getCombatStatus());
         double multiplier = 1.0;
-        Element healerElement = healer->getElement();
-        Element weaponElement = healingWeapon->getElement();
+        Element healerElement = healer->elementType;
+        Element weaponElement = healingWeapon->elementType;
         if (healerElement.isBeneficialResourceTo(weaponElement))
         {
             lostHealthMultiplier += 0.4;
@@ -439,7 +430,7 @@ public:
     {
         assert(getCombatStatus());
         double multiplier = 1.0;
-        Element damagingElement = attacker->getElement();
+        Element damagingElement = attacker->elementType;
         Element weaponElement = damagingWeapon->getElement();
         if (damagingElement.isEffectiveAgainst(weaponElement))
         {
@@ -480,7 +471,7 @@ public:
     // EFFECTS: Prints weapons of fighter to os
     virtual std::ostream &printWeapons(std::ostream &os) const
     {
-        for (int i = 0; i < numberOfWeapons; ++i)
+        for (int i = 0; i < weapons.size(); ++i)
         {
             os << "Weapon " << i << ": " << *weapons[i] << std::endl;
         }
@@ -502,7 +493,7 @@ public:
     // Needed to avoid some compiler errors
     virtual ~Fighter()
     {
-        while (numberOfWeapons != 0)
+        while (!weapons.empty())
         {
             deleteWeapon(0);
         }
@@ -512,7 +503,6 @@ private:
     std::string name;
     Element elementType;
     std::vector<Weapon *> weapons;
-    int numberOfWeapons;
     int activeWeapon;
     bool inCombat;
     double maxHealth;
@@ -553,7 +543,6 @@ public:
         const std::string &givenName,
         const Element &givenElement,
         std::vector<Weapon *> givenWeapons,
-        const int &givenNumberOfWeapons,
         const int &givenActiveWeapon,
         const bool &givenInCombat,
         const double &givenMaxHealth,
@@ -565,7 +554,6 @@ public:
               givenName,
               givenElement,
               givenWeapons,
-              givenNumberOfWeapons,
               givenActiveWeapon,
               givenInCombat,
               givenMaxHealth,
@@ -613,7 +601,7 @@ public:
         assert(getCombatStatus());
         int target = requestHealTarget(allies);
         activeWeapon = requestActiveWeaponK();
-        Weapon *currentWeapon = getOfWeaponK(activeWeapon);
+        Weapon *currentWeapon = weapons[activeWeapon];
         Fighter *ally = allies[target];
         goHealAllyWithWeapon(ally, currentWeapon);
     }
@@ -626,7 +614,7 @@ public:
         assert(getCombatStatus());
         int target = requestAttackTarget(opponents);
         activeWeapon = requestActiveWeaponK();
-        Weapon *currentWeapon = getOfWeaponK(activeWeapon);
+        Weapon *currentWeapon = weapons[activeWeapon];
         Fighter *opponent = opponents[target];
         goAttackTargetWithWeapon(opponent, currentWeapon);
         return target;
@@ -647,7 +635,6 @@ private:
     std::string name;
     Element elementType;
     std::vector<Weapon *> weapons;
-    int numberOfWeapons;
     int activeWeapon;
     bool inCombat;
     double maxHealth;
@@ -730,7 +717,7 @@ private:
         int target;
         std::cin >> target;
         std::cout << std::endl;
-        if (!(-1 <= target && target < numberOfWeapons))
+        if (!(-1 <= target && target < weapons.size()))
         {
             std::cout << std::endl
                       << "\033[2J"
@@ -795,7 +782,6 @@ public:
         const std::string &givenName,
         const Element &givenElement,
         std::vector<Weapon *> givenWeapons,
-        const int &givenNumberOfWeapons,
         const int &givenActiveWeapon,
         const bool &givenInCombat,
         const double &givenMaxHealth,
@@ -807,7 +793,6 @@ public:
               givenName,
               givenElement,
               givenWeapons,
-              givenNumberOfWeapons,
               givenActiveWeapon,
               givenInCombat,
               givenMaxHealth,
@@ -857,7 +842,7 @@ public:
         for (size_t i = 0; i < opponents.size(); ++i)
         {
             Fighter *potentialDefender = opponents[i];
-            Element opponentElement = potentialDefender->getElement();
+            Element opponentElement = potentialDefender->elementType;
             int potentialAdvantage = 0;
 
             if (activeweaponElement.isEffectiveAgainst(opponentElement))
@@ -885,7 +870,7 @@ public:
             }
         }
 
-        Weapon *currentWeapon = getOfWeaponK(activeWeapon);
+        Weapon *currentWeapon = weapons[activeWeapon];
         Fighter *opponent = opponents[target];
         goAttackTargetWithWeapon(opponent, currentWeapon);
 
@@ -904,7 +889,6 @@ private:
     std::string name;
     Element elementType;
     std::vector<Weapon *> weapons;
-    int numberOfWeapons;
     int activeWeapon;
     bool inCombat;
     double maxHealth;
@@ -918,12 +902,12 @@ private:
     // EFFECTS returns highest damage weapon
     int getHighestDamageWeapon()
     {
-        assert(numberOfWeapons != 0);
+        assert(!weapons.empty());
         int highestDamageWeapon = 0;
 
         double highestDamageAmount = DBL_MIN;
 
-        for (int i = 0; i < numberOfWeapons; ++i)
+        for (int i = 0; i < weapons.size(); ++i)
         {
             if (weapons[i]->getAttackStrength() > highestDamageAmount)
             {
@@ -977,38 +961,36 @@ Fighter *FighterFactory(
 Fighter *FighterFactory(const Fighter *copiedFighter)
 {
 
-    std::string name = copiedFighter->getName();
-    Element element = copiedFighter->getElement();
-
-    int numberOfWeapons = copiedFighter->getNumberOfWeapons();
+    std::string name = copiedFighter->name;
+    Element element = copiedFighter->element);
 
     std::vector<Weapon *> weapons;
-    for (int i = 0; i < numberOfWeapons; ++i)
+    for (int i = 0; i < copiedFighter->weapons.size(); ++i)
     {
-        Weapon *weaponI = copiedFighter->getOfWeaponK(i);
+        Weapon *weaponI = copiedFighter->weapons[i];
         Weapon *addedWeapon = WeaponFactory(weaponI);
         weapons.push_back(addedWeapon);
     }
 
-    int activeWeapon = copiedFighter->getActiveWeapon();
-    bool inCombat = copiedFighter->getCombatStatus();
-    double maxHealth = copiedFighter->getMaxHealth();
-    double currentHealth = copiedFighter->getCurrentHealth();
+    int activeWeapon = copiedFighter->activeWeapon];
+    bool inCombat = copiedFighter->inCombat;
+    double maxHealth = copiedFighter->maxHealth;
+    double currentHealth = copiedFighter->currentHealth;
 
-    double attackStrength = copiedFighter->getAttackStrength();
-    double healingStrength = copiedFighter->getHealingStrength();
-    std::string type = copiedFighter->getType();
+    double attackStrength = copiedFighter->attackStrength;
+    double healingStrength = copiedFighter->healingStrength;
+    std::string type = copiedFighter->type;
 
     if (type == "Human")
     {
         return new Human(
-            name, element, weapons, numberOfWeapons, activeWeapon,
+            name, element, weapons, activeWeapon,
             inCombat, maxHealth, currentHealth, attackStrength, healingStrength, type);
     }
     else if (type == "Warrior")
     {
         return new Warrior(
-            name, element, weapons, numberOfWeapons, activeWeapon,
+            name, element, weapons, activeWeapon,
             inCombat, maxHealth, currentHealth, attackStrength, healingStrength, type);
     }
     assert(false);

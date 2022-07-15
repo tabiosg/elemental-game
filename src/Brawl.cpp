@@ -165,7 +165,7 @@ void Brawl::requestAndEnactAction(Fighter *f, Team &allies, Team &opponents)
 			std::cout << *defender << " has exited the combat due to lack of health." << std::endl
 					  << std::endl;
 			int droppedIndex = defender->getActiveWeapon();
-			Weapon *droppedWeapon = defender->getOfWeaponK(droppedIndex);
+			Weapon *droppedWeapon = defender->getWeaponK(droppedIndex);
 			std::cout << *defender << " has dropped the " << *droppedWeapon << "." << std::endl
 					  << std::endl;
 			addDroppedWeapon(droppedWeapon);
@@ -195,7 +195,7 @@ void Brawl::fighterExitsCombat(Fighter *fighter)
 	assert(fighter->getCurrentHealth() == 0);
 	fighter->exitCombat();
 	int activeWeapon = fighter->getActiveWeapon();
-	Weapon *copiedWeapon = fighter->getOfWeaponK(activeWeapon);
+	Weapon *copiedWeapon = fighter->getWeaponK(activeWeapon);
 	addDroppedWeapon(copiedWeapon);
 }
 
