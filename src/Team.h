@@ -27,7 +27,7 @@ public:
 	// EFFECTS return true if team is in brawl, returns false otherwise.
 	bool getBrawlStatus() const;
 
-	// REQUIRES 0 < k <= inCombatFighters in team
+	// REQUIRES 0 <= k < inCombatFighters in team
 	// EFFECTS return the kth  inCombat fighter.
 	Fighter *getFighterK(const int &k) const;
 

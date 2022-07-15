@@ -103,7 +103,7 @@ public:
         healingStrength = other.getHealingStrength();
         type = other.getType();
 
-        for (int k = 0; numberOfWeapons; ++k)
+        for (int k = 0; k < numberOfWeapons; ++k)
         {
             Weapon *additionWeapon = WeaponFactory(other.getOfWeaponK(k));
             weapons.push_back(additionWeapon);
@@ -228,14 +228,14 @@ public:
         activeWeapon = min(activeWeapon, numberOfWeapons - 1)
     };
 
-    // REQUIRES 0 < k <= numberOfWeapons
+    // REQUIRES 0 <= k < numberOfWeapons
     // EFFECTS returns the kth weapon's name
     virtual const std::string &getNameOfWeaponK(const int &k) const
     {
         return weapons[k]->getName();
     };
 
-    // REQUIRES 0 < k <= numberOfWeapons
+    // REQUIRES 0 <= k < numberOfWeapons
     // EFFECTS  returns element of the kth weapon
     virtual Element getElementOfWeaponK(const int &k) const
     {
@@ -248,21 +248,21 @@ public:
         return getElementOfWeaponK(activeWeapon);
     };
 
-    /// REQUIRES 0 < k <= numberOfWeapons
+    /// REQUIRES 0 <= k < numberOfWeapons
     // EFFECTS  returns attack strength of the kth weapon
     virtual double getAttackStrengthOfWeaponK(const int &k) const
     {
         return weapons[k]->getAttackStrength();
     };
 
-    // REQUIRES 0 < k <= numberOfWeapons
+    // REQUIRES 0 <= k < numberOfWeapons
     // EFFECTS  returns healing strength of the kth weapon
     virtual double getHealingStrengthOfWeaponK(const int &k) const
     {
         return weapons[k]->getHealingStrength();
     };
 
-    // REQUIRES 0 < k <= numberOfWeapons
+    // REQUIRES 0 <= k < numberOfWeapons
     // EFFECTS returns the kth weapon's type
     virtual const std::string getTypeOfWeaponK(const int &k) const
     {
@@ -482,7 +482,7 @@ public:
     {
         for (int i = 0; i < numberOfWeapons; ++i)
         {
-            os << "Weapon " << i + 1 << ": " << *weapons[i] << std::endl;
+            os << "Weapon " << i << ": " << *weapons[i] << std::endl;
         }
         return os;
     };
@@ -494,7 +494,7 @@ public:
         for (size_t i = 0; i < weapons.size(); ++i)
         {
             Weapon *ithweapon = weapons[i];
-            os << "Weapon " << i + 1 << ": " << *ithweapon << std::endl;
+            os << "Weapon " << i << ": " << *ithweapon << std::endl;
         }
         return os;
     };
@@ -668,7 +668,7 @@ private:
         int target;
         std::cin >> target;
         std::cout << std::endl;
-        if (!((size_t)target <= opponents.size() && target > 0))
+        if (!(0 <= target && target < opponents.size()))
         {
             std::cout << std::endl
                       << "\033[2J"
@@ -679,7 +679,7 @@ private:
         std::cout << std::endl
                   << "\033[2J"
                   << "\033[1;1H";
-        return target - 1;
+        return target;
     }
 
     // REQUIRES fighter wants to heal
@@ -689,11 +689,11 @@ private:
         std::cout << "These are your allies: " << std::endl;
         printListOfFighters(std::cout, allies);
         std::cout << std::endl;
-        std::cout << name << ", choose who to heal (0 for self)" << std::endl;
+        std::cout << name << ", choose who to heal (-1 for self): " << std::endl;
         int target;
         std::cin >> target;
         std::cout << std::endl;
-        if (!(target <= allies.size() && target > 0))
+        if (!(-1 <= target && target < allies.size()))
         {
             std::cout << std::endl
                       << "\033[2J"
@@ -704,7 +704,19 @@ private:
         std::cout << std::endl
                   << "\033[2J"
                   << "\033[1;1H";
-        return target - 1;
+
+        if (target == -1)
+        {
+            for (auto ally : allies)
+            {
+                if (ally == this)
+                {
+                    return target;
+                }
+            }
+        }
+
+        return target;
     }
 
     // REQUIRES fighter wants to heal or attack
@@ -714,11 +726,11 @@ private:
         std::cout << "These are your weapons: " << std::endl;
         printWeapons(std::cout);
         std::cout << std::endl;
-        std::cout << name << ", choose which weapon to equip by entering a number (0 for same): " << std::endl;
+        std::cout << name << ", choose which weapon to equip by entering a number (-1 for same): " << std::endl;
         int target;
         std::cin >> target;
         std::cout << std::endl;
-        if (!(0 <= target && target <= numberOfWeapons))
+        if (!(-1 <= target && target < numberOfWeapons))
         {
             std::cout << std::endl
                       << "\033[2J"
@@ -729,11 +741,7 @@ private:
         std::cout << std::endl
                   << "\033[2J"
                   << "\033[1;1H";
-        if (target == 0)
-        {
-            return activeWeapon;
-        }
-        return target - 1;
+        return target == -1 ? activeWeapon : target;
     }
 
     // REQUIRES fighter wants to grab and there are dropped weapons
@@ -747,7 +755,7 @@ private:
         int target;
         std::cin >> target;
         std::cout << std::endl;
-        if (!(0 <= target && target <= droppedWeapons.size()))
+        if (!(0 <= target && target < droppedWeapons.size()))
         {
             std::cout << std::endl
                       << "\033[2J"
@@ -758,7 +766,7 @@ private:
         std::cout << std::endl
                   << "\033[2J"
                   << "\033[1;1H";
-        return target - 1;
+        return target;
     }
 };
 
@@ -1028,7 +1036,7 @@ std::ostream &printListOfFighters(std::ostream &os, std::vector<Fighter *> fight
     for (size_t i = 0; i < fighters.size(); ++i)
     {
         Fighter *fighterI = fighters[i];
-        os << "Fighter " << i + 1 << ": " << *fighterI << std::endl;
+        os << "Fighter " << i << ": " << *fighterI << std::endl;
     }
     return os;
 }

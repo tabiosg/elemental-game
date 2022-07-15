@@ -23,10 +23,10 @@ void Brawl::startBrawl()
 {
 	teamZero.enterBrawl();
 	teamOne.enterBrawl();
-	std::cout << "Team 1 has entered the brawl! Here are its members:" << std::endl;
+	std::cout << "Team 0 has entered the brawl! Here are its members:" << std::endl;
 	teamZero.printAllFighters(std::cout);
 	std::cout << std::endl;
-	std::cout << "Team 2 has entered the brawl! Here are its members:" << std::endl;
+	std::cout << "Team 1 has entered the brawl! Here are its members:" << std::endl;
 	teamOne.printAllFighters(std::cout);
 	std::cout << std::endl;
 
@@ -48,7 +48,7 @@ void Brawl::startBrawl()
 
 		if (isTeamZeroTurn)
 		{
-			std::cout << "Team 1 will send out its fighter! " << std::endl
+			std::cout << "Team 0 will send out its fighter! " << std::endl
 					  << std::endl;
 			currentFighter = teamZero.getFighterK(teamZeroTurn);
 			requestAndEnactAction(currentFighter, teamZero, teamOne);
@@ -58,7 +58,7 @@ void Brawl::startBrawl()
 
 		else
 		{
-			std::cout << "Team 2 will send out its fighter! " << std::endl
+			std::cout << "Team 1 will send out its fighter! " << std::endl
 					  << std::endl;
 			currentFighter = teamOne.getFighterK(teamOneTurn);
 			requestAndEnactAction(currentFighter, teamOne, teamZero);
@@ -77,22 +77,22 @@ void Brawl::startBrawl()
 			teamOneTurn = 0;
 		}
 
-		std::cout << "This is team 1 and its members now:" << std::endl;
+		std::cout << "This is Team 0 and its members now:" << std::endl;
 		teamZero.printAllFighters(std::cout);
 		std::cout << std::endl;
-		std::cout << "This is team 2 and its members now:" << std::endl;
+		std::cout << "This is Team 1 and its members now:" << std::endl;
 		teamOne.printAllFighters(std::cout);
 	}
 	teamZeroSize = teamZero.getInCombatSize();
 	teamOneSize = teamOne.getInCombatSize();
 	if (teamZeroSize == 0)
 	{
-		std::cout << "Team 1 wins!" << std::endl
+		std::cout << "Team 0 wins!" << std::endl
 				  << std::endl;
 	}
 	else
 	{
-		std::cout << "Team 2 wins!" << std::endl
+		std::cout << "Team 1 wins!" << std::endl
 				  << std::endl;
 	}
 	teamZero.exitBrawl();
@@ -205,7 +205,7 @@ std::ostream &Brawl::printDroppedWeapons(std::ostream &os) const
 {
 	for (int i = 0; i < totalDroppedWeapons; ++i)
 	{
-		os << "Dropped Weapon " << i + 1 << ": " << *droppedWeapons[i] << std::endl;
+		os << "Dropped Weapon " << i << ": " << *droppedWeapons[i] << std::endl;
 	}
 	return os;
 }
