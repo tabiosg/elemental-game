@@ -880,11 +880,11 @@ Fighter *FighterFactory(
 // EFFECTS Returns a pointer to a fighter that is copy of copiedFighter
 Fighter *FighterFactory(const Fighter *copiedFighter)
 {
-
     std::string name = copiedFighter->getName();
     Element element = copiedFighter->getElement();
 
     std::vector<Weapon *> weapons;
+    std::cout << copiedFighter->getNumberOfWeapons() << std::endl;
     for (int i = 0; i < copiedFighter->getNumberOfWeapons(); ++i)
     {
         Weapon *weaponI = copiedFighter->getWeaponK(i);
@@ -912,7 +912,6 @@ Fighter *FighterFactory(const Fighter *copiedFighter)
             name, element, weapons, inCombat, maxHealth,
             currentHealth, attackStrength, healingStrength, type);
     }
-    assert(false);
     return nullptr;
 }
 

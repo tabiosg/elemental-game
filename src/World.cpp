@@ -73,11 +73,13 @@ int main()
 	Fighter *fighter2 = FighterFactory(
 		name2, Element(Element::FIRE),
 		Weapon::SPEAR, Fighter::WARRIOR);
+
 	Fighter *fighter3 = FighterFactory(
 		name3, Element(Element::WOOD),
 		Weapon::SPEAR, Fighter::WARRIOR);
 
 	Team GoodTeam;
+
 
 	GoodTeam.addMember(fighter1);
 	GoodTeam.addMember(fighter2);

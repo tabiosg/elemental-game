@@ -4,22 +4,35 @@
 
 #include "Weapon.h"
 
-Weapon::Weapon() {}
+Weapon::Weapon()
+    : name("Default Weapon"),
+      element(Element(Element::WATER)),
+      attackStrength(0),
+      healingStrength(0),
+      weaponType("Staff")
+{
+}
 
 Weapon::Weapon(
     const std::string &givenName,
     const Element &givenElement)
-    : name(givenName), element(givenElement) {}
+    : name(givenName),
+      element(givenElement),
+      attackStrength(0),
+      healingStrength(0),
+      weaponType("Staff") {}
 
 Weapon::Weapon(
     const std::string &givenName,
     const Element &givenElement,
     const double &givenAttackStrength,
     const double &givenHealingStrength)
-    : Weapon(givenName, givenElement)
+    : name(givenName),
+      element(givenElement),
+      attackStrength(givenAttackStrength),
+      healingStrength(givenHealingStrength),
+      weaponType("Staff")
 {
-    attackStrength = givenAttackStrength;
-    healingStrength = givenHealingStrength;
 }
 
 // EFFECTS returns weapon's name
@@ -98,7 +111,7 @@ public:
     Staff(
         const std::string &givenName,
         const Element &givenElement)
-        : Weapon(
+        : Staff(
               givenName,
               givenElement,
               4.0,
@@ -107,9 +120,9 @@ public:
     Staff()
         : Staff(
               "A Magical Staff",
-              Element(Element::WATER)) {
-
-              }
+              Element(Element::WATER))
+    {
+    }
 
     // Needed to avoid some compiler errors
     ~Staff() {}
@@ -204,7 +217,6 @@ Weapon *WeaponFactory(
     const Element &element,
     const std::string &weaponType)
 {
-
     if (weaponType == Weapon::STAFF)
     {
         return new Staff(name, element);
@@ -243,7 +255,7 @@ Weapon *WeaponFactory(const std::string &weaponType)
 // EFFECTS Returns a pointer to a weapon that is copy of copiedWeapon
 Weapon *WeaponFactory(const Weapon *copiedWeapon)
 {
-
+    std::cout << *copiedWeapon << std::endl;
     std::string name = copiedWeapon->getName();
     Element element = copiedWeapon->getElement();
     double attackStrength = copiedWeapon->getAttackStrength();
