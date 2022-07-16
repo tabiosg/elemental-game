@@ -190,11 +190,11 @@ void Brawl::fighterExitsCombat(Fighter *fighter)
 	std::cout << *fighter << " has exited the combat due to lack of health." << std::endl
 					  << std::endl;
 	fighter->exitCombat();
-	if (fighter->getNumberOfWeapons == 0) {
+	if (fighter->getNumberOfWeapons() == 0) {
 		return;
 	}
 	Weapon *copiedWeapon = fighter->getHighestDamageWeapon();
-	std::cout << *fighter << " has dropped the " << *droppedWeapon << "." << std::endl
+	std::cout << *fighter << " has dropped the " << *copiedWeapon << "." << std::endl
 					  << std::endl;
 	addDroppedWeapon(copiedWeapon);
 }

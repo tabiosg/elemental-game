@@ -62,7 +62,7 @@ int main()
 			  << "\033[1;1H";
 
 	std::cout << "A fire-type fighter and wood-type fighter ran up to you to form a party with you "
-			  << "as the leader.";
+			  << "as the leader." << std::endl;
 	std::cout << "They both have spears! You gladly allow them to join your party. " << std::endl;
 
 	std::cout << "Choose the name of the fire-type fighter." << std::endl;
@@ -73,11 +73,13 @@ int main()
 	Fighter *fighter2 = FighterFactory(
 		name2, Element(Element::FIRE),
 		Weapon::SPEAR, Fighter::WARRIOR);
+
 	Fighter *fighter3 = FighterFactory(
 		name3, Element(Element::WOOD),
 		Weapon::SPEAR, Fighter::WARRIOR);
 
 	Team GoodTeam;
+
 
 	GoodTeam.addMember(fighter1);
 	GoodTeam.addMember(fighter2);
@@ -104,6 +106,7 @@ int main()
 	std::cout << std::endl
 			  << "Choose the name of the third enemy." << std::endl;
 	std::cin >> name6;
+
 
 	Fighter *enemy1 = FighterFactory(
 		name4, Element(Element::EARTH),

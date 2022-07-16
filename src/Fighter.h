@@ -14,6 +14,8 @@
 #include "Weapon.h"
 #include <string>
 #include <vector>
+#include <bits/stdc++.h>
+#include <algorithm>
 
 class Fighter
 {
@@ -26,6 +28,30 @@ public:
         Fighter::HUMAN,
         Fighter::WARRIOR};
     static constexpr const int NUM_FIGHTER_TYPES = 2;
+
+    Fighter();
+
+    Fighter(const std::string &givenName, const Element &element);
+
+    Fighter(
+        const std::string &givenName,
+        const Element &element,
+        const std::string &weaponType);
+
+    Fighter(
+    const std::string &givenName,
+    const Element &givenElement,
+    std::vector<Weapon *> givenWeapons,
+    const bool &givenInCombat,
+    const double &givenMaxHealth,
+    const double &givenCurrentHealth,
+    const double &givenAttackStrength,
+    const double &givenHealingStrength,
+    std::string &givenType);
+
+    Fighter(const Fighter &other);
+
+    Fighter &operator=(const Fighter &rhs);
 
     // EFFECTS returns fighter's name
     virtual const std::string &getName() const;
@@ -81,6 +107,10 @@ public:
     // REQUIRES 0 <= k < weapons.size()
     // EFFECTS  returns healing strength of the kth weapon
     virtual double getHealingStrengthOfWeaponK(const int &k) const;
+
+    // REQUIRES fighter has at least 1 weapon
+    // EFFECTS returns highest damage weapon
+    virtual Weapon *getHighestDamageWeapon() const;
 
     // REQUIRES 0 <= k < weapons.size()
     // EFFECTS returns the kth weapon's type
@@ -142,7 +172,7 @@ public:
 
     // REQUIRES fighter wants to fight
     // EFFECTS  make fighter grab weapon
-    virtual void goGrabThisWeapon(Weapon *droppedWeapon);
+    virtual void goGrabThisWeapon(Weapon *wantedWeapon);
 
     // REQUIRES fighter must be in combat
     // EFFECTS  change health based on amount healed
@@ -161,7 +191,7 @@ public:
         const std::vector<Weapon *> weapons) const;
 
     // Needed to avoid some compiler errors
-    virtual ~Fighter() {}
+    virtual ~Fighter();
 
 private:
     std::string name;

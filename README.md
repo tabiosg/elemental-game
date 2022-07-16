@@ -72,7 +72,13 @@ The pentagon (outside) represents the elements resource dependency graph while t
 
 ## Running the Game
 
-Change your directory to the elemental-game. Then run make play.
+Double click the executable [```world.exe```](world.exe).
+
+---
+
+## Developing Code
+
+Change your directory to the elemental-game. Change the .cpp and.h files found in [```src/```](src/) to your liking. Then run make play.
 
 ```c++
 cd /documents/elemental-game
