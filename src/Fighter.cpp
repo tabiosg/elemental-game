@@ -10,12 +10,15 @@
 #include "Element.h"
 
 Fighter::Fighter()
-    : elementType(Element::WATER),
+    : name("Defualt Fighter"),
+      elementType(Element::WATER),
+      weapons(std::vector<Weapon*>()),
       inCombat(false),
       maxHealth(20.0),
       currentHealth(maxHealth),
       attackStrength(2.5),
-      healingStrength(2.5)
+      healingStrength(2.5),
+      type(Fighter::WARRIOR)
 {
 }
 
@@ -477,8 +480,6 @@ public:
           name("Angel"),
           type("Human")
     {
-        name = "Angel";
-        type = "Human";
     }
 
     Human(const std::string &givenName, const Element &element)
@@ -880,18 +881,19 @@ Fighter *FighterFactory(
 // EFFECTS Returns a pointer to a fighter that is copy of copiedFighter
 Fighter *FighterFactory(const Fighter *copiedFighter)
 {
+    std::cout << "TODO - test" << std::endl;
     std::string name = copiedFighter->getName();
+    std::cout << "TODO - test name" << std::endl;
     Element element = copiedFighter->getElement();
+    std::cout << "TODO - test element" << std::endl;
 
     std::vector<Weapon *> weapons;
-    std::cout << copiedFighter->getNumberOfWeapons() << std::endl;
     for (int i = 0; i < copiedFighter->getNumberOfWeapons(); ++i)
     {
         Weapon *weaponI = copiedFighter->getWeaponK(i);
         Weapon *addedWeapon = WeaponFactory(weaponI);
         weapons.push_back(addedWeapon);
     }
-
     bool inCombat = copiedFighter->getCombatStatus();
     double maxHealth = copiedFighter->getMaxHealth();
     double currentHealth = copiedFighter->getCurrentHealth();

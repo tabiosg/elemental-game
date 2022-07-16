@@ -255,7 +255,6 @@ Weapon *WeaponFactory(const std::string &weaponType)
 // EFFECTS Returns a pointer to a weapon that is copy of copiedWeapon
 Weapon *WeaponFactory(const Weapon *copiedWeapon)
 {
-    std::cout << *copiedWeapon << std::endl;
     std::string name = copiedWeapon->getName();
     Element element = copiedWeapon->getElement();
     double attackStrength = copiedWeapon->getAttackStrength();

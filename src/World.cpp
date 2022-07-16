@@ -107,6 +107,7 @@ int main()
 			  << "Choose the name of the third enemy." << std::endl;
 	std::cin >> name6;
 
+
 	Fighter *enemy1 = FighterFactory(
 		name4, Element(Element::EARTH),
 		Weapon::CROSS, Fighter::WARRIOR);
