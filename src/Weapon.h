@@ -10,7 +10,6 @@
  */
 
 #include "Element.h"
-#include "Weapon.h"
 #include <string>
 #include <vector>
 
@@ -64,14 +63,16 @@ public:
 
     // REQUIRES weapon has an attack strength
     // EFFECTS  changes attack strength of weapon
-    virtual void changeAttackStrength(const int &changedAttackStrength);
+    virtual void changeAttackStrength(
+        const int &changedAttackStrength);
 
     // REQUIRES weapon has a healing strength
     // EFFECTS  changes healing strength of weapon
-    virtual void changeHealingStrength(const int &changedHealStrength);
+    virtual void changeHealingStrength(
+        const int &changedHealStrength);
 
     // Needed to avoid some compiler errors
-    virtual ~Weapon() {}
+    virtual ~Weapon();
 
 private:
     std::string name;

@@ -62,7 +62,7 @@ int main()
 			  << "\033[1;1H";
 
 	std::cout << "A fire-type fighter and wood-type fighter ran up to you to form a party with you "
-			  << "as the leader.";
+			  << "as the leader." << std::endl;
 	std::cout << "They both have spears! You gladly allow them to join your party. " << std::endl;
 
 	std::cout << "Choose the name of the fire-type fighter." << std::endl;

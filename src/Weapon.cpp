@@ -2,103 +2,84 @@
 #include <vector>
 #include <cassert>
 
-#include "Element.h"
 #include "Weapon.h"
 
-class Weapon
+Weapon::Weapon() {}
+
+Weapon::Weapon(
+    const std::string &givenName,
+    const Element &givenElement)
+    : name(givenName), element(givenElement) {}
+
+Weapon::Weapon(
+    const std::string &givenName,
+    const Element &givenElement,
+    const double &givenAttackStrength,
+    const double &givenHealingStrength)
+    : Weapon(givenName, givenElement)
 {
-public:
-    // weapon names
-    static constexpr const char *const STAFF = "Staff";
-    static constexpr const char *const SPEAR = "Spear";
-    static constexpr const char *const CROSS = "Cross";
-    // list
-    static constexpr const char *const WEAPON_LIST[] = {
-        Weapon::STAFF,
-        Weapon::SPEAR,
-        Weapon::CROSS};
-    static constexpr const int NUM_weaponTypeS = 3;
+    attackStrength = givenAttackStrength;
+    healingStrength = givenHealingStrength;
+}
 
-    Weapon() {}
-
-    Weapon(
-        const std::string &givenName,
-        const Element &givenElement,
-        const double &givenAttackStrength,
-        const double &givenHealingStrength)
-        : Weapon(givenName, givenElement),
-          attackStrength(givenAttackStrength),
-          healingStrength(givenHealingStrength) {}
-
-    Weapon(
-        const std::string &givenName,
-        const Element &givenElement)
-        : name(givenName), element(givenElement) {}
-
-    // EFFECTS returns weapon's name
-    virtual const std::string &getName() const
-    {
-        return name;
-    };
-
-    // REQUIRES weapon has an element
-    // EFFECTS  returns element of weapon
-    virtual Element getElement() const
-    {
-        return element;
-    };
-
-    // REQUIRES weapon has an attack strength
-    // EFFECTS  returns attack strength of weapon
-    virtual double getAttackStrength() const
-    {
-        return attackStrength;
-    };
-
-    // REQUIRES weapon has a healing strength
-    // EFFECTS  returns healing strength of weapon
-    virtual double getHealingStrength() const
-    {
-        return healingStrength;
-    }
-
-    // EFFECTS returns weapon's type
-    virtual const std::string getWeaponType() const
-    {
-        return weaponType;
-    };
-
-    // REQUIRES weapon has a name
-    // EFFECTS  changes name of weapon
-    virtual void changeName(const std::string &newName)
-    {
-        name = newName;
-    };
-
-    // REQUIRES weapon has an attack strength
-    // EFFECTS  changes attack strength of weapon
-    virtual void changeAttackStrength(
-        const int &changedAttackStrength){
-        attackStrength = changedAttackStrength};
-
-    // REQUIRES weapon has a healing strength
-    // EFFECTS  changes healing strength of weapon
-    virtual void changeHealingStrength(
-        const int &changedHealStrength)
-    {
-        healingStrength = changedHealStrength;
-    };
-
-    // Needed to avoid some compiler errors
-    virtual ~Weapon() {}
-
-private:
-    std::string name;
-    Element element;
-    double attackStrength;
-    double healingStrength;
-    std::string weaponType;
+// EFFECTS returns weapon's name
+const std::string &Weapon::getName() const
+{
+    return name;
 };
+
+// REQUIRES weapon has an element
+// EFFECTS  returns element of weapon
+Element Weapon::getElement() const
+{
+    return element;
+};
+
+// REQUIRES weapon has an attack strength
+// EFFECTS  returns attack strength of weapon
+double Weapon::getAttackStrength() const
+{
+    return attackStrength;
+};
+
+// REQUIRES weapon has a healing strength
+// EFFECTS  returns healing strength of weapon
+double Weapon::getHealingStrength() const
+{
+    return healingStrength;
+}
+
+// EFFECTS returns weapon's type
+const std::string Weapon::getWeaponType() const
+{
+    return weaponType;
+};
+
+// REQUIRES weapon has a name
+// EFFECTS  changes name of weapon
+void Weapon::changeName(const std::string &newName)
+{
+    name = newName;
+};
+
+// REQUIRES weapon has an attack strength
+// EFFECTS  changes attack strength of weapon
+void Weapon::changeAttackStrength(
+    const int &changedAttackStrength)
+{
+    attackStrength = changedAttackStrength;
+};
+
+// REQUIRES weapon has a healing strength
+// EFFECTS  changes healing strength of weapon
+void Weapon::changeHealingStrength(
+    const int &changedHealStrength)
+{
+    healingStrength = changedHealStrength;
+};
+
+// Needed to avoid some compiler errors
+Weapon::~Weapon() {}
 
 class Staff : public Weapon
 {
@@ -126,7 +107,9 @@ public:
     Staff()
         : Staff(
               "A Magical Staff",
-              Element::WATER) {}
+              Element(Element::WATER)) {
+
+              }
 
     // Needed to avoid some compiler errors
     ~Staff() {}
@@ -165,7 +148,7 @@ public:
     Spear()
         : Spear(
               "Super Strong Spear",
-              Element::WATER) {}
+              Element(Element::WATER)) {}
 
     // Needed to avoid some compiler errors
     ~Spear() {}
@@ -202,7 +185,7 @@ public:
     Cross()
         : Cross(
               "The Coolest Cross",
-              Element::WATER) {}
+              Element(Element::WATER)) {}
 
     // Needed to avoid some compiler errors
     ~Cross() {}
@@ -279,7 +262,6 @@ Weapon *WeaponFactory(const Weapon *copiedWeapon)
     {
         return new Cross(name, element, attackStrength, healingStrength);
     }
-    assert(false);
     return nullptr;
 }
 
